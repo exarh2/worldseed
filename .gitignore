@@ -1,0 +1,97 @@
+# Logs
+*.log
+*.log.*
+logs/
+**/logs/
+
+# Frontend (Vite / React / TypeScript)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.npm/
+frontend/.yarn/
+frontend/.pnp.*
+frontend/.cache/
+frontend/.parcel-cache/
+frontend/coverage/
+
+# Backend (Java / Spring / Maven)
+backend/target/
+backend/build/
+backend/out/
+backend/.mvn/
+backend/.gradle/
+
+# Generic Node / JS / TS
+node_modules/
+**/node_modules/
+.npm/
+.yarn/
+.pnp.*
+dist/
+build/
+.next/
+out/
+.cache/
+.parcel-cache/
+*.tsbuildinfo
+
+# Generic Java / JVM
+target/
+**/target/
+build/
+**/build/
+out/
+**/out/
+.gradle/
+**/.gradle/
+.mvn/
+**/.mvn/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+bin/
+**/bin/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+secrets/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# Coverage & Testing
+coverage/
+.nyc_output/
+*.lcov
+.jest/
+
