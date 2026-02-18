@@ -1,27 +1,46 @@
 ---
-description: TypeScript/JavaScript conventions (Node/React/etc.)
-globs: "**/*.{ts,tsx,js,jsx}"
+description: Frontend TypeScript/React conventions (Vite + React, worldseed-web)
+globs: "**/*.{ts,tsx}"
 alwaysApply: false
 ---
 
-# TypeScript / JavaScript
+## Stack
+- Use Vite with React and the SWC plugin (`@vitejs/plugin-react-swc`).
+- Rely on strict TypeScript configuration from `tsconfig.app.json` / `tsconfig.node.json` (bundler module resolution, `strict: true`, `noUncheckedSideEffectImports: true`).
+- Follow the flat ESLint config (`eslint.config.js`) based on `@eslint/js`, `typescript-eslint`, `eslint-plugin-react-x`, `eslint-plugin-react-dom`, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`.
+
+## Project structure
+- Treat routes as scene entry points (scene-by-route switch); keep scene-specific logic close to the route that owns it.
+- Keep global state and API logic under `src/store` (slices, base API, and generated RTK Query APIs under `src/store/generated`).
+- Colocate UI components, hooks, and utilities with their feature; promote to shared locations only when reused across scenes.
 
 ## Types
-- Prefer `unknown` over `any`; narrow with type guards.
-- Avoid unsafe assertions (`as Foo`) unless you validate first.
-- Keep public APIs typed; don’t leak `any` across boundaries.
+- Prefer `unknown` over `any` and narrow with type guards or helpers.
+- Avoid unsafe assertions (`as Foo`) unless the value is validated first.
+- Keep public component props, store slices, and API layers well-typed; don’t let `any` leak across module boundaries.
 
-## Async + errors
-- Don’t swallow errors; return meaningful failures or throw with context.
-- Handle `Promise` rejections explicitly; avoid floating promises.
+## React components
+- Use function components with hooks; avoid class components.
+- Keep components focused and composable: presentational components should be mostly stateless, while containers connect to Redux/RTK Query.
+- Derive render state from Redux/RTK Query store instead of duplicating it in local component state when possible.
 
-## Structure
-- Keep modules small and cohesive; extract helpers when reuse emerges.
-- Prefer pure functions; isolate side effects (IO, time, randomness).
+## State and data (Redux Toolkit + RTK Query)
+- Use `@reduxjs/toolkit` (`createSlice`, `configureStore`, etc.) instead of manual action types/reducers.
+- Treat generated RTK Query files from `@rtk-query/codegen-openapi` as read-only; adjust `openapi-config.ts` instead of editing generated code.
+- Prefer RTK Query for server data; keep normalized state in slices only when truly needed for client-only behavior.
+
+## Async, errors, and logging
+- Handle Promise rejections explicitly; avoid floating promises.
+- Surface user-facing errors through consistent UI patterns (notifications, banners, etc.) and log technical details using the existing logging approach (e.g., `js-logger`) where appropriate.
+- Wrap low-level errors with context so it’s clear which scene/feature failed.
+
+## Performance and rendering
+- Be mindful of re-renders in connected components; use memoization (`React.memo`, `useMemo`, `useCallback`) when it clearly reduces work in hot paths.
+- For 3D/scene rendering (`three`, `@react-three/fiber`, `@react-three/drei`) and map rendering (`ol`), keep heavy computations off the React render path when possible.
 
 ## Tooling
-- If the repo has ESLint/Prettier/tsconfig rules, follow them exactly.
-- When adding files, match existing import style and path aliasing.
+- When adding or modifying files, match the existing import style, path usage, and ESLint expectations; prefer fixing the code over disabling rules.
+- Before pushing significant changes, run `npm run lint` and `npm run build` in `worldseed-web` and fix new issues you introduce.
 
 ## Tests
-- For behavior changes, add/adjust unit tests near the change.
+- When changing behavior in critical flows (routing, auth, scene loading, store logic), add or adjust tests where the project already has them.
