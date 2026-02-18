@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="2026-02-18-create-role-type-enum" author="worldseed">
+        <sql>
+            DROP TYPE IF EXISTS role_type;
+            CREATE TYPE role_type AS ENUM ('USER', 'ADMIN');
+        </sql>
+    </changeSet>
+
+    <changeSet id="2026-02-18-create-security-user-table" author="worldseed">
+        <createTable tableName="security_user" remarks="Пользователи системы">
+            <column name="id" type="uuid" remarks="Идентификатор записи">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="varchar(50)" remarks="Логин пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)" remarks="Пароль пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)" remarks="Почта пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="role_type" remarks="Роль пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" remarks="Дата создания записи" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp" remarks="Дата изменения записи" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

@@ -8,6 +8,7 @@ alwaysApply: false
 
 ## Package
 - Use online.worldseed base package
+- Store JPA entities in `online.worldseed.model.entity` package
 
 ## Style + structure
 - Follow existing package structure and naming; don’t reshuffle without a reason.
@@ -24,9 +25,13 @@ alwaysApply: false
 - Use structured logging patterns used in the repo; avoid noisy logs in hot paths.
 
 ## Libraries
-- Use maven-checkstyle-plugin 
-- Use liquibase with xml syntax
-- Use springdoc openapi
+- spring
+- maven-checkstyle-plugin 
+- liquibase with xml syntax
+- springdoc openapi
+
+## Database
+- Postgres
 
 ## Tests
 - When changing behavior, add/adjust JUnit tests (JUnit 5 style if present).
