@@ -1,0 +1,30 @@
+---
+description: Core collaboration and quality standards (always on)
+alwaysApply: true
+---
+
+# Core agent rules
+
+## Workflow
+- Prefer the **smallest safe change** that solves the problem.
+- If requirements are ambiguous, ask targeted questions early.
+- Explain **tradeoffs** when multiple approaches are viable.
+
+## Code quality
+- Match existing project conventions (structure, naming, patterns).
+#- Add/adjust **tests** when behavior changes; keep them fast and focused.
+- Run the **most relevant checks** for touched areas (build/lint/tests) and fix regressions you introduce.
+
+## Dependencies and tooling
+- Don’t add new dependencies without explicit user approval.
+- Don’t change formatter/linter/tooling configs unless asked or necessary to complete the task.
+
+## Security and hygiene
+- Never commit or paste secrets (tokens, private keys, `.env` contents).
+- Prefer configuration via env vars and documented defaults.
+
+## Git discipline
+- Do not create commits unless the user explicitly asks.
+
+## Testing
+- Don’t add new tests without explicit user query.

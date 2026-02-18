@@ -1,0 +1,27 @@
+---
+description: TypeScript/JavaScript conventions (Node/React/etc.)
+globs: "**/*.{ts,tsx,js,jsx}"
+alwaysApply: false
+---
+
+# TypeScript / JavaScript
+
+## Types
+- Prefer `unknown` over `any`; narrow with type guards.
+- Avoid unsafe assertions (`as Foo`) unless you validate first.
+- Keep public APIs typed; don’t leak `any` across boundaries.
+
+## Async + errors
+- Don’t swallow errors; return meaningful failures or throw with context.
+- Handle `Promise` rejections explicitly; avoid floating promises.
+
+## Structure
+- Keep modules small and cohesive; extract helpers when reuse emerges.
+- Prefer pure functions; isolate side effects (IO, time, randomness).
+
+## Tooling
+- If the repo has ESLint/Prettier/tsconfig rules, follow them exactly.
+- When adding files, match existing import style and path aliasing.
+
+## Tests
+- For behavior changes, add/adjust unit tests near the change.

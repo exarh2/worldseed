@@ -1,0 +1,73 @@
+---
+description: How to add or edit Cursor rules in our project
+globs: 
+alwaysApply: false
+---
+# Cursor Rules Guide
+
+How to add and edit cursor rules in this project.
+
+## File Location
+
+Always place rule files in `PROJECT_ROOT/.cursor/rules/`:
+
+- ✅ Correct: `.cursor/rules/typescript.mdc`
+- ✅ Correct: `.cursor/rules/frontend/react.mdc`
+- ❌ Wrong: `rules/typescript.mdc` (not in .cursor folder)
+- ❌ Wrong: `.cursor/typescript.mdc` (not in rules subfolder)
+
+## Naming Convention
+
+1. **Use kebab-case** for filenames: `my-rule-name.mdc`
+2. **Always use `.mdc` extension**
+3. **Make names descriptive** of the rule's purpose
+4. **Optional: Use numeric prefixes** for ordering (e.g., `00-core.mdc`, `01-frontend.mdc`)
+
+## Organization
+
+- Place rules for **frontend subproject** in `.cursor/rules/frontend/` subfolder
+- Place rules for **backend subproject** in `.cursor/rules/backend/` subfolder
+- Place **general/core rules** directly in `.cursor/rules/`
+
+## File Structure
+
+Every rule file must follow this structure:
+
+```markdown
+---
+description: Short description of the rule's purpose
+globs: optional/path/pattern/**/* 
+alwaysApply: false
+---
+# Rule Title
+
+Main content explaining the rule with markdown formatting.
+
+1. Step-by-step instructions
+2. Code examples
+3. Guidelines
+
+Example:
+```typescript
+// ✅ Good: Using type guards
+function processValue(value: unknown): string {
+  if (typeof value === 'string') {
+    return value.toUpperCase();
+  }
+  throw new Error('Expected string');
+}
+
+// ❌ Bad: Unsafe assertion
+function processValue(value: unknown): string {
+  return (value as string).toUpperCase(); // May crash!
+}
+```
+```
+
+## Best Practices
+
+1. **Keep rules focused**: One rule file = one concern (language, framework, pattern)
+2. **Use examples**: Show both good ✅ and bad ❌ practices
+3. **Be specific**: Avoid vague guidelines; provide concrete examples
+4. **Update existing rules**: Edit existing files rather than creating duplicates
+5. **Test rules**: Verify rules work as expected after creation/modification

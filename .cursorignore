@@ -1,0 +1,83 @@
+﻿# Log files
+*.log
+*.log.*
+logs/
+**/logs/
+
+# Node.js / TypeScript / React Frontend
+node_modules/
+**/node_modules/
+.npm/
+.yarn/
+.pnp.*
+dist/
+build/
+.next/
+out/
+.cache/
+.parcel-cache/
+*.tsbuildinfo
+
+# Java / Spring Backend
+target/
+**/target/
+build/
+**/build/
+out/
+**/out/
+.gradle/
+**/.gradle/
+.mvn/
+**/.mvn/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+bin/
+**/bin/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+secrets/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# Coverage & Testing
+coverage/
+.nyc_output/
+*.lcov
+.jest/
+
+# Package manager locks (optional - uncomment if you want to ignore)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml

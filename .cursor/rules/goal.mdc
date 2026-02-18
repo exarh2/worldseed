@@ -1,0 +1,10 @@
+---
+description: Goal of project
+alwaysApply: true
+---
+
+## Project domain "world-seed.online"
+
+**World Seed Online** is an open-source world engine inspired by the World Seed from the anime/manga Sword Art Online.
+
+The goal of the project is to create a virtual twin of Earth, aligned to real-world geodetic coordinates. The world is built from dynamically loaded and unloaded terrain tiles, similar to raster map engines. Terrain height data is sourced from SRTM, and the initial landscape and features are generated from OpenStreetMap. Generated terrains are processed on the backend and stored in MinIO for scalable streaming and reuse.
