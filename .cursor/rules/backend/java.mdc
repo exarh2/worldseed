@@ -28,6 +28,8 @@ alwaysApply: false
 - spring
 - maven-checkstyle-plugin 
 - liquibase with xml syntax
+- lombook
+- mapstruct
 - springdoc openapi
 
 ## Database
