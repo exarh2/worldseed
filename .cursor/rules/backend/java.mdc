@@ -15,6 +15,13 @@ alwaysApply: false
 - Prefer small, focused classes; keep responsibilities clear.
 - Make data immutable by default (`final`, unmodifiable collections).
 
+## Lombok
+- Prefer Lombok for boilerplate (getters/setters/constructors) where it keeps code clear.
+- For simple mutable entities (e.g. JPA) use `@Data` instead of explicit getters/setters.
+- For immutable value types and DTOs prefer `record` or Lombok `@Value`.
+- Do not use `@Getter` / `@Setter` on their own; use `@Data` / `@Value` instead.
+- Invices/controllers prefer constructor injection with `final` fields and Lombok `@RequiredArgsConstructor` instead of manual constructors.
+
 ## Nulls + APIs
 - Avoid returning `null` for collections; return empty collections instead.
 - Use `Optional` thoughtfully for return values (not fields/params unless project convention says so).

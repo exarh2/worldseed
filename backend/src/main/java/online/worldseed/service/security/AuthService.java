@@ -1,41 +1,51 @@
 package online.worldseed.service.security;
 
+import java.util.UUID;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import online.worldseed.dto.AuthResponse;
-import online.worldseed.dto.SignInRequest;
-import online.worldseed.dto.SignUpRequest;
+import lombok.RequiredArgsConstructor;
+import online.worldseed.model.dto.security.AuthResponse;
+import online.worldseed.model.dto.security.SignInRequest;
+import online.worldseed.model.dto.security.SignUpRequest;
 import online.worldseed.model.entity.SecurityUserEntity;
 import online.worldseed.model.enums.RoleType;
+import online.worldseed.repository.SecurityUserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    private final SecurityUserService userService;
+    private final SecurityUserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthService(SecurityUserService userService, JwtService jwtService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.jwtService = jwtService;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     public AuthResponse signUp(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.password());
-        SecurityUserEntity user = userService.create(
-                request.login(),
-                encodedPassword,
-                request.email(),
-                RoleType.USER
-        );
+
+        if (userRepository.existsByLogin(request.login())) {
+            throw new IllegalArgumentException("User with login " + request.login() + " already exists");
+        }
+        if (userRepository.existsByEmail(request.email())) {
+            throw new IllegalArgumentException("User with email " + request.email() + " already exists");
+        }
+
+        SecurityUserEntity user = new SecurityUserEntity();
+        user.setId(UUID.randomUUID());
+        user.setLogin(request.login());
+        user.setPassword(encodedPassword);
+        user.setEmail(request.email());
+        user.setRole(RoleType.USER);
+
+        user = userRepository.save(user);
+
         String token = jwtService.generateToken(user.getLogin(), user.getRole().name());
         return new AuthResponse(token, user.getLogin(), user.getRole().name());
     }
 
     public AuthResponse signIn(SignInRequest request) {
-        SecurityUserEntity user = userService.findByLogin(request.login())
+        SecurityUserEntity user = userRepository.findByLogin(request.login())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid login or password"));
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid login or password");

@@ -8,19 +8,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import online.worldseed.dto.AuthResponse;
-import online.worldseed.dto.SignInRequest;
-import online.worldseed.dto.SignUpRequest;
+import lombok.RequiredArgsConstructor;
+import online.worldseed.model.dto.security.AuthResponse;
+import online.worldseed.model.dto.security.SignInRequest;
+import online.worldseed.model.dto.security.SignUpRequest;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/sign-up")
     public ResponseEntity<AuthResponse> signUp(@Valid @RequestBody SignUpRequest request) {
