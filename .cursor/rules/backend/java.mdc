@@ -10,6 +10,9 @@ alwaysApply: false
 - Use online.worldseed base package
 - Store JPA entities in `online.worldseed.model.entity` package
 
+## Enums
+- Use **static import** for enum constants
+
 ## Style + structure
 - Follow existing package structure and naming; don’t reshuffle without a reason.
 - Prefer small, focused classes; keep responsibilities clear.

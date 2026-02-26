@@ -3,7 +3,7 @@ package online.worldseed.model.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
+import static jakarta.persistence.EnumType.STRING;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -43,7 +43,7 @@ public class SecurityUserEntity {
     private String email;
 
     /** Роль пользователя в системе. */
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     @Column(name = "role", nullable = false)
     @ColumnTransformer(
             read = "role::text",

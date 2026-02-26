@@ -10,6 +10,7 @@ import online.worldseed.model.dto.security.AuthResponse;
 import online.worldseed.model.dto.security.SignInRequest;
 import online.worldseed.model.dto.security.SignUpRequest;
 import online.worldseed.model.entity.SecurityUserEntity;
+import static online.worldseed.model.enums.RoleType.USER;
 import online.worldseed.model.enums.RoleType;
 import online.worldseed.repository.SecurityUserRepository;
 
@@ -40,7 +41,7 @@ public class AuthService {
         user.setLogin(request.login());
         user.setPassword(encodedPassword);
         user.setEmail(request.email());
-        user.setRole(RoleType.USER);
+        user.setRole(USER);
 
         user = userRepository.save(user);
 
