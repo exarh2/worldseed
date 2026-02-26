@@ -7,49 +7,25 @@ alwaysApply: false
 # Java
 
 ## Package
-- Use online.worldseed base package
-- Store JPA entities in `online.worldseed.model.entity` package
+- Base: `online.worldseed`. 
 
 ## Enums
-- Use **static import** for enum constants
+- Use **static import** for enum constants.
 
 ## Style + structure
-- Follow existing package structure and naming; don’t reshuffle without a reason.
-- Prefer small, focused classes; keep responsibilities clear.
-- Make data immutable by default (`final`, unmodifiable collections).
+- Follow existing structure; small focused classes; immutable by default (`final`, unmodifiable collections).
 
 ## Lombok
-- Prefer Lombok for boilerplate (getters/setters/constructors) where it keeps code clear.
-- For simple mutable entities (e.g. JPA) use `@Data` instead of explicit getters/setters.
-- For immutable value types and DTOs prefer `record` or Lombok `@Value`.
-- Do not use `@Getter` / `@Setter` on their own; use `@Data` / `@Value` instead.
-- Invices/controllers prefer constructor injection with `final` fields and Lombok `@RequiredArgsConstructor` instead of manual constructors.
+- Boilerplate: Lombok (getters/setters/constructors). JPA entities: `@Data`. Immutable/DTOs: `record` or `@Value`. No standalone `@Getter`/`@Setter`. Services/controllers: constructor injection, `final` fields, `@RequiredArgsConstructor`.
 
 ## Nulls + APIs
-- Avoid returning `null` for collections; return empty collections instead.
-- Use `Optional` thoughtfully for return values (not fields/params unless project convention says so).
-- Validate inputs at boundaries; fail fast with clear messages.
+- Collections: never return `null`, use empty. Use `Optional` for returns (not fields/params unless convention). Validate at boundaries; fail fast with clear messages.
 
 ## Errors + logging
-- Don’t swallow exceptions; wrap with context when rethrowing.
-- Use structured logging patterns used in the repo; avoid noisy logs in hot paths.
+- Don’t swallow exceptions; wrap with context when rethrowing. Use repo’s logging style; avoid noisy logs in hot paths.
 
 ## Libraries
-- spring
-- maven-checkstyle-plugin 
-- liquibase with xml syntax
-- lombook
-- mapstruct
-- springdoc openapi
-
-## Database
-- Postgres
+- spring, maven-checkstyle-plugin, liquibase (xml), lombok, mapstruct, springdoc-openapi. DB: Postgres.
 
 ## Documentation (Russian)
-
-- **JPA entities**: Javadoc in Russian for each field.
-- **Services**: Javadoc in Russian for public methods.
-- **DTOs**: `@Schema(description = "...")` in Russian on type and fields; `requiredMode = Schema.RequiredMode.REQUIRED` for required fields.
-
-## Tests
-- When changing behavior, add/adjust JUnit tests (JUnit 5 style if present).
+- **JPA**: Javadoc in Russian per field. **Services**: Javadoc for public methods. **DTOs**: `@Schema(description = "...")` in Russian on type/fields; `requiredMode = Schema.RequiredMode.REQUIRED` for required.
