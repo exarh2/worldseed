@@ -1,4 +1,4 @@
-package online.worldseed.service;
+package online.worldseed.service.security;
 
 import java.util.List;
 import java.util.Optional;
