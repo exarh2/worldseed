@@ -2,7 +2,6 @@ package online.worldseed.controller;
 
 import jakarta.validation.Valid;
 import online.worldseed.service.security.AuthService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,14 +20,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<AuthResponse> signUp(@Valid @RequestBody SignUpRequest request) {
-        AuthResponse response = authService.signUp(request);
-        return ResponseEntity.ok(response);
+    public AuthResponse signUp(@Valid @RequestBody SignUpRequest request) {
+        return authService.signUp(request);
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<AuthResponse> signIn(@Valid @RequestBody SignInRequest request) {
-        AuthResponse response = authService.signIn(request);
-        return ResponseEntity.ok(response);
+    public AuthResponse signIn(@Valid @RequestBody SignInRequest request) {
+        return authService.signIn(request);
     }
 }

@@ -15,9 +15,9 @@ import online.worldseed.model.enums.RoleType;
 import online.worldseed.repository.SecurityUserRepository;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructorg
 public class AuthService {
-
+ыва
     private final SecurityUserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
