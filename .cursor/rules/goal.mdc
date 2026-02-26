@@ -1,6 +1,6 @@
 ---
 description: Goal of project
-alwaysApply: true
+alwaysApply: false
 ---
 
 ## Project domain "world-seed.online"
