@@ -17,7 +17,7 @@ import online.worldseed.repository.SecurityUserRepository;
 @Service
 @RequiredArgsConstructorg
 public class AuthService {
-ыва
+
     private final SecurityUserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
