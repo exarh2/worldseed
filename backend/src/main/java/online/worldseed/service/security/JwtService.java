@@ -26,6 +26,9 @@ public class JwtService {
         this.expirationMs = expirationMs;
     }
 
+    /**
+     * Генерирует JWT для пользователя с указанным логином и ролью.
+     */
     public String generateToken(String login, String role) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expirationMs);
@@ -38,14 +41,23 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * Извлекает логин пользователя из JWT.
+     */
     public String getLoginFromToken(String token) {
         return getClaims(token).getSubject();
     }
 
+    /**
+     * Извлекает роль пользователя из JWT.
+     */
     public String getRoleFromToken(String token) {
         return (String) getClaims(token).get("role");
     }
 
+    /**
+     * Проверяет валидность JWT (подпись и срок действия).
+     */
     public boolean validateToken(String token) {
         try {
             getClaims(token);

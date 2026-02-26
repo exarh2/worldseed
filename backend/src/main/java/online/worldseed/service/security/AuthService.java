@@ -21,6 +21,10 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Регистрирует нового пользователя: проверяет уникальность логина и email,
+     * сохраняет пользователя с закодированным паролем и возвращает JWT и данные для входа.
+     */
     public AuthResponse signUp(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.password());
 
@@ -44,6 +48,9 @@ public class AuthService {
         return new AuthResponse(token, user.getLogin(), user.getRole().name());
     }
 
+    /**
+     * Выполняет вход пользователя: проверяет логин и пароль, возвращает JWT и данные пользователя.
+     */
     public AuthResponse signIn(SignInRequest request) {
         SecurityUserEntity user = userRepository.findByLogin(request.login())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid login or password"));

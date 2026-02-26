@@ -15,6 +15,9 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
     private final SecurityUserRepository repository;
 
+    /**
+     * Загружает пользователя по логину для аутентификации Spring Security.
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SecurityUserEntity entity = repository.findByLogin(username)

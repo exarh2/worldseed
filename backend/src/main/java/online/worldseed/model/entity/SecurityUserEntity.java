@@ -25,19 +25,24 @@ import online.worldseed.model.enums.RoleType;
 @NoArgsConstructor
 public class SecurityUserEntity {
 
+    /** Уникальный идентификатор пользователя. */
     @Id
     @Column(name = "id", nullable = false)
     private UUID id;
 
+    /** Логин пользователя (уникальный). */
     @Column(name = "login", nullable = false, length = 50)
     private String login;
 
+    /** Хэш пароля пользователя. */
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
+    /** Адрес электронной почты пользователя. */
     @Column(name = "email", nullable = false, length = 255)
     private String email;
 
+    /** Роль пользователя в системе. */
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     @ColumnTransformer(
@@ -46,10 +51,12 @@ public class SecurityUserEntity {
     )
     private RoleType role;
 
+    /** Дата и время создания записи. */
     @CreatedDate
     @Column(name = "created_date", nullable = false, updatable = false)
     private Instant createdDate;
 
+    /** Дата и время последнего изменения записи. */
     @LastModifiedDate
     @Column(name = "last_modified_date", nullable = false)
     private Instant lastModifiedDate;

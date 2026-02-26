@@ -42,5 +42,11 @@ alwaysApply: false
 ## Database
 - Postgres
 
+## Documentation (Russian)
+
+- **JPA entities**: Javadoc in Russian for each field.
+- **Services**: Javadoc in Russian for public methods.
+- **DTOs**: `@Schema(description = "...")` in Russian on type and fields; `requiredMode = Schema.RequiredMode.REQUIRED` for required fields.
+
 ## Tests
 - When changing behavior, add/adjust JUnit tests (JUnit 5 style if present).
