@@ -16,7 +16,7 @@ alwaysApply: false
 - Follow existing structure; small focused classes; immutable by default (`final`, unmodifiable collections).
 
 ## Lombok
-- Boilerplate: Lombok (getters/setters/constructors). JPA entities: `@Data`. Immutable/DTOs: `record` or `@Value`. No standalone `@Getter`/`@Setter`. Services/controllers: constructor injection, `final` fields, `@RequiredArgsConstructor`.
+- Boilerplate: Lombok (getters/setters/constructors). JPA entities: `@Data`. Immutable/DTOs: `record` or `@Value`. Not use `@Getter`/`@Setter`. Services/controllers: constructor injection, `final` fields, `@RequiredArgsConstructor`.
 
 ## Nulls + APIs
 - Collections: never return `null`, use empty. Use `Optional` for returns (not fields/params unless convention). Validate at boundaries; fail fast with clear messages.
@@ -28,4 +28,4 @@ alwaysApply: false
 - spring, maven-checkstyle-plugin, liquibase (xml), lombok, mapstruct, springdoc-openapi. DB: Postgres.
 
 ## Documentation (Russian)
-- **JPA**: Javadoc in Russian per field. **Services**: Javadoc for public methods. **DTOs**: `@Schema(description = "...")` in Russian on type/fields; `requiredMode = Schema.RequiredMode.REQUIRED` for required.
+- **JPA**: Javadoc in Russian per field. **Services**: Javadoc for public methods. **DTOs**: `@Schema(description = "...")` in Russian on type/fields with requiredMode for required.

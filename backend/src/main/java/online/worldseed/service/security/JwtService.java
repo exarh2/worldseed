@@ -6,7 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import org.springframework.beans.factory.annotation.Value;
+import online.worldseed.model.properties.SecurityProperties;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -19,11 +19,10 @@ public class JwtService {
     private final SecretKey secretKey;
     private final long expirationMs;
 
-    public JwtService(
-            @Value("${jwt.secret:default-secret-key-min-256-bits-for-hs256-please-set-jwt-secret-in-env}") String secret,
-            @Value("${jwt.expiration-ms:86400000}") long expirationMs) {
+    public JwtService(SecurityProperties securityProperties) {
+        String secret = securityProperties.getJwt().getSecret();
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.expirationMs = expirationMs;
+        this.expirationMs = securityProperties.getJwt().getExpirationMs();
     }
 
     /**
