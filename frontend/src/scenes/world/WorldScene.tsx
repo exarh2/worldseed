@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetHelloQuery } from "../../store/api/baseApi";
+import { useGetHelloQuery } from "../../store/api/helloApi";
 
 export const WorldScene: React.FC = () => {
   const { data, isLoading, isError } = useGetHelloQuery();
@@ -13,4 +13,3 @@ export const WorldScene: React.FC = () => {
     </section>
   );
 };
-

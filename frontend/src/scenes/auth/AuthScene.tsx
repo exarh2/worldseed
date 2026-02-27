@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSignInMutation, useSignUpMutation } from "../../store/api/baseApi";
+import { useSignInMutation, useSignUpMutation } from "../../store/api/authApi";
 import { setAuth } from "../../store/slices/authSlice";
 
 export const AuthScene: React.FC = () => {
