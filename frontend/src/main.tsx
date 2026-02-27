@@ -8,7 +8,7 @@ import { App } from "./app/App";
 import { AdminApplication } from "./app/AdminApplication";
 import { Login } from "./app/Login";
 import { AdminProtectedRoute } from "./components/AdminProtectedRoute";
-import { logger } from "./logger";
+import { logger } from "./utils/logger";
 import { config } from "./config";
 
 const rootElement = document.getElementById("root");

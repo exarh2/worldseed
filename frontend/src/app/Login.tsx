@@ -4,6 +4,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { useSignInMutation, useSignUpMutation } from "../store/api/authApi";
 import { setAuth } from "../store/slices/authSlice";
 import type { RootState } from "../store";
+import { getErrorMessage } from "../utils/error";
 
 export const Login: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -33,18 +34,7 @@ export const Login: React.FC = () => {
       dispatch(setAuth({ token: result.token, login: result.login, role: result.role }));
       navigate(result.role === "ADMIN" ? "/admin" : "/", { replace: true });
     } catch (err: unknown) {
-      let msg = "Auth failed";
-      if (err && typeof err === "object" && "data" in err) {
-        const data = (err as { data: unknown }).data;
-        if (data && typeof data === "object" && "message" in data && typeof (data as { message: unknown }).message === "string") {
-          msg = (data as { message: string }).message;
-        } else if (typeof data === "string") {
-          msg = data;
-        }
-      } else if (err instanceof Error) {
-        msg = err.message;
-      }
-      setError(msg);
+      setError(getErrorMessage(err, "Auth failed"));
     }
   };
 
