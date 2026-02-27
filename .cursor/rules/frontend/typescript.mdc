@@ -18,6 +18,7 @@ alwaysApply: false
 - Prefer `unknown` over `any` and narrow with type guards or helpers.
 - Avoid unsafe assertions (`as Foo`) unless the value is validated first.
 - Keep public component props, store slices, and API layers well-typed; don’t let `any` leak across module boundaries.
+- For API request/response interfaces mirroring backend DTOs (e.g. `SignUpRequest`, `AuthResponse` in `src/store/api`), add short brief JSDoc comments to the interface and its fields; 
 
 ## React components
 - Use function components with hooks; avoid class components.
@@ -26,7 +27,6 @@ alwaysApply: false
 
 ## State and data (Redux Toolkit + RTK Query)
 - Use `@reduxjs/toolkit` (`createSlice`, `configureStore`, etc.) instead of manual action types/reducers.
-- Treat generated RTK Query files from `@rtk-query/codegen-openapi` as read-only; adjust `openapi-config.ts` instead of editing generated code.
 - Prefer RTK Query for server data; keep normalized state in slices only when truly needed for client-only behavior.
 
 ## Async, errors, and logging
