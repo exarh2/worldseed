@@ -10,9 +10,11 @@ import {
   persistStore
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { createLogger as createReduxLogger } from "redux-logger";
 import { uiReducer } from "./slices/uiSlice";
 import { authReducer } from "./slices/authSlice";
 import { baseApi } from "./api/baseApi";
+import { config } from "../config";
 
 const authPersistConfig = {
   key: "auth",
@@ -26,14 +28,28 @@ const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer
 });
 
+const reduxLoggerMiddleware = createReduxLogger({
+    //Не показываем назойливые действия
+    //predicate: (getState, action) => !action.type.startsWith('@@redux-form'),
+    //Свертываем все действия
+    collapsed: true
+});
+
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
+  middleware: (getDefaultMiddleware) => {
+    const middleware = getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
-    }).concat(baseApi.middleware)
+    }).concat(baseApi.middleware);
+
+    if (config.reduxLoggerEnabled) {
+      middleware.push(reduxLoggerMiddleware);
+    }
+
+    return middleware;
+  }
 });
 
 export const persistor = persistStore(store);
