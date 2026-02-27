@@ -21,7 +21,7 @@ export const App: React.FC = () => {
     <div>
       <header>
         <nav>
-          <Link to="/">Home</Link> | <Link to="/world">World</Link>
+          <Link to="/">Home</Link> | <Link to="/world">World</Link> | 
           {token ? (
             <button type="button" onClick={handleLogout}>Logout</button>
           ) : (
