@@ -16,12 +16,12 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const token = useSelector((state: RootState) => state.auth.token);
   const role = useSelector((state: RootState) => state.auth.role);
+  const [signIn] = useSignInMutation();
+  const [signUp] = useSignUpMutation();
 
   if (token) {
     return <Navigate to={role === "ADMIN" ? "/admin" : "/"} replace />;
   }
-  const [signIn] = useSignInMutation();
-  const [signUp] = useSignUpMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

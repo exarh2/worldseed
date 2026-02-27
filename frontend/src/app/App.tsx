@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { HomeScene } from "../scenes/home/HomeScene";
-import { WorldScene } from "../scenes/world/WorldScene";
+import { HomeScene } from "../views/home/HomeScene";
+import { WorldScene } from "../views/world/WorldScene";
 import { Login } from "./Login";
 import { PageNotFound } from "./PageNotFound";
 import { clearAuth } from "../store/slices/authSlice";
