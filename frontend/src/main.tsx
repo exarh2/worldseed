@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
 import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
@@ -18,24 +20,26 @@ logger.info("Starting world seedapp1...", { env: config.appEnv });
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <BrowserRouter>
-            <Routes>
-              <Route
-                path="admin/*"
-                element={(
-                  <AdminProtectedRoute>
-                    <AdminApplication />
-                  </AdminProtectedRoute>
-                )}
-              />
-              <Route path="login/*" element={<Login />} />
-              <Route path="/*" element={<App />} />
-            </Routes>
-          </BrowserRouter>
-        </PersistGate>
-      </Provider>
+      <MantineProvider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <BrowserRouter>
+              <Routes>
+                <Route
+                  path="admin/*"
+                  element={(
+                    <AdminProtectedRoute>
+                      <AdminApplication />
+                    </AdminProtectedRoute>
+                  )}
+                />
+                <Route path="login/*" element={<Login />} />
+                <Route path="/*" element={<App />} />
+              </Routes>
+            </BrowserRouter>
+          </PersistGate>
+        </Provider>
+      </MantineProvider>
     </React.StrictMode>
   );
 }
