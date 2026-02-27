@@ -3,7 +3,8 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { HomeScene } from "../scenes/home/HomeScene";
 import { WorldScene } from "../scenes/world/WorldScene";
-import { AuthScene } from "../scenes/auth/AuthScene";
+import { Login } from "./Login";
+import { PageNotFound } from "./PageNotFound";
 import { clearAuth } from "../store/slices/authSlice";
 import type { RootState } from "../store";
 
@@ -33,7 +34,8 @@ export const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<HomeScene />} />
           <Route path="/world" element={<WorldScene />} />
-          <Route path="/login" element={<AuthScene />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>
     </div>

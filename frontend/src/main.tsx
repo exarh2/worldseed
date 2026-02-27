@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./store";
 import { App } from "./app/App";
+import { AdminApplication } from "./app/AdminApplication";
+import { Login } from "./app/Login";
+import { AdminProtectedRoute } from "./components/AdminProtectedRoute";
 import { logger } from "./logger";
 import { config } from "./config";
 
@@ -18,7 +21,18 @@ if (rootElement) {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <BrowserRouter>
-            <App />
+            <Routes>
+              <Route
+                path="admin/*"
+                element={(
+                  <AdminProtectedRoute>
+                    <AdminApplication />
+                  </AdminProtectedRoute>
+                )}
+              />
+              <Route path="login/*" element={<Login />} />
+              <Route path="/*" element={<App />} />
+            </Routes>
           </BrowserRouter>
         </PersistGate>
       </Provider>

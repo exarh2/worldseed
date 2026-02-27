@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSignInMutation, useSignUpMutation } from "../../store/api/authApi";
-import { setAuth } from "../../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useSignInMutation, useSignUpMutation } from "../store/api/authApi";
+import { setAuth } from "../store/slices/authSlice";
+import type { RootState } from "../store";
 
-export const AuthScene: React.FC = () => {
+export const Login: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -11,6 +13,13 @@ export const AuthScene: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token = useSelector((state: RootState) => state.auth.token);
+  const role = useSelector((state: RootState) => state.auth.role);
+
+  if (token) {
+    return <Navigate to={role === "ADMIN" ? "/admin" : "/"} replace />;
+  }
   const [signIn] = useSignInMutation();
   const [signUp] = useSignUpMutation();
 
@@ -22,6 +31,7 @@ export const AuthScene: React.FC = () => {
         ? await signUp({ login, password, email }).unwrap()
         : await signIn({ login, password }).unwrap();
       dispatch(setAuth({ token: result.token, login: result.login, role: result.role }));
+      navigate(result.role === "ADMIN" ? "/admin" : "/", { replace: true });
     } catch (err: unknown) {
       let msg = "Auth failed";
       if (err && typeof err === "object" && "data" in err) {
