@@ -1,18 +1,17 @@
 package online.worldseed.service.security;
 
-import java.util.UUID;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
 import online.worldseed.model.dto.security.AuthResponse;
 import online.worldseed.model.dto.security.SignInRequest;
 import online.worldseed.model.dto.security.SignUpRequest;
 import online.worldseed.model.entity.SecurityUserEntity;
-import static online.worldseed.model.enums.RoleType.USER;
-import online.worldseed.model.enums.RoleType;
 import online.worldseed.repository.SecurityUserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+
+import static online.worldseed.model.enums.RoleType.USER;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +53,7 @@ public class AuthService {
      */
     public AuthResponse signIn(SignInRequest request) {
         SecurityUserEntity user = userRepository.findByLogin(request.login())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid login or password"));
+            .orElseThrow(() -> new IllegalArgumentException("Invalid login or password"));
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid login or password");
         }
