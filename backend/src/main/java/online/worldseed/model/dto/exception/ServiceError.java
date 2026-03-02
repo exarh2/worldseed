@@ -1,5 +1,5 @@
-package online.worldseed.model.dto.error;
+package online.worldseed.model.dto.exception;
 
 public interface ServiceError {
-    online.worldseed.generator.model.ErrorInfo getErrorInfo();
+    ErrorInfo getErrorInfo();
 }

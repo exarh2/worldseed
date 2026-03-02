@@ -1,7 +1,7 @@
-package online.worldseed.generator.model.exception;
+package online.worldseed.model.exception;
 
-import online.worldseed.generator.model.ErrorInfo;
-import online.worldseed.generator.model.ServiceError;
+import online.worldseed.model.dto.exception.ErrorInfo;
+import online.worldseed.model.dto.exception.ServiceError;
 
 /**
  * Исключение для клиентской части с кодом ошибки 422

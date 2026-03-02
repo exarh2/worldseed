@@ -1,4 +1,4 @@
-package online.worldseed.generator.properties;
+package online.worldseed.model.properties;
 
 import lombok.Builder;
 import lombok.Data;

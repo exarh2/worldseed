@@ -1,6 +1,6 @@
-package online.worldseed.generator.model.exception;
+package online.worldseed.model.exception;
 
-import online.worldseed.generator.model.ErrorInfo;
+import online.worldseed.model.dto.exception.ErrorInfo;
 
 /**
  * Исключение для клиентской части с кодом ошибки 503 запроса стороннего сервиса

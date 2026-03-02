@@ -1,18 +1,18 @@
-package online.worldseed.generator.utils;
+package online.worldseed.controller;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ConstraintViolationException;
-import online.worldseed.generator.model.dto.exception.BadRequestDto;
-import online.worldseed.generator.model.dto.exception.BusinessErrorDto;
-import online.worldseed.generator.model.dto.exception.ServiceErrorDto;
-import online.worldseed.generator.model.dto.exception.ServiceUnavailableDto;
-import online.worldseed.generator.model.exception.BadRequestException;
-import online.worldseed.generator.model.exception.BusinessProcessException;
-import online.worldseed.generator.model.exception.EntityNotFoundException;
-import online.worldseed.generator.model.exception.ForbiddenException;
-import online.worldseed.generator.model.exception.ServiceErrorException;
-import online.worldseed.generator.model.exception.ServiceUnavailableException;
-import online.worldseed.generator.model.exception.UnauthorizedException;
+import online.worldseed.model.dto.exception.BadRequestDto;
+import online.worldseed.model.dto.exception.BusinessErrorDto;
+import online.worldseed.model.dto.exception.ServiceErrorDto;
+import online.worldseed.model.dto.exception.ServiceUnavailableDto;
+import online.worldseed.model.exception.BadRequestException;
+import online.worldseed.model.exception.BusinessProcessException;
+import online.worldseed.model.exception.EntityNotFoundException;
+import online.worldseed.model.exception.ForbiddenException;
+import online.worldseed.model.exception.ServiceErrorException;
+import online.worldseed.model.exception.ServiceUnavailableException;
+import online.worldseed.model.exception.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +27,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
-import static online.worldseed.generator.mapper.ExceptionMapper.toBadRequestDto;
-import static online.worldseed.generator.mapper.ExceptionMapper.toBusinessErrorDto;
-import static online.worldseed.generator.mapper.ExceptionMapper.toServiceUnavailableDto;
-import static online.worldseed.generator.model.Errors.REQUEST_VALIDATION_ERROR;
+import static online.worldseed.mapper.ExceptionMapper.toBadRequestDto;
+import static online.worldseed.mapper.ExceptionMapper.toBusinessErrorDto;
+import static online.worldseed.mapper.ExceptionMapper.toServiceUnavailableDto;
+import static online.worldseed.model.dto.exception.Errors.REQUEST_VALIDATION_ERROR;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
@@ -99,7 +99,7 @@ public class BaseExceptionAdvice {
         log.error(exception.getClass().getName() + ": ", exception);
         var errorText = exception.getError();
         return status(INTERNAL_SERVER_ERROR)
-                .body(errorText == null ? null : new ServiceErrorDto(errorText));
+            .body(errorText == null ? null : new ServiceErrorDto(errorText));
     }
 
     @ExceptionHandler(ServiceUnavailableException.class)
@@ -115,14 +115,14 @@ public class BaseExceptionAdvice {
     }
 
     @ExceptionHandler({ConstraintViolationException.class, MethodArgumentNotValidException.class,
-            HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class,
-            MissingServletRequestParameterException.class})
+        HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class,
+        MissingServletRequestParameterException.class})
     public ResponseEntity<BadRequestDto> handleValidationError(Exception exception) {
         log.error(exception.getClass().getName() + ": ", exception);
         return badRequest().body(BadRequestDto.builder()
-                .code(REQUEST_VALIDATION_ERROR.getCode())
-                .message(REQUEST_VALIDATION_ERROR.getMessage())
-                .reasons(List.of(exception.getMessage()))
-                .build());
+            .code(REQUEST_VALIDATION_ERROR.getCode())
+            .message(REQUEST_VALIDATION_ERROR.getMessage())
+            .reasons(List.of(exception.getMessage()))
+            .build());
     }
 }

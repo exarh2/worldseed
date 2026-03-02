@@ -1,12 +1,12 @@
-package online.worldseed.generator.config;
+package online.worldseed.config;
 
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.model.exception.ServiceErrorException;
-import online.worldseed.generator.properties.MinioProperties;
+import online.worldseed.model.exception.ServiceErrorException;
+import online.worldseed.model.properties.MinioProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

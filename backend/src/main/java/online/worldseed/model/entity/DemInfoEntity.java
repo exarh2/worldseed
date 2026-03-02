@@ -1,4 +1,4 @@
-package online.worldseed.generator.model.entity;
+package online.worldseed.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import online.worldseed.generator.service.srtm.model.SrtmSourceType;
+import online.worldseed.model.enums.SrtmSourceType;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;

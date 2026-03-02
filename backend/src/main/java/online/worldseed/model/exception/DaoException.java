@@ -1,4 +1,4 @@
-package online.worldseed.generator.model.exception;
+package online.worldseed.model.exception;
 
 /**
  * Исключение для бизнесовой части, не обрабатывается на клиентской части,

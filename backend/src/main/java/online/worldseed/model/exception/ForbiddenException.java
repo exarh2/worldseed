@@ -1,4 +1,4 @@
-package online.worldseed.generator.model.exception;
+package online.worldseed.model.exception;
 
 /**
  * Исключение для клиентской части с кодом ошибки 403

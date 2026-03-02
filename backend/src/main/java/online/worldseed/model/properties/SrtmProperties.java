@@ -1,10 +1,10 @@
-package online.worldseed.generator.properties;
+package online.worldseed.model.properties;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
-import online.worldseed.generator.service.srtm.model.SrtmSourceType;
+import online.worldseed.model.enums.SrtmSourceType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 

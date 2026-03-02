@@ -1,4 +1,4 @@
-package online.worldseed.model.dto.error;
+package online.worldseed.model.dto.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

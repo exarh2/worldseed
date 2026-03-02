@@ -1,4 +1,4 @@
-package online.worldseed.generator.service.srtm.model;
+package online.worldseed.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

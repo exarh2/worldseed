@@ -1,4 +1,4 @@
-package online.worldseed.generator.properties;
+package online.worldseed.model.properties;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

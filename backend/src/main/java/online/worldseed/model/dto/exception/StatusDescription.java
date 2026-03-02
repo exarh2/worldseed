@@ -1,4 +1,4 @@
-package online.worldseed.model.dto.error;
+package online.worldseed.model.dto.exception;
 
 public interface StatusDescription {
     String HTTP_200_DESC = "Запрос выполнен успешно";
