@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="2024-10-05 add dem_info table" author="akudryashov">
+        <sql>
+            drop type if exists public.srtm_source_type;
+            create type public.srtm_source_type as enum ('VFP', 'ARDUPILOT', 'CGIAR');
+        </sql>
+
+        <createTable tableName="dem_info" remarks="Источник высотных данных">
+            <column name="id" type="uuid" remarks="Идентификатор записи">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="srtm_source" type="srtm_source_type" remarks="Источник высотных данных">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lat" type="int" remarks="Широта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lon" type="int" remarks="Долгота">
+                <constraints nullable="false"/>
+            </column>
+            <column name="row_key" type="varchar(10)" remarks="Поисковый индекс (lat + lon)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="arc_name" type="varchar(50)" remarks="Название файла архива">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_path" type="varchar(50)" remarks="Путь файла в архиве">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" remarks="Дата создания записи" defaultValue="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp" remarks="Дата изменения записи" defaultValue="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="dem_info" indexName="idx_row_key">
+            <column name="row_key"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
