@@ -37,3 +37,27 @@ minio:
   connect-timeout: 5000
   write-timeout: 60000
   read-timeout: 10000
+
+
+srtm:
+  #Приоритет использования источников данных
+  srtm-source-order:
+    - CGIAR
+    - ARDUPILOT
+    - VFP
+  #Текущий импортируемый источник данных
+  #srtm-source: VFP
+  #srtm-source: ARDUPILOT
+  srtm-import-source: CGIAR
+  #При старте запустить импорт высотных данных из соответствующего источника
+  startup-import: true
+  #Путь к хранилищу высотных данных ardupilot
+  srtm-ardupilot-storage-path: c:/Projects/world-seed/data/ardupilot_srtm/
+  #Путь к хранилищу высотных данных viewfinderpanoramas
+  srtm-vfp-storage-path: c:/Projects/world-seed/data/vfp_srtm/
+  #Путь к хранилищу высотных данных CGIAR
+  srtm-cgiar-storage-path: c:/Projects/world-seed/data/cgiar_srtm/
+
+generator:
+  #overpass-api-url: https://overpass-api.de/api/interpreter
+  overpass-api-url: https://maps.mail.ru/osm/tools/overpass/api/interpreter

@@ -1,7 +1,7 @@
-package online.worldseed.generator.repository;
+package online.worldseed.repository;
 
-import online.worldseed.generator.model.entity.DemInfoEntity;
-import online.worldseed.generator.service.srtm.model.SrtmSourceType;
+import online.worldseed.model.entity.DemInfoEntity;
+import online.worldseed.model.enums.SrtmSourceType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
