@@ -23,4 +23,4 @@ public record SignUpRequest(
     @Email
     @Size(max = 255)
     String email
-) {}
+) { }

@@ -1,12 +1,11 @@
 package online.worldseed.repository;
 
-import java.util.Optional;
-import java.util.UUID;
-
+import online.worldseed.model.entity.SecurityUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import online.worldseed.model.entity.SecurityUserEntity;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface SecurityUserRepository extends JpaRepository<SecurityUserEntity, UUID> {

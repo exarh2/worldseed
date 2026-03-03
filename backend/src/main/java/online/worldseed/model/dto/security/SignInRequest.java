@@ -13,4 +13,4 @@ public record SignInRequest(
     @Schema(description = "Пароль пользователя", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Password is required")
     String password
-) {}
+) { }

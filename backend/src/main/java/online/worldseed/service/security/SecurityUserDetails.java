@@ -1,13 +1,13 @@
 package online.worldseed.service.security;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import online.worldseed.model.entity.SecurityUserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import online.worldseed.model.entity.SecurityUserEntity;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 public class SecurityUserDetails implements UserDetails {
 

@@ -4,6 +4,9 @@
 
 <module name="Checker">
   <property name="charset" value="UTF-8"/>
+  <property name="localeCountry" value="EN"/>
+  <property name="localeLanguage" value="en"/>
+
   <!-- See http://checkstyle.sourceforge.net/config_whitespace.html#FileTabCharacter -->
   <module name="FileTabCharacter">
     <property name="eachLine" value="true"/>

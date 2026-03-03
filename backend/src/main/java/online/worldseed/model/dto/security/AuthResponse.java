@@ -7,4 +7,4 @@ public record AuthResponse(
     @Schema(description = "JWT-токен для авторизации запросов") String token,
     @Schema(description = "Логин пользователя") String login,
     @Schema(description = "Роль пользователя в системе") String role
-) {}
+) { }

@@ -16,11 +16,13 @@
     </parent>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <minio.version>8.5.11</minio.version>
         <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
-        <check-style.version>12.3.1</check-style.version>
+        <check-style.version>10.19.0</check-style.version>
+        <jts-core.version>1.20.0</jts-core.version>
     </properties>
 
     <dependencies>
@@ -79,6 +81,12 @@
             <version>0.12.5</version>
             <scope>runtime</scope>
         </dependency>
+        <!-- Явно зададим версию jts-core, т.к. используется во всех либах и бывает старая -->
+        <dependency>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>${jts-core.version}</version>
+        </dependency>
         <!-- MapStruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -117,6 +125,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <propertyExpansion>checkstyle.locale=en</propertyExpansion>
                     <configLocation>checkstyle.xml</configLocation>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
