@@ -1,4 +1,4 @@
-package online.worldseed.service.osm.model;
+package online.worldseed.model.geo.osm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

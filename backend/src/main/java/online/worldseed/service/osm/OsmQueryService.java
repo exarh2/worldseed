@@ -16,9 +16,9 @@ import de.topobyte.osm4j.xml.dynsax.OsmXmlReader;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import online.worldseed.model.geo.osm.GeometryMetaInfo;
+import online.worldseed.model.geo.osm.RenderObjectType;
 import online.worldseed.model.properties.GeneratorProperties;
-import online.worldseed.service.osm.model.GeometryMetaInfo;
-import online.worldseed.service.osm.model.RenderObjectType;
 import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static online.worldseed.service.osm.model.RenderObjectType.ZERO;
+import static online.worldseed.model.geo.osm.RenderObjectType.ZERO;
 
 @Slf4j
 @Service
