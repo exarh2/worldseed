@@ -23,7 +23,24 @@
         <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
         <check-style.version>10.19.0</check-style.version>
         <jts-core.version>1.20.0</jts-core.version>
+        <osm4j.version>1.4.1</osm4j.version>
+        <geotools.version>32.0</geotools.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>geotools-repo</id>
+            <url>https://repo.osgeo.org/repository/release/</url>
+        </repository>
+        <repository>
+            <id>topobyte-repo</id>
+            <url>https://mvn.topobyte.de</url>
+        </repository>
+        <repository>
+            <id>slimjars-repo</id>
+            <url>https://mvn.slimjars.com</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -86,6 +103,33 @@
             <groupId>org.locationtech.jts</groupId>
             <artifactId>jts-core</artifactId>
             <version>${jts-core.version}</version>
+        </dependency>
+        <!-- osm tools -->
+        <dependency>
+            <groupId>de.topobyte</groupId>
+            <artifactId>osm4j-xml</artifactId>
+            <version>${osm4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.topobyte</groupId>
+            <artifactId>osm4j-geometry</artifactId>
+            <version>${osm4j.version}</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>de.topobyte</groupId>-->
+        <!--            <artifactId>adt-geo</artifactId>-->
+        <!--            <version>${adt-geo.version}</version>-->
+        <!--        </dependency>-->
+        <!-- geo tools -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.wololo</groupId>-->
+        <!--            <artifactId>jts2geojson</artifactId>-->
+        <!--            <version>${jts2geojson.version}</version>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>${geotools.version}</version>
         </dependency>
         <!-- MapStruct -->
         <dependency>

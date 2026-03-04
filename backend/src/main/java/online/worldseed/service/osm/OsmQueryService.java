@@ -1,4 +1,4 @@
-package online.worldseed.generator.service.osm;
+package online.worldseed.service.osm;
 
 import de.topobyte.osm4j.core.dataset.InMemoryMapDataSet;
 import de.topobyte.osm4j.core.dataset.MapDataSetLoader;
@@ -16,13 +16,15 @@ import de.topobyte.osm4j.xml.dynsax.OsmXmlReader;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.properties.GeneratorProperties;
-import online.worldseed.generator.service.osm.model.GeometryMetaInfo;
-import online.worldseed.generator.service.osm.model.RenderObjectType;
+import online.worldseed.model.properties.GeneratorProperties;
+import online.worldseed.service.osm.model.GeometryMetaInfo;
+import online.worldseed.service.osm.model.RenderObjectType;
 import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
@@ -34,16 +36,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static online.worldseed.generator.service.osm.model.RenderObjectType.ZERO;
+import static online.worldseed.service.osm.model.RenderObjectType.ZERO;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class OsmQueryService {
+    public static final GeometryFactory GEOMETRY_FACTORY = new GeometryFactory();
+
     private static final String QUERY = "(" +
-            "nwr[natural~'wood|water|wetland|mud|beach'](%s);>;" +
-            "nwr[waterway](%s);" +
-            ");out geom;";
+                                        "nwr[natural~'wood|water|wetland|mud|beach'](%s);>;" +
+                                        "nwr[waterway](%s);" +
+                                        ");out geom;";
 
     private final GeneratorProperties generatorProperties;
     private WayBuilder wayBuilder = new WayBuilder();
@@ -56,8 +60,7 @@ public class OsmQueryService {
     @SneakyThrows
     public List<Geometry> getGeometriesFromOsm(Envelope envelope) {
         List<Geometry> geometries = new ArrayList<>();
-
-        var bbox = JTS.toPolygon(JTS.toRectangle2D(envelope));
+        var bbox = (Polygon) GEOMETRY_FACTORY.toGeometry(envelope);
         InMemoryMapDataSet data = queryInMemoryMapDataSet(envelope);
 
         //Пути, которые уже обработаны в связях
@@ -89,7 +92,7 @@ public class OsmQueryService {
     private InMemoryMapDataSet queryInMemoryMapDataSet(Envelope envelope) {
         var bboxStr = envelope.getMinY() + "," + envelope.getMinX() + "," + envelope.getMaxY() + "," + envelope.getMaxX();
         var query = generatorProperties.getOverpassApiUrl() + "?data=" +
-                URLEncoder.encode(QUERY.formatted(bboxStr, bboxStr), StandardCharsets.UTF_8.toString());
+                    URLEncoder.encode(QUERY.formatted(bboxStr, bboxStr), StandardCharsets.UTF_8);
         var input = new URL(query).openStream();
         var reader = new OsmXmlReader(input, false);
         return MapDataSetLoader.read(reader, false, true, true);
@@ -133,9 +136,9 @@ public class OsmQueryService {
             name = tags.get("natural");
         }
         return GeometryMetaInfo.builder()
-                .tags(tags)
-                .renderObjectType(RenderObjectType.getByName(name))
-                .build();
+            .tags(tags)
+            .renderObjectType(RenderObjectType.getByName(name))
+            .build();
     }
 
     private MultiPolygon getPolygon(OsmWay way, OsmEntityProvider data) {
