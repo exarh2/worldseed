@@ -1,4 +1,4 @@
-package online.worldseed.generator.utils;
+package online.worldseed.utils;
 
 import lombok.SneakyThrows;
 import org.locationtech.jts.awt.ShapeWriter;
@@ -17,8 +17,8 @@ import javax.imageio.ImageIO;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static java.lang.Boolean.TRUE;
 import static java.lang.Math.abs;
-import static online.worldseed.generator.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
-import static online.worldseed.generator.utils.GeoJsonWriter.DEBUG_DUMP_FOLDER;
+import static online.worldseed.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
+import static online.worldseed.utils.GeoJsonWriter.DEBUG_DUMP_FOLDER;
 import static org.locationtech.jts.geom.util.AffineTransformation.scaleInstance;
 import static org.locationtech.jts.geom.util.AffineTransformation.translationInstance;
 
@@ -38,8 +38,8 @@ public class GeometryImageWriter {
         var envelope = geometryCollection.getEnvelopeInternal();
         geometryCollection = translationInstance(-envelope.getMinX(), -envelope.getMinY()).transform(geometryCollection);
         var scale = envelope.getWidth() > envelope.getHeight() ?
-                (IMAGE_RESOLUTION - 1) / abs(envelope.getMaxX() - envelope.getMinX()) :
-                (IMAGE_RESOLUTION - 1) / abs(envelope.getMaxY() - envelope.getMinY());
+            (IMAGE_RESOLUTION - 1) / abs(envelope.getMaxX() - envelope.getMinX()) :
+            (IMAGE_RESOLUTION - 1) / abs(envelope.getMaxY() - envelope.getMinY());
         geometryCollection = scaleInstance(scale, scale).transform(geometryCollection);
 
         ShapeWriter sw = new ShapeWriter();

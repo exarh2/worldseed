@@ -1,4 +1,4 @@
-package online.worldseed.generator.service.generator.gltf;
+package online.worldseed.service.generator.gltf;
 
 import de.javagl.jgltf.model.creation.MaterialModels;
 import de.javagl.jgltf.model.creation.MeshPrimitiveBuilder;
@@ -8,8 +8,8 @@ import de.javagl.jgltf.model.impl.DefaultMeshModel;
 import de.javagl.jgltf.model.impl.DefaultMeshPrimitiveModel;
 import de.javagl.jgltf.model.impl.DefaultNodeModel;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.service.generator.model.option.PlanetTerrainOptions;
-import online.worldseed.generator.service.generator.model.option.Resolution;
+import online.worldseed.service.generator.model.option.PlanetTerrainOptions;
+import online.worldseed.service.generator.model.option.Resolution;
 import org.springframework.stereotype.Service;
 
 import java.nio.FloatBuffer;
@@ -18,8 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static online.worldseed.generator.service.generator.model.GeoConstants.EARTH_RADIUS_A;
-import static online.worldseed.generator.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.service.generator.model.GeoConstants.EARTH_RADIUS_A;
+import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
 
 @Slf4j
 @Service

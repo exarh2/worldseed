@@ -1,14 +1,14 @@
-package online.worldseed.generator.service.scene;
+package online.worldseed.service.scene;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.model.dto.scene.ScenePlanetResult;
-import online.worldseed.generator.repository.TerrainRepository;
-import online.worldseed.generator.service.generator.TerrainGeneratorService;
-import online.worldseed.generator.service.generator.model.TerrainGenerationRequest;
-import online.worldseed.generator.service.generator.model.option.Resolution;
+import online.worldseed.model.dto.scene.ScenePlanetResult;
+import online.worldseed.repository.TerrainRepository;
+import online.worldseed.service.generator.TerrainGeneratorService;
+import online.worldseed.service.generator.model.TerrainGenerationRequest;
+import online.worldseed.service.generator.model.option.Resolution;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static online.worldseed.generator.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
 
 /**
  * Планетойды на сцене

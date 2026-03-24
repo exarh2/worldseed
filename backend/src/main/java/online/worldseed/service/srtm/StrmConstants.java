@@ -1,4 +1,4 @@
-package online.worldseed.service.strm;
+package online.worldseed.service.srtm;
 
 public interface StrmConstants {
     //Разрешение DEM3 шагов на градус

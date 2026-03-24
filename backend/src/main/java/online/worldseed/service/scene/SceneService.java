@@ -1,25 +1,25 @@
-package online.worldseed.generator.service.scene;
+package online.worldseed.service.scene;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.mapper.DefaultMapper;
-import online.worldseed.generator.model.dto.scene.SceneConfigRequest;
-import online.worldseed.generator.model.dto.scene.SceneConfigResult;
-import online.worldseed.generator.model.dto.scene.SceneGenerationStateRequest;
-import online.worldseed.generator.model.dto.scene.SceneStateRequest;
-import online.worldseed.generator.model.dto.scene.SceneStateResult;
-import online.worldseed.generator.model.dto.scene.core.GeocentricPosition;
-import online.worldseed.generator.model.entity.TerrainEntity;
-import online.worldseed.generator.repository.TerrainRepository;
-import online.worldseed.generator.service.generator.TerrainGeneratorService;
-import online.worldseed.generator.service.generator.model.Geocentric;
-import online.worldseed.generator.service.generator.model.Geodetic;
-import online.worldseed.generator.service.generator.model.TerrainGenerationRequest;
-import online.worldseed.generator.service.generator.model.option.AltitudeTerrainOptions;
-import online.worldseed.generator.service.generator.model.option.Resolution;
-import online.worldseed.generator.service.generator.utils.TerrainSlicing;
-import online.worldseed.generator.service.srtm.DigitalElevationModelProvider;
+import online.worldseed.mapper.DefaultMapper;
+import online.worldseed.model.dto.scene.SceneConfigRequest;
+import online.worldseed.model.dto.scene.SceneConfigResult;
+import online.worldseed.model.dto.scene.SceneGenerationStateRequest;
+import online.worldseed.model.dto.scene.SceneStateRequest;
+import online.worldseed.model.dto.scene.SceneStateResult;
+import online.worldseed.model.dto.scene.core.GeocentricPosition;
+import online.worldseed.model.entity.TerrainEntity;
+import online.worldseed.repository.TerrainRepository;
+import online.worldseed.service.generator.TerrainGeneratorService;
+import online.worldseed.service.generator.model.Geocentric;
+import online.worldseed.service.generator.model.Geodetic;
+import online.worldseed.service.generator.model.TerrainGenerationRequest;
+import online.worldseed.service.generator.model.option.AltitudeTerrainOptions;
+import online.worldseed.service.generator.model.option.Resolution;
+import online.worldseed.service.generator.utils.TerrainSlicing;
+import online.worldseed.service.srtm.DigitalElevationModelProvider;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.data.util.Pair;
@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static online.worldseed.generator.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
 
 /**
  * Загрузки террейнов на сцену
@@ -96,7 +96,7 @@ public class SceneService {
                 .collect(Collectors.toMap(tew -> TerrainSlicing.getRowKey(tew.terrainEnvelope()), tew -> tew));
         //В базе для ускорения ищется по хэшу, но на всякий случай дофильтровывается уже по row_key
         var existedRowKeyPairMap = terrainRepository
-                .findAllByRowHashIn(rowKeyTerrainEnvelopWrapperMap.keySet().stream().map(String::hashCode).toList())
+                .findAllByRowKeyIn(rowKeyTerrainEnvelopWrapperMap.keySet())
                 .stream()
                 .filter(t -> rowKeyTerrainEnvelopWrapperMap.containsKey(t.getRowKey()))
                 .collect(Collectors.toMap(TerrainEntity::getRowKey,

@@ -1,4 +1,4 @@
-package online.worldseed.generator.utils;
+package online.worldseed.utils;
 
 import de.javagl.jgltf.model.GltfModel;
 import de.javagl.jgltf.model.io.GltfModelWriter;
@@ -7,7 +7,7 @@ import lombok.SneakyThrows;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
-import static online.worldseed.generator.utils.GeoJsonWriter.DEBUG_DUMP_FOLDER;
+import static online.worldseed.utils.GeoJsonWriter.DEBUG_DUMP_FOLDER;
 
 public class GltfDefaultModelWriter {
     private static GltfModelWriter gltfModelWriter = new GltfModelWriter();

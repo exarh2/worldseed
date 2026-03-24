@@ -20,10 +20,10 @@ import java.util.UUID;
 import static jakarta.persistence.EnumType.STRING;
 
 @Entity
-@Table(name = "security_user")
-@EntityListeners(AuditingEntityListener.class)
 @Data
 @NoArgsConstructor
+@Table(name = "security_user")
+@EntityListeners(AuditingEntityListener.class)
 public class SecurityUserEntity {
 
     /** Уникальный идентификатор пользователя. */

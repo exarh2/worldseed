@@ -1,11 +1,10 @@
-package online.worldseed.generator.service.admin;
+package online.worldseed.service.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.repository.TerrainRepository;
-import online.worldseed.generator.service.generator.MinioService;
-import online.worldseed.generator.service.scene.PlanetService;
-import online.worldseed.generator.service.scene.SceneService;
+import online.worldseed.repository.TerrainRepository;
+import online.worldseed.service.MinioService;
+import online.worldseed.service.scene.PlanetService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 

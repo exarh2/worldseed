@@ -1,12 +1,12 @@
-package online.worldseed.generator.controller.admin;
+package online.worldseed.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import online.worldseed.generator.model.dto.admin.DropAllTerrainsResult;
-import online.worldseed.generator.service.admin.AdminService;
+import online.worldseed.model.dto.admin.DropAllTerrainsResult;
+import online.worldseed.service.admin.AdminService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

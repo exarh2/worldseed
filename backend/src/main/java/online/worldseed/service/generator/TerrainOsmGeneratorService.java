@@ -1,19 +1,19 @@
-//package online.worldseed.generator.service.generator;
+//package online.worldseed.service.generator;
 //
 //import de.javagl.jgltf.model.impl.DefaultGltfModel;
 //import de.javagl.jgltf.model.impl.DefaultNodeModel;
 //import lombok.RequiredArgsConstructor;
 //import lombok.SneakyThrows;
 //import lombok.extern.slf4j.Slf4j;
-//import online.worldseed.generator.service.generator.gltf.GltfModelCreator;
-//import online.worldseed.generator.service.generator.model.Geocentric;
-//import online.worldseed.generator.service.generator.model.option.ResolutionOption;
-//import online.worldseed.generator.service.generator.utils.TerrainMath;
-//import online.worldseed.generator.service.generator.utils.TerrainSlicing;
-//import online.worldseed.generator.service.generator.utils.Triangulation;
-//import online.worldseed.generator.service.isohypse.IsohypseGeneratorService;
-//import online.worldseed.generator.service.osm.OsmQueryService;
-//import online.worldseed.generator.service.srtm.DigitalElevationModelProvider;
+//import online.worldseed.service.generator.gltf.GltfModelCreator;
+//import online.worldseed.service.generator.model.Geocentric;
+//import online.worldseed.service.generator.model.option.ResolutionOption;
+//import online.worldseed.service.generator.utils.TerrainMath;
+//import online.worldseed.service.generator.utils.TerrainSlicing;
+//import online.worldseed.service.generator.utils.Triangulation;
+//import online.worldseed.service.isohypse.IsohypseGeneratorService;
+//import online.worldseed.service.osm.OsmQueryService;
+//import online.worldseed.service.srtm.DigitalElevationModelProvider;
 //import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 //import org.apache.commons.math3.linear.RealMatrix;
 //import org.geotools.geometry.jts.JTS;
@@ -31,8 +31,8 @@
 //
 //import static java.lang.Math.PI;
 //import static java.lang.Math.toRadians;
-//import static online.worldseed.generator.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
-//import static online.worldseed.generator.service.generator.model.TerrainGenerationType.TERRAIN_ALTITUDE;
+//import static online.worldseed.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
+//import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_ALTITUDE;
 //
 //@Slf4j
 //@Service

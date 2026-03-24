@@ -1,17 +1,17 @@
-package online.worldseed.generator.service.generator;
+package online.worldseed.service.generator;
 
 import de.javagl.jgltf.model.impl.DefaultGltfModel;
 import de.javagl.jgltf.model.impl.DefaultNodeModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.service.generator.gltf.PlanetGltfModelCreator;
-import online.worldseed.generator.service.generator.model.Geocentric;
-import online.worldseed.generator.service.generator.model.GeocentricTriangle;
-import online.worldseed.generator.service.generator.model.option.PlanetTerrainOptions;
-import online.worldseed.generator.service.generator.model.option.Resolution;
-import online.worldseed.generator.service.generator.utils.TerrainMath;
-import online.worldseed.generator.service.generator.utils.TerrainSlicing;
-import online.worldseed.generator.service.generator.utils.Triangulation;
+import online.worldseed.service.generator.gltf.PlanetGltfModelCreator;
+import online.worldseed.service.generator.model.Geocentric;
+import online.worldseed.service.generator.model.GeocentricTriangle;
+import online.worldseed.service.generator.model.option.PlanetTerrainOptions;
+import online.worldseed.service.generator.model.option.Resolution;
+import online.worldseed.service.generator.utils.TerrainMath;
+import online.worldseed.service.generator.utils.TerrainSlicing;
+import online.worldseed.service.generator.utils.Triangulation;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.geotools.geometry.jts.JTS;
@@ -28,8 +28,8 @@ import java.util.Optional;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.toRadians;
-import static online.worldseed.generator.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
-import static online.worldseed.generator.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
+import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
 
 /**
  * Генерация глобуса на основе TERRAIN_PLANET

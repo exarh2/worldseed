@@ -24,7 +24,10 @@
         <check-style.version>10.19.0</check-style.version>
         <jts-core.version>1.20.0</jts-core.version>
         <osm4j.version>1.4.1</osm4j.version>
+        <jts2geojson.version>0.18.1</jts2geojson.version>
         <geotools.version>32.0</geotools.version>
+        <jgltf-model-builder.version>2.0.4</jgltf-model-builder.version>
+        <commons-math3.version>3.6.1</commons-math3.version>
     </properties>
 
     <repositories>
@@ -121,15 +124,27 @@
         <!--            <version>${adt-geo.version}</version>-->
         <!--        </dependency>-->
         <!-- geo tools -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.wololo</groupId>-->
-        <!--            <artifactId>jts2geojson</artifactId>-->
-        <!--            <version>${jts2geojson.version}</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.wololo</groupId>
+            <artifactId>jts2geojson</artifactId>
+            <version>${jts2geojson.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-main</artifactId>
             <version>${geotools.version}</version>
+        </dependency>
+        <!-- gltf -->
+        <dependency>
+            <groupId>de.javagl</groupId>
+            <artifactId>jgltf-model-builder</artifactId>
+            <version>${jgltf-model-builder.version}</version>
+        </dependency>
+        <!-- Helpers -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>${commons-math3.version}</version>
         </dependency>
         <!-- MapStruct -->
         <dependency>

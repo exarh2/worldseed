@@ -1,7 +1,7 @@
-package online.worldseed.generator.utils;
+package online.worldseed.utils;
 
 import lombok.SneakyThrows;
-import online.worldseed.generator.service.osm.model.GeometryMetaInfo;
+import online.worldseed.model.geo.osm.GeometryMetaInfo;
 import org.apache.commons.io.FileUtils;
 import org.locationtech.jts.geom.Geometry;
 import org.wololo.geojson.Feature;

@@ -1,4 +1,4 @@
-package online.worldseed.generator.service.generator.model;
+package online.worldseed.service.generator.model;
 
 import lombok.Value;
 import org.locationtech.jts.geom.Coordinate;
@@ -15,12 +15,12 @@ import static java.lang.Math.pow;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
-import static online.worldseed.generator.service.generator.model.GeoConstants.EARTH_RADIUS_A;
-import static online.worldseed.generator.service.generator.model.GeoConstants.EARTH_RADIUS_B;
-import static online.worldseed.generator.service.generator.model.GeoConstants.F;
-import static online.worldseed.generator.service.generator.model.GeoConstants.FIRST_ECCENTRICITY;
-import static online.worldseed.generator.service.generator.model.GeoConstants.POLAR_RADIUS_OF_CURVATURE;
-import static online.worldseed.generator.service.generator.model.GeoConstants.SECOND_ECCENTRICITY;
+import static online.worldseed.service.generator.model.GeoConstants.EARTH_RADIUS_A;
+import static online.worldseed.service.generator.model.GeoConstants.EARTH_RADIUS_B;
+import static online.worldseed.service.generator.model.GeoConstants.F;
+import static online.worldseed.service.generator.model.GeoConstants.FIRST_ECCENTRICITY;
+import static online.worldseed.service.generator.model.GeoConstants.POLAR_RADIUS_OF_CURVATURE;
+import static online.worldseed.service.generator.model.GeoConstants.SECOND_ECCENTRICITY;
 
 /**
  * Геодезическая координата (широта/долгота/высота) GeodeticCoordinate

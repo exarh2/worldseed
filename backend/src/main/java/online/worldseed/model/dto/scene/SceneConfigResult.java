@@ -1,12 +1,12 @@
-package online.worldseed.generator.model.dto.scene;
+package online.worldseed.model.dto.scene;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
-import online.worldseed.generator.model.dto.scene.core.GeocentricPosition;
-import online.worldseed.generator.model.dto.scene.core.SceneTerrainOptions;
+import online.worldseed.model.dto.scene.core.GeocentricPosition;
+import online.worldseed.model.dto.scene.core.SceneTerrainOptions;
 
 import java.util.List;
 import java.util.Optional;

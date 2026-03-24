@@ -1,8 +1,8 @@
-package online.worldseed.generator.service.generator.utils;
+package online.worldseed.service.generator.utils;
 
-import online.worldseed.generator.service.generator.model.Geocentric;
-import online.worldseed.generator.service.generator.model.Geodetic;
-import online.worldseed.generator.service.generator.model.option.Resolution;
+import online.worldseed.service.generator.model.Geocentric;
+import online.worldseed.service.generator.model.Geodetic;
+import online.worldseed.service.generator.model.option.Resolution;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.data.util.Pair;
@@ -15,8 +15,8 @@ import java.util.Map;
 import static java.lang.Math.abs;
 import static java.lang.Math.ceil;
 import static java.lang.Math.floor;
-import static online.worldseed.generator.service.generator.model.GeoConstants.LATITUDE_ONE_DEGREE_IN_METERS;
-import static online.worldseed.generator.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.service.generator.model.GeoConstants.LATITUDE_ONE_DEGREE_IN_METERS;
+import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
 
 /**
  * Сервис нарезки земной поверхности в зависимости от разрешения

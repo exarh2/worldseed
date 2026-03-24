@@ -1,4 +1,4 @@
-package online.worldseed.service.strm;
+package online.worldseed.service.srtm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import static online.worldseed.service.strm.StrmConstants.DEM3_RESOLUTION;
+import static online.worldseed.service.srtm.StrmConstants.DEM3_RESOLUTION;
 
 @Slf4j
 @Service

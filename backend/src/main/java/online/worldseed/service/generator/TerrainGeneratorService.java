@@ -1,4 +1,4 @@
-package online.worldseed.generator.service.generator;
+package online.worldseed.service.generator;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -6,10 +6,11 @@ import de.javagl.jgltf.model.GltfModel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.model.entity.TerrainEntity;
-import online.worldseed.generator.repository.TerrainRepository;
-import online.worldseed.generator.service.generator.model.TerrainGenerationRequest;
-import online.worldseed.generator.service.generator.utils.TerrainSlicing;
+import online.worldseed.model.entity.TerrainEntity;
+import online.worldseed.repository.TerrainRepository;
+import online.worldseed.service.MinioService;
+import online.worldseed.service.generator.model.TerrainGenerationRequest;
+import online.worldseed.service.generator.utils.TerrainSlicing;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static online.worldseed.generator.service.generator.model.TerrainGenerationType.TERRAIN_ALTITUDE;
-import static online.worldseed.generator.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_ALTITUDE;
+import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
 
 @Slf4j
 @Service
@@ -77,7 +78,6 @@ public class TerrainGeneratorService {
                 .id(terrainId)
                 .resolution(resolution)
                 .rowKey(rowKey)
-                .rowHash(rowKey.hashCode())
                 .storagePath(storagePath)
                 .build());
     }

@@ -1,14 +1,15 @@
-package online.worldseed.generator.repository;
+package online.worldseed.repository;
 
-import online.worldseed.generator.model.entity.TerrainEntity;
-import online.worldseed.generator.service.generator.model.option.Resolution;
+import online.worldseed.model.entity.TerrainEntity;
+import online.worldseed.service.generator.model.option.Resolution;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface TerrainRepository extends JpaRepository<TerrainEntity, UUID> {
     List<TerrainEntity> findAllByResolutionIn(List<Resolution> resolutions);
 
-    List<TerrainEntity> findAllByRowHashIn(List<Integer> rowHashList);
+    List<TerrainEntity> findAllByRowKeyIn(Set<String> rowKeyList);
 }

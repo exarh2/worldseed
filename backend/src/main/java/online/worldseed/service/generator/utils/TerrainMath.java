@@ -1,8 +1,8 @@
-package online.worldseed.generator.service.generator.utils;
+package online.worldseed.service.generator.utils;
 
 import lombok.val;
-import online.worldseed.generator.service.generator.model.Geocentric;
-import online.worldseed.generator.service.generator.model.GeocentricTriangle;
+import online.worldseed.service.generator.model.Geocentric;
+import online.worldseed.service.generator.model.GeocentricTriangle;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;

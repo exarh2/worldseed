@@ -1,4 +1,4 @@
-package online.worldseed.service.generator;
+package online.worldseed.service;
 
 import de.javagl.jgltf.model.GltfModel;
 import io.minio.ListObjectsArgs;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import online.worldseed.model.exception.ServiceErrorException;
-import online.worldseed.properties.MinioProperties;
+import online.worldseed.model.properties.MinioProperties;
 import online.worldseed.service.generator.model.option.Resolution;
 import org.locationtech.jts.geom.Coordinate;
 import org.springframework.stereotype.Service;

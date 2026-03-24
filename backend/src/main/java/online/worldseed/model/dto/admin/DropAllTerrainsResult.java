@@ -1,4 +1,4 @@
-package online.worldseed.generator.model.dto.admin;
+package online.worldseed.model.dto.admin;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;

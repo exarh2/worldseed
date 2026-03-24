@@ -1,6 +1,6 @@
-package online.worldseed.generator.service.generator.model;
+package online.worldseed.service.generator.model;
 
-import online.worldseed.generator.service.generator.model.option.Resolution;
+import online.worldseed.service.generator.model.option.Resolution;
 import org.locationtech.jts.geom.Envelope;
 
 import java.util.Optional;

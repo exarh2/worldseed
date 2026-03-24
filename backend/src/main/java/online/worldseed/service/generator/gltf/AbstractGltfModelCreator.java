@@ -1,4 +1,4 @@
-package online.worldseed.generator.service.generator.gltf;
+package online.worldseed.service.generator.gltf;
 
 import de.javagl.jgltf.model.MeshModel;
 import de.javagl.jgltf.model.creation.GltfModelBuilder;
@@ -13,9 +13,9 @@ import de.javagl.jgltf.model.impl.DefaultSceneModel;
 import de.javagl.jgltf.model.v2.MaterialModelV2;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.service.generator.model.Geocentric;
-import online.worldseed.generator.service.generator.model.GeocentricTriangle;
-import online.worldseed.generator.service.generator.utils.TerrainMath;
+import online.worldseed.service.generator.model.Geocentric;
+import online.worldseed.service.generator.model.GeocentricTriangle;
+import online.worldseed.service.generator.utils.TerrainMath;
 import org.springframework.stereotype.Service;
 
 import java.nio.FloatBuffer;

@@ -1,4 +1,4 @@
-package online.worldseed.service.strm;
+package online.worldseed.service.srtm;
 
 import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
@@ -32,7 +32,7 @@ import javax.imageio.ImageIO;
 
 import static java.awt.image.BufferedImage.TYPE_USHORT_GRAY;
 import static online.worldseed.model.enums.SrtmSourceType.CGIAR;
-import static online.worldseed.service.strm.StrmConstants.DEM3_RESOLUTION;
+import static online.worldseed.service.srtm.StrmConstants.DEM3_RESOLUTION;
 
 /**
  * Импорт данных из CGIAR

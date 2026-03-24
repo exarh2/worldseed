@@ -1,4 +1,4 @@
-package ru.synchro.tcc.mobile.config;
+package online.worldseed.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -7,16 +7,10 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.servers.Server;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.synchro.tcc.mobile.config.properties.OpenAPIProperties;
-
-import java.util.stream.Collectors;
 
 @Configuration
-@EnableConfigurationProperties(OpenAPIProperties.class)
 @SecurityScheme(type = SecuritySchemeType.HTTP, name = "bearerAuth", scheme = "bearer", bearerFormat = "JWT")
 public class SpringDocConfiguration {
 
@@ -26,17 +20,16 @@ public class SpringDocConfiguration {
     }
 
     @Bean
-    OpenAPI openAPI(OpenAPIProperties properties) {
+    OpenAPI openAPI() {
         var info = new Info()
-            .title(properties.getTitle())
-            .description(properties.getDescription());
-
-        var servers = properties.getServers().stream()
-            .map(e -> new Server().url(e.getUrl()).description(e.getDescription()))
-            .collect(Collectors.toList());
+            .title("worldseed-backend")
+            .description("worldseed-backend api");
+        //        var servers = properties.getServers().stream()
+        //            .map(e -> new Server().url(e.getUrl()).description(e.getDescription()))
+        //            .collect(Collectors.toList());
 
         return new OpenAPI()
-            .info(info)
-            .servers(servers);
+            .info(info);
+        //.servers(servers)
     }
 }

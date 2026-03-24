@@ -1,4 +1,4 @@
-package online.worldseed.service.strm;
+package online.worldseed.service.srtm;
 
 import lombok.Data;
 import lombok.Value;
@@ -8,7 +8,7 @@ import org.locationtech.jts.geom.Envelope;
 
 import java.util.Arrays;
 
-import static online.worldseed.service.strm.StrmConstants.DEM3_RESOLUTION;
+import static online.worldseed.service.srtm.StrmConstants.DEM3_RESOLUTION;
 
 @Value
 public class DigitalElevationModel {

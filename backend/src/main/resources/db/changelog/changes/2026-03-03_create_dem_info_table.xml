@@ -38,7 +38,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex tableName="dem_info" indexName="idx_row_key">
+        <createIndex tableName="dem_info" indexName="idx_dem_info_row_key">
             <column name="row_key"/>
         </createIndex>
     </changeSet>

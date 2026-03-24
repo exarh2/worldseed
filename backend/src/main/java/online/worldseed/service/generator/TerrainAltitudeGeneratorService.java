@@ -1,19 +1,19 @@
-package online.worldseed.generator.service.generator;
+package online.worldseed.service.generator;
 
 import de.javagl.jgltf.model.impl.DefaultGltfModel;
 import de.javagl.jgltf.model.impl.DefaultNodeModel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.generator.service.generator.gltf.AltitudeGltfModelCreator;
-import online.worldseed.generator.service.generator.model.Geocentric;
-import online.worldseed.generator.service.generator.model.GeocentricTriangle;
-import online.worldseed.generator.service.generator.model.option.AltitudeTerrainOptions;
-import online.worldseed.generator.service.generator.model.option.Resolution;
-import online.worldseed.generator.service.generator.utils.TerrainMath;
-import online.worldseed.generator.service.generator.utils.TerrainSlicing;
-import online.worldseed.generator.service.generator.utils.Triangulation;
-import online.worldseed.generator.service.srtm.DigitalElevationModelProvider;
+import online.worldseed.service.generator.gltf.AltitudeGltfModelCreator;
+import online.worldseed.service.generator.model.Geocentric;
+import online.worldseed.service.generator.model.GeocentricTriangle;
+import online.worldseed.service.generator.model.option.AltitudeTerrainOptions;
+import online.worldseed.service.generator.model.option.Resolution;
+import online.worldseed.service.generator.utils.TerrainMath;
+import online.worldseed.service.generator.utils.TerrainSlicing;
+import online.worldseed.service.generator.utils.Triangulation;
+import online.worldseed.service.srtm.DigitalElevationModelProvider;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.locationtech.jts.geom.Coordinate;
@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static online.worldseed.generator.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
-import static online.worldseed.generator.service.generator.model.TerrainGenerationType.TERRAIN_ALTITUDE;
+import static online.worldseed.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
+import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_ALTITUDE;
 
 /**
  * Генерация террейнов с минимальными высотными данными (для построения рельефа ЧАСТИ земной поверхности) TERRAIN_ALTITUDE

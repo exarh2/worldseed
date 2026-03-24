@@ -14,9 +14,6 @@
             <column name="row_key" type="varchar(50)" remarks="Поисковый индекс (lat + lon)">
                 <constraints nullable="false"/>
             </column>
-            <column name="row_hash" type="int" remarks="Хэш поискового индекса">
-                <constraints nullable="false"/>
-            </column>
             <column name="storage_path" type="varchar(100)" remarks="Путь в хранилище">
                 <constraints nullable="false"/>
             </column>
@@ -28,10 +25,7 @@
             </column>
         </createTable>
 
-        <createIndex tableName="terrain" indexName="idx_row_hash">
-            <column name="row_hash"/>
-        </createIndex>
-        <createIndex tableName="terrain" indexName="idx_row_key" unique="true">
+        <createIndex tableName="terrain" indexName="idx_terrain_row_key" unique="true">
             <column name="row_key"/>
         </createIndex>
     </changeSet>

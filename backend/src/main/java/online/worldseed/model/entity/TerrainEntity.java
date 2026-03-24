@@ -1,4 +1,4 @@
-package online.worldseed.generator.model.entity;
+package online.worldseed.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import online.worldseed.generator.service.generator.model.option.Resolution;
+import online.worldseed.service.generator.model.option.Resolution;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -44,11 +44,6 @@ public class TerrainEntity {
      */
     @NotNull
     private String rowKey;
-    /**
-     * Хэш поискового индекса
-     */
-    @NotNull
-    private Integer rowHash;
     /**
      * Путь в хранилище
      */

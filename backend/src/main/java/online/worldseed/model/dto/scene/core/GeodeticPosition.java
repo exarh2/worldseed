@@ -1,4 +1,4 @@
-package online.worldseed.generator.model.dto.scene.core;
+package online.worldseed.model.dto.scene.core;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;

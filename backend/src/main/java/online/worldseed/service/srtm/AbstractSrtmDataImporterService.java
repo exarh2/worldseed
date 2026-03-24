@@ -1,4 +1,4 @@
-package online.worldseed.service.strm;
+package online.worldseed.service.srtm;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import static online.worldseed.service.strm.StrmConstants.DEM3_FILE_SIZE;
+import static online.worldseed.service.srtm.StrmConstants.DEM3_FILE_SIZE;
 
 /**
  * Импорт данных из соответствующего источника

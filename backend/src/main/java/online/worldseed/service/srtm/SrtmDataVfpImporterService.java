@@ -1,4 +1,4 @@
-package online.worldseed.service.strm;
+package online.worldseed.service.srtm;
 
 import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
