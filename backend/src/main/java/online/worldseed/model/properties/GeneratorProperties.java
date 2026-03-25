@@ -1,6 +1,7 @@
 package online.worldseed.model.properties;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,4 +20,12 @@ public class GeneratorProperties {
      */
     @NotBlank
     private String overpassApiUrl;
+
+    @Positive
+    @Builder.Default
+    private int overpassConnectTimeoutMs = 5000;
+
+    @Positive
+    @Builder.Default
+    private int overpassReadTimeoutMs = 10000;
 }

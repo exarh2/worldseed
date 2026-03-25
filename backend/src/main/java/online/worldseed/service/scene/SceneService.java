@@ -51,8 +51,9 @@ public class SceneService {
      */
     public SceneConfigResult getSceneConfig(@Valid SceneConfigRequest sceneConfigRequest) {
         var geocentricPosition = Optional.<GeocentricPosition>empty();
-        if (sceneConfigRequest.getGeodeticPosition().isPresent()) {
-            var pos = sceneConfigRequest.getGeodeticPosition().get();
+        //TODO на фронте высоту
+        if (sceneConfigRequest.getGeodeticPosition() != null) {
+            var pos = sceneConfigRequest.getGeodeticPosition();
             //Пока минимальное разрешение считаем R_1_64
             var altitudeTerrainOptions = (AltitudeTerrainOptions) Resolution.R_1_64.getTerrainOptions();
             var minEnvelop = TerrainSlicing.getSearchEnvelop(pos.getLon(), pos.getLat(),

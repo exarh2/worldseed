@@ -16,6 +16,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -29,6 +30,8 @@ import static online.worldseed.service.generator.model.TerrainGenerationType.TER
 public class TerrainGeneratorService {
     //Пока вместо redis храним список на генерацию
     private final Queue<Envelope> generateQueue = new ConcurrentLinkedQueue<>();
+    //Atomic guard against duplicate generation requests per rowKey
+    private final Set<String> generationInProgress = ConcurrentHashMap.newKeySet();
     //Мапа rowKey - storagePath для последних сгенерированных террейнов
     private final Cache<String, String> generatedCache = CacheBuilder.newBuilder().maximumSize(10000).build();
     private final ConcurrentHashMap<String, String> generatedMap = new ConcurrentHashMap(5000);
@@ -42,7 +45,8 @@ public class TerrainGeneratorService {
      * Добавление террейна в очередь на генерацию, если он еще не там
      */
     public void generateTerrain(TerrainGenerationRequest terrainGenerationRequest) {
-        if (!generateQueue.contains(terrainGenerationRequest.terrainEnvelop())) {
+        var rowKey = TerrainSlicing.getRowKey(terrainGenerationRequest.terrainEnvelop());
+        if (generationInProgress.add(rowKey)) {
             generateQueue.add(terrainGenerationRequest.terrainEnvelop());
             terrainGeneratorTaskExecutor.execute(new TerrainGenerationTask(terrainGenerationRequest, this));
         }
@@ -87,12 +91,17 @@ public class TerrainGeneratorService {
      */
     @SneakyThrows
     private void generateTerrainAsync(TerrainGenerationRequest terrainGenerationRequest) {
-        var terrainEntity = generateTerrainSync(terrainGenerationRequest);
-        //Внимание. Удаление из generateQueue происходит раньше, чем завершается транзакция
-        // По хорошему надо переделать на ожидание коммита, но сделан обход через generatedCache
-        generatedCache.put(terrainEntity.getRowKey(), terrainEntity.getStoragePath());
-        generateQueue.remove(terrainGenerationRequest.terrainEnvelop());
-        log.debug("Finish generate {} with id = {}", terrainEntity.getRowKey(), terrainEntity.getId());
+        var rowKey = TerrainSlicing.getRowKey(terrainGenerationRequest.terrainEnvelop());
+        try {
+            var terrainEntity = generateTerrainSync(terrainGenerationRequest);
+            //Внимание. Удаление из generateQueue происходит раньше, чем завершается транзакция
+            // По хорошему надо переделать на ожидание коммита, но сделан обход через generatedCache
+            generatedCache.put(terrainEntity.getRowKey(), terrainEntity.getStoragePath());
+            log.debug("Finish generate {} with id = {}", terrainEntity.getRowKey(), terrainEntity.getId());
+        } finally {
+            generateQueue.remove(terrainGenerationRequest.terrainEnvelop());
+            generationInProgress.remove(rowKey);
+        }
     }
 
     @RequiredArgsConstructor

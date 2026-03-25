@@ -27,7 +27,9 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -93,9 +95,13 @@ public class OsmQueryService {
         var bboxStr = envelope.getMinY() + "," + envelope.getMinX() + "," + envelope.getMaxY() + "," + envelope.getMaxX();
         var query = generatorProperties.getOverpassApiUrl() + "?data=" +
                     URLEncoder.encode(QUERY.formatted(bboxStr, bboxStr), StandardCharsets.UTF_8);
-        var input = new URL(query).openStream();
-        var reader = new OsmXmlReader(input, false);
-        return MapDataSetLoader.read(reader, false, true, true);
+        URLConnection connection = new URL(query).openConnection();
+        connection.setConnectTimeout(generatorProperties.getOverpassConnectTimeoutMs());
+        connection.setReadTimeout(generatorProperties.getOverpassReadTimeoutMs());
+        try (InputStream input = connection.getInputStream()) {
+            var reader = new OsmXmlReader(input, false);
+            return MapDataSetLoader.read(reader, false, true, true);
+        }
     }
 
     private void processMultiPolygonGeometry(Geometry multiPolygon, Map<String, String> tags, List<Geometry> geometries) {

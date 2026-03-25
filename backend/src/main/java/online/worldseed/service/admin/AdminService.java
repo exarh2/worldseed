@@ -20,21 +20,25 @@ public class AdminService {
     private final TerrainRepository terrainRepository;
     private final MinioService minioService;
     private final PlanetService planetService;
-    private AtomicBoolean dropInProgress = new AtomicBoolean(false);
+    private final AtomicBoolean dropInProgress = new AtomicBoolean(false);
 
     /**
      * Удаление всех террейнов
      */
     @Async
     public void dropAllTerrains() {
-        if (!dropInProgress.get()) {
+        if (!dropInProgress.compareAndSet(false, true)) {
+            log.info("Drop all terrains is already in progress");
+            return;
+        }
+        try {
             log.info("Start to drop all terrains");
-            dropInProgress.set(true);
             minioService.clearTerrainBucket();
             terrainRepository.deleteAll();
             //Перегенерируем планетойды
             planetService.regenerate();
             log.info("All terrains dropped successfully");
+        } finally {
             dropInProgress.set(false);
         }
     }

@@ -36,7 +36,7 @@ public class SecurityProperties {
          */
         @NotBlank(message = "security.jwt.secret не должен быть пустым")
         @Size(min = 32, message = "security.jwt.secret должен быть не менее 32 символов для HS256")
-        private String secret = "default-secret-key-min-256-bits-for-hs256-please-set-jwt-secret-in-env";
+        private String secret;
 
         /**
          * Время жизни токена в миллисекундах.
