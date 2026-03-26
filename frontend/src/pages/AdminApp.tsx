@@ -58,7 +58,7 @@ export const AdminApp: React.FC = () => {
   const handleSignOut = async () => {
     await persistor.purge();
     dispatch(clearAuth());
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   };
 
   const handleNavigate = (routeSubRoute: string) => {

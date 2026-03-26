@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
-import { Dialog, Overlay } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import { useSignInMutation, useSignUpMutation } from "../store/api/authApi";
 import { setAuth } from "../store/slices/authSlice";
 import type { RootState } from "../store";
@@ -47,7 +47,6 @@ export const Login: React.FC<LoginProps> = ({ opened, onClose }) => {
 
   const content = (
     <section>
-      <h1>{isSignUp ? "Sign up" : "Sign in"}</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="login">Login</label>
@@ -99,28 +98,14 @@ export const Login: React.FC<LoginProps> = ({ opened, onClose }) => {
   }
 
   return (
-    <>
-      <Overlay fixed backgroundOpacity={0.45} onClick={onClose} />
-      <Dialog
-        opened={opened}
-        withCloseButton
-        onClose={onClose}
-        size="lg"
-        radius="md"
-        zIndex={1000}
-        styles={{
-          root: {
-            top: "50%",
-            left: "50%",
-            right: "auto",
-            bottom: "auto",
-            transform: "translate(-50%, -50%)",
-            width: "min(480px, 90vw)",
-          },
-        }}
-      >
-        {content}
-      </Dialog>
-    </>
+    <Modal
+      opened={opened}
+      onClose={onClose ?? (() => undefined)}
+      centered
+      size="lg"
+      title={isSignUp ? "Sign up" : "Sign in"}
+    >
+      {content}
+    </Modal>
   );
 };
