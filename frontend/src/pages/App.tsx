@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Box, Burger, Button, Drawer, Text} from "@mantine/core";
+import {Box, Burger, Button, Checkbox, Drawer, Text} from "@mantine/core";
 import {Login} from "../components/Login";
 import {clearAuth} from "../store/slices/authSlice";
 import type {RootState} from "../store";
+import {OsmMap} from "../components/OsmMap";
 
 export const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -11,6 +12,7 @@ export const App: React.FC = () => {
     const login = useSelector((state: RootState) => state.auth.login);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isMapVisible, setIsMapVisible] = useState(false);
 
     return (
         <Box
@@ -60,8 +62,15 @@ export const App: React.FC = () => {
                 >
                     {token ? "Logout" : "Login"}
                 </Button>
+                <Checkbox
+                    mt="md"
+                    label="Show map"
+                    checked={isMapVisible}
+                    onChange={(event) => setIsMapVisible(event.currentTarget.checked)}
+                />
             </Drawer>
             <Login opened={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}/>
+            {isMapVisible && <OsmMap/>}
         </Box>
     );
 };
