@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
-import { Modal } from "@mantine/core";
+import { Alert, Button, Group, Modal, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useSignInMutation, useSignUpMutation } from "../store/api/authApi";
 import { setAuth } from "../store/slices/authSlice";
 import type { RootState } from "../store";
@@ -23,8 +23,9 @@ export const Login: React.FC<LoginProps> = ({ opened, onClose }) => {
   const navigate = useNavigate();
   const token = useSelector((state: RootState) => state.auth.token);
   const role = useSelector((state: RootState) => state.auth.role);
-  const [signIn] = useSignInMutation();
-  const [signUp] = useSignUpMutation();
+  const [signIn, { isLoading: isSignInLoading }] = useSignInMutation();
+  const [signUp, { isLoading: isSignUpLoading }] = useSignUpMutation();
+  const isSubmitting = isSignInLoading || isSignUpLoading;
 
   if (token) {
     return <Navigate to={role === "ADMIN" ? "/admin" : "/"} replace />;
@@ -48,44 +49,53 @@ export const Login: React.FC<LoginProps> = ({ opened, onClose }) => {
   const content = (
     <section>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="login">Login</label>
-          <input
-            id="login"
-            type="text"
+        <Stack>
+          <TextInput
+            label="Login"
+            placeholder="Enter login"
             value={login}
-            onChange={(e) => setLogin(e.target.value)}
+            onChange={(e) => setLogin(e.currentTarget.value)}
             required
           />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
+          <PasswordInput
+            label="Password"
+            placeholder="Enter password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.currentTarget.value)}
             required
           />
-        </div>
-        {isSignUp && (
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
+          {isSignUp && (
+            <TextInput
+              label="Email"
+              placeholder="Enter email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.currentTarget.value)}
               required
             />
-          </div>
-        )}
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit">{isSignUp ? "Sign up" : "Sign in"}</button>
+          )}
+          {error && (
+            <Alert color="red" variant="light">
+              {error}
+            </Alert>
+          )}
+          <Button type="submit" loading={isSubmitting} fullWidth>
+            {isSignUp ? "Sign up" : "Sign in"}
+          </Button>
+        </Stack>
       </form>
-      <button type="button" onClick={() => { setIsSignUp(!isSignUp); setError(null); }}>
-        {isSignUp ? "Already have an account? Sign in" : "Need an account? Sign up"}
-      </button>
+      <Group mt="sm" justify="center">
+        <Button
+          variant="subtle"
+          type="button"
+          onClick={() => {
+            setIsSignUp(!isSignUp);
+            setError(null);
+          }}
+        >
+          {isSignUp ? "Already have an account? Sign in" : "Need an account? Sign up"}
+        </Button>
+      </Group>
     </section>
   );
 
