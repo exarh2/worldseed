@@ -7,6 +7,17 @@ import type {AppDispatch, RootState} from "../store";
 import {OsmMap} from "../components/OsmMap";
 import {setMapView, setMapVisible, setMapWindow} from "../store/slices/uiSlice";
 import {useGetSceneConfigQuery} from "../store/api/sceneApi";
+import {SceneSelector} from "../components/SceneSelector";
+import {PlanetScene} from "../scene/PlanetScene";
+import {TestScene} from "../scene/TestScene";
+
+const SceneWrapper: React.FC = () => {
+    const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentSceneTerrainOptions);
+    if (currentSceneTerrainOption?.generationType == 'TERRAIN_PLANET')
+        return <PlanetScene/>;
+    return <TestScene/>;
+};
+
 
 export const App: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -49,6 +60,7 @@ export const App: React.FC = () => {
                 onClick={() => setIsDrawerOpen((prev) => !prev)}
                 aria-label="Toggle drawer"
                 style={{
+                    zIndex: 100,
                     position: "absolute",
                     top: 10,
                     left: 10
@@ -87,8 +99,12 @@ export const App: React.FC = () => {
                     checked={isMapVisible}
                     onChange={(event) => dispatch(setMapVisible(event.currentTarget.checked))}
                 />
+                <Box mt="md">
+                    <SceneSelector/>
+                </Box>
             </Drawer>
             <Login opened={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}/>
+            <SceneWrapper/>
             {isMapVisible && (
                 <OsmMap
                     mapWindow={mapWindow}
