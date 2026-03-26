@@ -42,7 +42,7 @@ const adminRoutes: AdminRouteConfig[] = [
   },
 ];
 
-export const AdminApplication: React.FC = () => {
+export const AdminApp: React.FC = () => {
   const dispatch = useDispatch();
   const [opened, { toggle, close }] = useDisclosure();
   const navigate = useNavigate();
