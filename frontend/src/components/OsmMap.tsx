@@ -5,10 +5,25 @@ import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
 import "ol/ol.css";
-import type {MapWindowState} from "../store/slices/uiSlice";
+import type {MapViewState, MapWindowState} from "../store/slices/uiSlice";
 
 const MIN_MAP_WIDTH = 320;
 const MIN_MAP_HEIGHT = 240;
+const MAP_CENTER_PRECISION = 6;
+const MAP_ZOOM_PRECISION = 3;
+
+const roundToPrecision = (value: number, precision: number): number => {
+    const factor = 10 ** precision;
+    return Math.round(value * factor) / factor;
+};
+
+const normalizeMapView = (mapView: MapViewState): MapViewState => ({
+    center: [
+        roundToPrecision(mapView.center[0], MAP_CENTER_PRECISION),
+        roundToPrecision(mapView.center[1], MAP_CENTER_PRECISION)
+    ],
+    zoom: roundToPrecision(mapView.zoom, MAP_ZOOM_PRECISION)
+});
 
 const clampMapWindowToViewport = (windowState: MapWindowState): MapWindowState => {
     if (typeof window === "undefined") {
@@ -34,13 +49,17 @@ const clampMapWindowToViewport = (windowState: MapWindowState): MapWindowState =
 
 interface OsmMapProps {
     mapWindow: MapWindowState;
+    mapView: MapViewState;
     onMapWindowChange: (next: MapWindowState) => void;
+    onMapViewChange: (next: MapViewState) => void;
 }
 
-export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, onMapWindowChange}) => {
+export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowChange, onMapViewChange}) => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<Map | null>(null);
     const clampedMapWindow = clampMapWindowToViewport(mapWindow);
+    const initialMapViewRef = useRef<MapViewState>(normalizeMapView(mapView));
+    const lastSavedMapViewRef = useRef<MapViewState>(initialMapViewRef.current);
 
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) {
@@ -57,21 +76,46 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, onMapWindowChange}) =>
             ],
             view: new View({
                 projection: 'EPSG:4326',
-                center: [112, 40],
-                zoom: 10,
+                center: initialMapViewRef.current.center,
+                zoom: initialMapViewRef.current.zoom,
                 maxZoom: 18
             })
         });
+
+        const view = mapRef.current.getView();
+        const handleMoveEnd = () => {
+            const center = view.getCenter();
+            const zoom = view.getZoom();
+            if (!center || zoom === undefined) {
+                return;
+            }
+
+            const nextMapView = normalizeMapView({
+                center: [center[0], center[1]],
+                zoom
+            });
+            if (
+                nextMapView.center[0] !== lastSavedMapViewRef.current.center[0] ||
+                nextMapView.center[1] !== lastSavedMapViewRef.current.center[1] ||
+                nextMapView.zoom !== lastSavedMapViewRef.current.zoom
+            ) {
+                lastSavedMapViewRef.current = nextMapView;
+                onMapViewChange(nextMapView);
+            }
+        };
+
+        mapRef.current.on("moveend", handleMoveEnd);
 
         return () => {
             if (!mapRef.current) {
                 return;
             }
 
+            mapRef.current.un("moveend", handleMoveEnd);
             mapRef.current.setTarget(undefined);
             mapRef.current = null;
         };
-    }, []);
+    }, [onMapViewChange]);
 
     useEffect(() => {
         const normalizeMapWindow = () => {

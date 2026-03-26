@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Box, Burger, Button, Checkbox, Drawer, Text} from "@mantine/core";
 import {Login} from "../components/Login";
 import {clearAuth} from "../store/slices/authSlice";
 import type {AppDispatch, RootState} from "../store";
 import {OsmMap} from "../components/OsmMap";
-import {setMapVisible, setMapWindow} from "../store/slices/uiSlice";
+import {setMapView, setMapVisible, setMapWindow} from "../store/slices/uiSlice";
 
 export const App: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -13,8 +13,15 @@ export const App: React.FC = () => {
     const login = useSelector((state: RootState) => state.auth.login);
     const isMapVisible = useSelector((state: RootState) => state.ui.isMapVisible);
     const mapWindow = useSelector((state: RootState) => state.ui.mapWindow);
+    const mapView = useSelector((state: RootState) => state.ui.mapView);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const handleMapWindowChange = useCallback((next: RootState["ui"]["mapWindow"]) => {
+        dispatch(setMapWindow(next));
+    }, [dispatch]);
+    const handleMapViewChange = useCallback((next: RootState["ui"]["mapView"]) => {
+        dispatch(setMapView(next));
+    }, [dispatch]);
 
     return (
         <Box
@@ -72,7 +79,14 @@ export const App: React.FC = () => {
                 />
             </Drawer>
             <Login opened={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}/>
-            {isMapVisible && <OsmMap mapWindow={mapWindow} onMapWindowChange={(next) => dispatch(setMapWindow(next))}/>}
+            {isMapVisible && (
+                <OsmMap
+                    mapWindow={mapWindow}
+                    mapView={mapView}
+                    onMapWindowChange={handleMapWindowChange}
+                    onMapViewChange={handleMapViewChange}
+                />
+            )}
         </Box>
     );
 };

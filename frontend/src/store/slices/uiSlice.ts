@@ -7,10 +7,16 @@ export interface MapWindowState {
   height: number;
 }
 
+export interface MapViewState {
+  center: [number, number];
+  zoom: number;
+}
+
 export interface UiState {
   initialized: boolean;
   isMapVisible: boolean;
   mapWindow: MapWindowState;
+  mapView: MapViewState;
 }
 
 const getDefaultMapWindow = (): MapWindowState => {
@@ -34,7 +40,11 @@ const getDefaultMapWindow = (): MapWindowState => {
 const initialState: UiState = {
   initialized: false,
   isMapVisible: false,
-  mapWindow: getDefaultMapWindow()
+  mapWindow: getDefaultMapWindow(),
+  mapView: {
+    center: [112, 40],
+    zoom: 10
+  }
 };
 
 const uiSlice = createSlice({
@@ -49,10 +59,13 @@ const uiSlice = createSlice({
     },
     setMapWindow(state, action: { payload: MapWindowState }) {
       state.mapWindow = action.payload;
+    },
+    setMapView(state, action: { payload: MapViewState }) {
+      state.mapView = action.payload;
     }
   }
 });
 
-export const { setInitialized, setMapVisible, setMapWindow } = uiSlice.actions;
+export const { setInitialized, setMapVisible, setMapWindow, setMapView } = uiSlice.actions;
 export const uiReducer = uiSlice.reducer;
 
