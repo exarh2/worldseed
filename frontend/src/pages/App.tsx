@@ -85,6 +85,7 @@ export const App: React.FC = () => {
                     mapView={mapView}
                     onMapWindowChange={handleMapWindowChange}
                     onMapViewChange={handleMapViewChange}
+                    onClose={() => dispatch(setMapVisible(false))}
                 />
             )}
         </Box>

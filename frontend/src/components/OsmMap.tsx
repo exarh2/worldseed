@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from "react";
 import {Rnd} from "react-rnd";
+import {CloseButton} from "@mantine/core";
 import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
@@ -52,9 +53,10 @@ interface OsmMapProps {
     mapView: MapViewState;
     onMapWindowChange: (next: MapWindowState) => void;
     onMapViewChange: (next: MapViewState) => void;
+    onClose: () => void;
 }
 
-export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowChange, onMapViewChange}) => {
+export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowChange, onMapViewChange, onClose}) => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<Map | null>(null);
     const clampedMapWindow = clampMapWindowToViewport(mapWindow);
@@ -172,17 +174,18 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
             <div
                 className="osm-map-header"
                 style={{
-                    height: 36,
+                    height: 28,
                     display: "flex",
                     alignItems: "center",
-                    padding: "0 12px",
+                    justifyContent: "flex-end",
+                    padding: "0 4px 0 12px",
                     borderBottom: "1px solid #ececec",
                     cursor: "move",
                     userSelect: "none",
                     fontWeight: 600
                 }}
             >
-                OSM Map
+                <CloseButton aria-label="Close map" onClick={onClose}/>
             </div>
             <div
                 ref={mapContainerRef}
