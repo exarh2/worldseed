@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { HomeScene } from "../views/home/HomeScene";
@@ -12,6 +12,7 @@ export const App: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state: RootState) => state.auth.token);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(clearAuth());
@@ -26,11 +27,12 @@ export const App: React.FC = () => {
           {token ? (
             <button type="button" onClick={handleLogout}>Logout</button>
           ) : (
-            <Link to="/login">Login</Link>
+            <button type="button" onClick={() => setIsLoginModalOpen(true)}>Login</button>
           )}
         </nav>
       </header>
       <main>
+        <Login opened={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
         <Routes>
           <Route path="/" element={<HomeScene />} />
           <Route path="/world" element={<WorldScene />} />

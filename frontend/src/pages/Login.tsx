@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
+import { Dialog, Overlay } from "@mantine/core";
 import { useSignInMutation, useSignUpMutation } from "../store/api/authApi";
 import { setAuth } from "../store/slices/authSlice";
 import type { RootState } from "../store";
 import { getErrorMessage } from "../utils/error";
 
-export const Login: React.FC = () => {
+type LoginProps = {
+  opened?: boolean;
+  onClose?: () => void;
+};
+
+export const Login: React.FC<LoginProps> = ({ opened, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -32,13 +38,14 @@ export const Login: React.FC = () => {
         ? await signUp({ login, password, email }).unwrap()
         : await signIn({ login, password }).unwrap();
       dispatch(setAuth({ token: result.token, login: result.login, role: result.role }));
+      onClose?.();
       navigate(result.role === "ADMIN" ? "/admin" : "/", { replace: true });
     } catch (err: unknown) {
       setError(getErrorMessage(err, "Auth failed"));
     }
   };
 
-  return (
+  const content = (
     <section>
       <h1>{isSignUp ? "Sign up" : "Sign in"}</h1>
       <form onSubmit={handleSubmit}>
@@ -81,5 +88,39 @@ export const Login: React.FC = () => {
         {isSignUp ? "Already have an account? Sign in" : "Need an account? Sign up"}
       </button>
     </section>
+  );
+
+  if (opened === undefined) {
+    return content;
+  }
+
+  if (!opened) {
+    return null;
+  }
+
+  return (
+    <>
+      <Overlay fixed backgroundOpacity={0.45} onClick={onClose} />
+      <Dialog
+        opened={opened}
+        withCloseButton
+        onClose={onClose}
+        size="lg"
+        radius="md"
+        zIndex={1000}
+        styles={{
+          root: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            transform: "translate(-50%, -50%)",
+            width: "min(480px, 90vw)",
+          },
+        }}
+      >
+        {content}
+      </Dialog>
+    </>
   );
 };
