@@ -10,6 +10,7 @@ import {
   persistStore
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+// @ts-ignore
 import { createLogger as createReduxLogger } from "redux-logger";
 import { uiReducer } from "./slices/uiSlice";
 import { authReducer } from "./slices/authSlice";
@@ -25,7 +26,7 @@ const authPersistConfig = {
 const uiPersistConfig = {
   key: "ui",
   storage,
-  whitelist: ["initialized", "isMapVisible", "mapWindow", "mapView"]
+  whitelist: ["isMapVisible", "mapWindow", "mapView"]
 };
 
 const rootReducer = combineReducers({
