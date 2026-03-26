@@ -6,9 +6,11 @@ import {clearAuth} from "../store/slices/authSlice";
 import type {AppDispatch, RootState} from "../store";
 import {OsmMap} from "../components/OsmMap";
 import {setMapView, setMapVisible, setMapWindow} from "../store/slices/uiSlice";
+import {useGetSceneConfigQuery} from "../store/api/sceneApi";
 
 export const App: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const {isLoading, isError} = useGetSceneConfigQuery();
     const token = useSelector((state: RootState) => state.auth.token);
     const login = useSelector((state: RootState) => state.auth.login);
     const isMapVisible = useSelector((state: RootState) => state.ui.isMapVisible);
@@ -22,6 +24,14 @@ export const App: React.FC = () => {
     const handleMapViewChange = useCallback((next: RootState["ui"]["mapView"]) => {
         dispatch(setMapView(next));
     }, [dispatch]);
+
+    if (isLoading) {
+        return null;
+    }
+
+    if (isError) {
+        return <Text>Service temporary unavailable</Text>;
+    }
 
     return (
         <Box

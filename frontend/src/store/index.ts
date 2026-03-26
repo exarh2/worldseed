@@ -14,6 +14,7 @@ import storage from "redux-persist/lib/storage";
 import { createLogger as createReduxLogger } from "redux-logger";
 import { uiReducer } from "./slices/uiSlice";
 import { authReducer } from "./slices/authSlice";
+import { sceneReducer } from "./slices/sceneSlice";
 import { baseApi } from "./api/baseApi";
 import { config } from "../config";
 
@@ -32,6 +33,7 @@ const uiPersistConfig = {
 const rootReducer = combineReducers({
   ui: persistReducer(uiPersistConfig, uiReducer),
   auth: persistReducer(authPersistConfig, authReducer),
+  scene: sceneReducer,
   [baseApi.reducerPath]: baseApi.reducer
 });
 
