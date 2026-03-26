@@ -18,6 +18,7 @@ import type { RootState } from "../store";
 import { persistor } from "../store";
 import { clearAuth } from "../store/slices/authSlice";
 import { PageNotFound } from "./PageNotFound";
+import { Operations } from "../views/admin/Operations";
 
 interface AdminRouteConfig {
   subRoute: string;
@@ -28,23 +29,7 @@ interface AdminRouteConfig {
 const AdminHome: React.FC = () => (
   <Container size="lg">
     <Stack gap="md">
-      <Text fw={600} fz="lg">
-        Администрирование
-      </Text>
       <Text c="dimmed">Выберите раздел в меню слева.</Text>
-    </Stack>
-  </Container>
-);
-
-const OperationsPlaceholder: React.FC = () => (
-  <Container size="lg">
-    <Stack gap="sm">
-      <Text fw={600} fz="lg">
-        Операции
-      </Text>
-      <Text c="dimmed">
-        Страница операций будет реализована позже. Здесь будут отображаться административные операции.
-      </Text>
     </Stack>
   </Container>
 );
@@ -53,7 +38,7 @@ const adminRoutes: AdminRouteConfig[] = [
   {
     subRoute: "operations",
     title: "Операции",
-    element: <OperationsPlaceholder />,
+    element: <Operations />,
   },
 ];
 
@@ -101,6 +86,28 @@ export const AdminApplication: React.FC = () => {
               size="sm"
               aria-label="Toggle navigation"
             />
+            <ActionIcon
+              variant="subtle"
+              size="sm"
+              aria-label="Go to admin home"
+              onClick={() => navigate("/admin")}
+              title="Администрирование"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 9l9-7 9 7" />
+                <path d="M9 22V12h6v10" />
+              </svg>
+            </ActionIcon>
             <Text fw={600}>{title}</Text>
           </Group>
           <Menu shadow="md" width={220}>

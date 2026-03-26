@@ -15,7 +15,7 @@ export const App: React.FC = () => {
 
   const handleLogout = () => {
     dispatch(clearAuth());
-    navigate("/fs");
+    navigate("/");
   };
 
   return (
