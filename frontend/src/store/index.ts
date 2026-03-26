@@ -22,8 +22,14 @@ const authPersistConfig = {
   whitelist: ["token", "login", "role"]
 };
 
+const uiPersistConfig = {
+  key: "ui",
+  storage,
+  whitelist: ["initialized", "isMapVisible", "mapWindow"]
+};
+
 const rootReducer = combineReducers({
-  ui: uiReducer,
+  ui: persistReducer(uiPersistConfig, uiReducer),
   auth: persistReducer(authPersistConfig, authReducer),
   [baseApi.reducerPath]: baseApi.reducer
 });

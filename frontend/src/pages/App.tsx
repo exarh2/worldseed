@@ -3,16 +3,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {Box, Burger, Button, Checkbox, Drawer, Text} from "@mantine/core";
 import {Login} from "../components/Login";
 import {clearAuth} from "../store/slices/authSlice";
-import type {RootState} from "../store";
+import type {AppDispatch, RootState} from "../store";
 import {OsmMap} from "../components/OsmMap";
+import {setMapVisible, setMapWindow} from "../store/slices/uiSlice";
 
 export const App: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const token = useSelector((state: RootState) => state.auth.token);
     const login = useSelector((state: RootState) => state.auth.login);
+    const isMapVisible = useSelector((state: RootState) => state.ui.isMapVisible);
+    const mapWindow = useSelector((state: RootState) => state.ui.mapWindow);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-    const [isMapVisible, setIsMapVisible] = useState(false);
 
     return (
         <Box
@@ -66,11 +68,11 @@ export const App: React.FC = () => {
                     mt="md"
                     label="Show map"
                     checked={isMapVisible}
-                    onChange={(event) => setIsMapVisible(event.currentTarget.checked)}
+                    onChange={(event) => dispatch(setMapVisible(event.currentTarget.checked))}
                 />
             </Drawer>
             <Login opened={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}/>
-            {isMapVisible && <OsmMap/>}
+            {isMapVisible && <OsmMap mapWindow={mapWindow} onMapWindowChange={(next) => dispatch(setMapWindow(next))}/>}
         </Box>
     );
 };
