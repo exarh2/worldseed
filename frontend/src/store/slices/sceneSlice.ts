@@ -31,7 +31,7 @@ const sceneSlice = createSlice({
       state.sceneTerrainOptions = action.payload;
       if (!state.currentSceneTerrainOptions) {
         state.currentSceneTerrainOptions =
-          action.payload.find((option) => option.resolution === "R_9") ?? action.payload[0] ?? null;
+          action.payload.find((option) => option.resolution === "R_3") ?? action.payload[0] ?? null;
       }
     },
     setCurrentSceneTerrainOption(state, action: { payload: SceneTerrainOptions | null }) {

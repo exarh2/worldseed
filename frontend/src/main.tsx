@@ -13,6 +13,7 @@ import {AdminProtectedRoute} from "./components/AdminProtectedRoute";
 import {logger} from "./utils/logger";
 import {config} from "./config";
 import {PageNotFound} from "./pages/PageNotFound";
+import {Login} from "./components/Login";
 
 const rootElement = document.getElementById("root");
 
@@ -27,7 +28,7 @@ if (rootElement) {
                         <BrowserRouter>
                             <Routes>
                                 <Route
-                                    path="admin/*"
+                                    path="/admin/*"
                                     element={(
                                         <AdminProtectedRoute>
                                             <AdminApp/>
