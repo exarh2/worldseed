@@ -26,6 +26,7 @@ import static online.worldseed.utils.GltfDefaultModelWriter.getGltfBinary;
 public class MinioService {
     private final MinioClient minioClient;
     private final MinioProperties minioProperties;
+    private final TerrainCompressionService terrainCompressionService;
 
     /**
      * Сохранение террейна в минио
@@ -35,10 +36,11 @@ public class MinioService {
         var contentType = "model/gltf-binary";
         try {
             var gltfBinary = getGltfBinary(gltfModel);
+            var optimizedGltfBinary = terrainCompressionService.compress(gltfBinary, terrainStorageFilePath);
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(minioProperties.getTerrainsBucketName())
                     .object(terrainStorageFilePath)
-                    .stream(new ByteArrayInputStream(gltfBinary), gltfBinary.length, -1)
+                    .stream(new ByteArrayInputStream(optimizedGltfBinary), optimizedGltfBinary.length, -1)
                     .contentType(contentType)
                     .build());
         } catch (Exception e) {

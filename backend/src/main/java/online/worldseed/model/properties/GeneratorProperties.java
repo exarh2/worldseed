@@ -1,11 +1,13 @@
 package online.worldseed.model.properties;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
 
 /**
  * Конфигурация генератора
@@ -21,11 +23,41 @@ public class GeneratorProperties {
     @NotBlank
     private String overpassApiUrl;
 
-    @Positive
-    @Builder.Default
+    @NotNull
     private int overpassConnectTimeoutMs = 5000;
 
-    @Positive
-    @Builder.Default
-    private int overpassReadTimeoutMs = 10000;
+    @NotNull
+    private int overpassReadTimeoutMs;
+
+    @NotNull
+    private TerrainCompressionProperties terrainCompression;
+
+    /**
+     * Конфигурация внешней оптимизации GLB (draco/meshopt).
+     */
+    @Data
+    @Validated
+    public static class TerrainCompressionProperties {
+        /**
+         * Включение оптимизации GLB перед сохранением
+         */
+        @NotNull
+        private boolean enabled;
+        /**
+         * Команда оптимизации.
+         * Поддерживаются шаблоны {input} и {output}.
+         */
+        @NotNull
+        private List<String> command;
+        /**
+         * Таймаут выполнения команды в ms.
+         */
+        @NotNull
+        private Long timeoutMs;
+        /**
+         * Падать с ошибкой, если CLI завершился неуспешно.
+         */
+        @NotNull
+        private Boolean failOnError;
+    }
 }

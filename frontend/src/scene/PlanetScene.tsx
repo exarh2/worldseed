@@ -13,7 +13,7 @@ const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
 // [-3282059.946, -2327411.335, 25504085.127],
 export const PlanetScene: React.FC = () => {
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentSceneTerrainOptions);
-    const {data} = useGetPlanetSceneQuery(currentSceneTerrainOption?.resolution ?? "R_9", {
+    const {data} = useGetPlanetSceneQuery("R_3", {
         skip: !currentSceneTerrainOption?.resolution
     });
     const terrainUrl = data?.terrainPath
@@ -37,7 +37,6 @@ export const PlanetScene: React.FC = () => {
                 screenSpacePanning
                 target={[0, 0, 0]}
             />
-            <axesHelper args={[25504085]}/>
             <ambientLight intensity={0.35}/>
             <directionalLight position={[5, 10, 8]} intensity={1.1}/>
             <Environment preset="city"/>
