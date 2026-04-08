@@ -7,8 +7,6 @@ export interface SceneTerrainOptions {
   generationType: "TERRAIN_PLANET" | "TERRAIN_ALTITUDE" | "TERRAIN_OSM";
   /** Шаг нарезки сетки по широте */
   latStep: number;
-  /** Если текущая высота камеры над террейном превышает эту высоты, то переключаемся на это разрешение */
-  relativeHeightFrom: number;
   /** Максимальная видимость вокруг пользователя в террейнах */
   maxTerrainViewDistance?: number;
 }

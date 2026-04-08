@@ -6,8 +6,6 @@ import online.worldseed.model.generator.TerrainGenerationType;
 
 import java.util.Optional;
 
-import static online.worldseed.model.generator.GeoConstants.LATITUDE_ONE_DEGREE_IN_METERS;
-
 /**
  * Кастомные настройки генерации и показа террейнов
  * TODO https://wiki.openstreetmap.org/wiki/Zoom_levels
@@ -25,10 +23,4 @@ public abstract class TerrainOptions {
     //Фронт может уменьшать, если машина слабая
     //Если террейнов нет, в казанном квадрате, то генерируются на 1 шире для более плавной подгрузки
     protected Optional<Integer> maxTerrainViewDistance;
-
-    //Если текущая высота камеры над террейном превышает эту высоты, то переключаемся на это разрешение
-    public int getRelativeHeightFrom() {
-        //базовая реализация c вычислением на основе latStep , чтобы угол обзора был приемлемым
-        return (int) (0.3 * LATITUDE_ONE_DEGREE_IN_METERS * latStep);
-    }
 }

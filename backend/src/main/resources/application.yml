@@ -63,6 +63,35 @@ generator:
   overpass-api-url: https://maps.mail.ru/osm/tools/overpass/api/interpreter
   overpass-connect-timeout-ms: 5000
   overpass-read-timeout-ms: 10000
+  resolutions:
+    R_1_128:
+      generation-type: TERRAIN_OSM
+      lat-step: 0.0078125 # 1 / 128.0
+      max-terrain-view-distance: 3
+    R_1_64:
+      generation-type: TERRAIN_ALTITUDE
+      lat-step: 0.015625 # 1 / 64.0
+      max-terrain-view-distance: 3
+      grid-size: 18
+    R_1_16:
+      generation-type: TERRAIN_ALTITUDE
+      lat-step: 0.0625 # 1 / 16.0
+      max-terrain-view-distance: 3
+      grid-size: 18
+    R_1_4:
+      generation-type: TERRAIN_ALTITUDE
+      lat-step: 0.25 # 1 / 4.0
+      max-terrain-view-distance: 3
+      grid-size: 18
+    R_1:
+      generation-type: TERRAIN_ALTITUDE
+      lat-step: 1.0
+      max-terrain-view-distance: 3
+      grid-size: 18
+    R_3:
+      generation-type: TERRAIN_PLANET
+      lat-step: 3.0
+      texture-source: earth1024.jpg
   terrain-compression:
     enabled: true
     # См. https://www.npmjs.com/package/@gltf-transform/cli — геометрия: подкоманды meshopt / draco

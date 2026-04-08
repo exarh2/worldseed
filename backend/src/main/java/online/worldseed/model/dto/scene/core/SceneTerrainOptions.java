@@ -22,9 +22,6 @@ public class SceneTerrainOptions {
     @NotNull
     @Schema(description = "Шаг нарезки сетки по широте")
     Double latStep;
-    @NotNull
-    @Schema(description = "Если текущая высота камеры над террейном превышает эту высоты, то переключаемся на это разрешение")
-    Integer relativeHeightFrom;
     @Schema(description = "Максимальная видимость вокруг пользователя в террейнах")
     Optional<Integer> maxTerrainViewDistance;
 }
