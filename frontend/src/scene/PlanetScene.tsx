@@ -2,10 +2,11 @@ import React, {Suspense} from "react";
 import {useSelector} from "react-redux";
 import type {RootState} from "../store";
 import {Canvas} from "@react-three/fiber";
-import {Bounds, Environment, OrbitControls, useGLTF} from "@react-three/drei";
+import {Bounds, Environment, OrbitControls, Stars, useGLTF} from "@react-three/drei";
 import {config} from "../config";
 import {useGetPlanetSceneQuery} from "../store/api/sceneApi";
 import {Resolution} from "../store/slices/sceneSlice";
+import {EARTH_RADIUS} from "./constants";
 
 const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
     const gltf = useGLTF(url);
@@ -25,15 +26,24 @@ export const PlanetScene: React.FC = () => {
         <Canvas
             shadows
             gl={{antialias: true}}
-            camera={{fov: 35, near: 0.01, far: 135504085, position: [25504085, 0, 0], up: [0, 0, 1]}}
+            camera={{fov: 35, near: /*0.01*/10, far: 135504085, position: [25504085, 0, 0], up: [0, 0, 1]}}
             style={{background: "#f3f4f6"}}
         >
+            <color attach="background" args={["#030712"]}/>
+            <Stars
+                radius={120000000}
+                depth={60000000}
+                count={5000}
+                factor={6}
+                saturation={0}
+                speed={0.5}
+            />
             <OrbitControls
                 makeDefault
                 autoRotate={false}
                 enableDamping
                 dampingFactor={0.08}
-                minDistance={0.1}
+                minDistance={EARTH_RADIUS}
                 maxDistance={50000000}
                 screenSpacePanning
                 target={[0, 0, 0]}
