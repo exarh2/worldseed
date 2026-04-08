@@ -1,4 +1,4 @@
-package online.worldseed.model.enums;
+package online.worldseed.model.entity;
 
 public enum RoleType {
     USER,

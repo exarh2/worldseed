@@ -1,12 +1,12 @@
-package online.worldseed.service.generator.model.option;
+package online.worldseed.model.generator.option;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import online.worldseed.service.generator.model.TerrainGenerationType;
+import online.worldseed.model.generator.TerrainGenerationType;
 
 import java.util.Optional;
 
-import static online.worldseed.service.generator.model.GeoConstants.LATITUDE_ONE_DEGREE_IN_METERS;
+import static online.worldseed.model.generator.GeoConstants.LATITUDE_ONE_DEGREE_IN_METERS;
 
 /**
  * Кастомные настройки генерации и показа террейнов

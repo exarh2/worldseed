@@ -1,4 +1,4 @@
-package online.worldseed.service.generator.model;
+package online.worldseed.model.generator;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +16,8 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toRadians;
-import static online.worldseed.service.generator.model.GeoConstants.EARTH_RADIUS_A;
-import static online.worldseed.service.generator.model.GeoConstants.EARTH_RADIUS_B;
+import static online.worldseed.model.generator.GeoConstants.EARTH_RADIUS_A;
+import static online.worldseed.model.generator.GeoConstants.EARTH_RADIUS_B;
 
 /**
  * Пространственная координата

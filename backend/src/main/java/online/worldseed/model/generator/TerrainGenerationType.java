@@ -1,4 +1,4 @@
-package online.worldseed.service.generator.model;
+package online.worldseed.model.generator;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

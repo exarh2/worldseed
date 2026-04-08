@@ -1,10 +1,10 @@
-package online.worldseed.service.generator.model.option;
+package online.worldseed.model.generator.option;
 
 import lombok.Getter;
 
 import java.util.Optional;
 
-import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_OSM;
+import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_OSM;
 
 @Getter
 public class OsmTerrainOptions extends TerrainOptions {

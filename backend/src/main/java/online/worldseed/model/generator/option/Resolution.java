@@ -1,4 +1,4 @@
-package online.worldseed.service.generator.model.option;
+package online.worldseed.model.generator.option;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public enum Resolution {
     R_1_64(new AltitudeTerrainOptions(1 / 64.0, 3, 18 /*max 18.75*/)),
     R_1_16(new AltitudeTerrainOptions(1 / 16.0, 3, 18 /*max 75*/)),
     R_1_4(new AltitudeTerrainOptions(1 / 4.0, 3, 18 /*max 300*/)),
-    R_1(new AltitudeTerrainOptions(1.0 , 3, 18 /*max ?*/)),
+    R_1(new AltitudeTerrainOptions(1.0, 3, 18 /*max ?*/)),
     R_3(new PlanetTerrainOptions(3.0, "earth1024.jpg"));
     //R_9(new PlanetTerrainOptions(9.0, "earth1024.jpg"));
     //R_18(new PlanetTerrainOptions(18.0, 1000, "earth1024.jpg"));

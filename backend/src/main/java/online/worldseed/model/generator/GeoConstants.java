@@ -1,4 +1,4 @@
-package online.worldseed.service.generator.model;
+package online.worldseed.model.generator;
 
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;

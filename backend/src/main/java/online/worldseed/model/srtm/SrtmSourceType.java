@@ -1,4 +1,4 @@
-package online.worldseed.model.enums;
+package online.worldseed.model.srtm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
