@@ -4,10 +4,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import online.worldseed.model.generator.TerrainGenerationType;
+import online.worldseed.model.generator.option.Resolution;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Конфигурация генератора
@@ -31,6 +34,9 @@ public class GeneratorProperties {
 
     @NotNull
     private TerrainCompressionProperties terrainCompression;
+
+    @NotNull
+    private Map<Resolution, ResolutionProperties> resolutions;
 
     /**
      * Конфигурация внешней оптимизации GLB (draco/meshopt).
@@ -59,5 +65,21 @@ public class GeneratorProperties {
          */
         @NotNull
         private Boolean failOnError;
+    }
+
+    @Data
+    @Validated
+    public static class ResolutionProperties {
+        @NotNull
+        private TerrainGenerationType generationType;
+
+        @NotNull
+        private Double latStep;
+
+        private Integer maxTerrainViewDistance;
+
+        private Integer gridSize;
+
+        private String textureSource;
     }
 }
