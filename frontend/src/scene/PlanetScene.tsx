@@ -5,6 +5,7 @@ import {Canvas} from "@react-three/fiber";
 import {Bounds, Environment, OrbitControls, useGLTF} from "@react-three/drei";
 import {config} from "../config";
 import {useGetPlanetSceneQuery} from "../store/api/sceneApi";
+import {Resolution} from "../store/slices/sceneSlice";
 
 const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
     const gltf = useGLTF(url);
@@ -13,7 +14,7 @@ const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
 // [-3282059.946, -2327411.335, 25504085.127],
 export const PlanetScene: React.FC = () => {
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentSceneTerrainOptions);
-    const {data} = useGetPlanetSceneQuery("R_3", {
+    const {data} = useGetPlanetSceneQuery(Resolution.R_3, {
         skip: !currentSceneTerrainOption?.resolution
     });
     const terrainUrl = data?.terrainPath

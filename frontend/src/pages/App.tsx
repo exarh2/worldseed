@@ -10,10 +10,11 @@ import {useGetSceneConfigQuery} from "../store/api/sceneApi";
 import {SceneSelector} from "../components/SceneSelector";
 import {PlanetScene} from "../scene/PlanetScene";
 import {TestScene} from "../scene/TestScene";
+import {TerrainType} from "../store/slices/sceneSlice";
 
 const SceneWrapper: React.FC = () => {
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentSceneTerrainOptions);
-    if (currentSceneTerrainOption?.generationType == 'TERRAIN_PLANET')
+    if (currentSceneTerrainOption?.generationType == TerrainType.TERRAIN_PLANET)
         return <PlanetScene/>;
     return <TestScene/>;
 };
