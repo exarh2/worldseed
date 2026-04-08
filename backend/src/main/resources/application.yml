@@ -66,9 +66,7 @@ generator:
   terrain-compression:
     enabled: true
     # См. https://www.npmjs.com/package/@gltf-transform/cli — геометрия: подкоманды meshopt / draco
-    #command: [ "gltf-transform", "meshopt", "{input}", "{output}", "--level", "medium" ]
+    # command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "meshopt", "--texture-compress", "webp"]
     command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "draco", "--texture-compress", "webp"]
-    # Пример для Draco:
-    #command: [ "gltf-transform", "draco", "{input}", "{output}", "--method", "edgebreaker" ]
     timeout-ms: 120000
     fail-on-error: false

@@ -15,9 +15,7 @@ public enum Resolution {
     R_1_64(new AltitudeTerrainOptions(1 / 64.0, 3, 18 /*max 18.75*/)),
     R_1_16(new AltitudeTerrainOptions(1 / 16.0, 3, 18 /*max 75*/)),
     R_1_4(new AltitudeTerrainOptions(1 / 4.0, 3, 18 /*max 300*/)),
-    R_1(new AltitudeTerrainOptions(1 / 4.0, 3, 18 /*max ?*/)),
-    //R_1(new PlanetTerrainOptions(1.0, "earth1024.jpg")),
-    //TODO meshopt или draco
+    R_1(new AltitudeTerrainOptions(1.0 , 3, 18 /*max ?*/)),
     R_3(new PlanetTerrainOptions(3.0, "earth1024.jpg"));
     //R_9(new PlanetTerrainOptions(9.0, "earth1024.jpg"));
     //R_18(new PlanetTerrainOptions(18.0, 1000, "earth1024.jpg"));
