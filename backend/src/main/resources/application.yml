@@ -64,7 +64,8 @@ generator:
   overpass-connect-timeout-ms: 5000
   overpass-read-timeout-ms: 10000
   # Примерный расчет целевого OSM zoom с учетом окна видимости:
-  # zoom-to ~= log2(360 / (lat-step * (2 * max-terrain-view-distance + 1)))
+  # Набито примерно по
+  # https://wiki.openstreetmap.org/wiki/RU:Zoom_levels#:~:text=RU:Zoom%20levels%20%2D%20OpenStreetMap%20Wiki
   resolutions:
     R_1_128:
       generation-type: TERRAIN_OSM
