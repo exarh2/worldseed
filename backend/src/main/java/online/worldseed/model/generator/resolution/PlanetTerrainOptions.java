@@ -1,8 +1,6 @@
-package online.worldseed.model.generator.option;
+package online.worldseed.model.generator.resolution;
 
 import lombok.Getter;
-
-import java.util.Optional;
 
 import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
 
@@ -11,8 +9,8 @@ public class PlanetTerrainOptions extends TerrainOptions {
     //Источник тестурирования
     private final String textureSource;
 
-    public PlanetTerrainOptions(Double latStep, String textureSource) {
-        super(TERRAIN_PLANET, latStep, Optional.empty());
+    public PlanetTerrainOptions(double latStep, String textureSource) {
+        super(TERRAIN_PLANET, latStep);
         this.textureSource = textureSource;
     }
 }

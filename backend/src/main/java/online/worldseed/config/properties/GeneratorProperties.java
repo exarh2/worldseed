@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import online.worldseed.model.generator.TerrainType;
-import online.worldseed.model.generator.option.Resolution;
+import online.worldseed.model.generator.resolution.Resolution;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -76,9 +76,9 @@ public class GeneratorProperties {
         @NotNull
         private Double latStep;
 
-        private Integer maxTerrainViewDistance;
-
         private Integer gridSize;
+
+        private Integer maxTerrainViewDistance;
 
         private String textureSource;
     }

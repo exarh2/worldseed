@@ -2,7 +2,7 @@ package online.worldseed.service.generator.utils;
 
 import online.worldseed.model.generator.Geocentric;
 import online.worldseed.model.generator.Geodetic;
-import online.worldseed.model.generator.option.Resolution;
+import online.worldseed.model.generator.resolution.Resolution;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.data.util.Pair;

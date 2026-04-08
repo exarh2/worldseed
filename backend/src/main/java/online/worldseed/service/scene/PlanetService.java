@@ -6,7 +6,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import online.worldseed.model.dto.scene.ScenePlanetResult;
 import online.worldseed.model.generator.TerrainGenerationRequest;
-import online.worldseed.model.generator.option.Resolution;
+import online.worldseed.model.generator.resolution.Resolution;
 import online.worldseed.repository.TerrainRepository;
 import online.worldseed.service.generator.TerrainGeneratorService;
 import org.locationtech.jts.geom.Coordinate;

@@ -1,4 +1,4 @@
-package online.worldseed.model.generator.option;
+package online.worldseed.model.generator.resolution;
 
 import lombok.Getter;
 

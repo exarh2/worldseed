@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
-import online.worldseed.model.generator.option.Resolution;
+import online.worldseed.model.generator.resolution.Resolution;
 
 @Value
 @Schema(description = "Запрос состояния сцены (non Planet)")

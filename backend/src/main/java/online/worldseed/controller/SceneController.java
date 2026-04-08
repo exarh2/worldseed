@@ -12,7 +12,7 @@ import online.worldseed.model.dto.scene.SceneGenerationStateRequest;
 import online.worldseed.model.dto.scene.ScenePlanetResult;
 import online.worldseed.model.dto.scene.SceneStateRequest;
 import online.worldseed.model.dto.scene.SceneStateResult;
-import online.worldseed.model.generator.option.Resolution;
+import online.worldseed.model.generator.resolution.Resolution;
 import online.worldseed.service.scene.PlanetService;
 import online.worldseed.service.scene.SceneService;
 import org.springframework.web.bind.annotation.GetMapping;

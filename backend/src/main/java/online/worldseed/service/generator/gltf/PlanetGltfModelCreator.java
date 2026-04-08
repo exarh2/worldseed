@@ -8,8 +8,8 @@ import de.javagl.jgltf.model.impl.DefaultMeshModel;
 import de.javagl.jgltf.model.impl.DefaultMeshPrimitiveModel;
 import de.javagl.jgltf.model.impl.DefaultNodeModel;
 import lombok.extern.slf4j.Slf4j;
-import online.worldseed.model.generator.option.PlanetTerrainOptions;
-import online.worldseed.model.generator.option.Resolution;
+import online.worldseed.model.generator.resolution.PlanetTerrainOptions;
+import online.worldseed.model.generator.resolution.Resolution;
 import org.springframework.stereotype.Service;
 
 import java.nio.FloatBuffer;

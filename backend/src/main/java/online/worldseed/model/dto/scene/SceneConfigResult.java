@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
 import online.worldseed.model.dto.scene.core.GeocentricPosition;
-import online.worldseed.model.dto.scene.core.SceneTerrainOptions;
+import online.worldseed.model.dto.scene.resolution.TerrainOptionsDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,5 +20,5 @@ public class SceneConfigResult {
     private Optional<GeocentricPosition> geocentricPosition;
     @Schema(description = "Настройки террейнов в зависимости от разрешения")
     @NotEmpty
-    private List<SceneTerrainOptions> sceneTerrainOptions;
+    private List<TerrainOptionsDto> sceneTerrainOptions;
 }

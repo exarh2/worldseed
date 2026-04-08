@@ -1,7 +1,7 @@
 package online.worldseed.repository;
 
 import online.worldseed.model.entity.TerrainEntity;
-import online.worldseed.model.generator.option.Resolution;
+import online.worldseed.model.generator.resolution.Resolution;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

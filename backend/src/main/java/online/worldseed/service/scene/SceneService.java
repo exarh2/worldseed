@@ -14,8 +14,9 @@ import online.worldseed.model.entity.TerrainEntity;
 import online.worldseed.model.generator.Geocentric;
 import online.worldseed.model.generator.Geodetic;
 import online.worldseed.model.generator.TerrainGenerationRequest;
-import online.worldseed.model.generator.option.AltitudeTerrainOptions;
-import online.worldseed.model.generator.option.Resolution;
+import online.worldseed.model.generator.resolution.AltitudeTerrainOptions;
+import online.worldseed.model.generator.resolution.OsmTerrainOptions;
+import online.worldseed.model.generator.resolution.Resolution;
 import online.worldseed.repository.TerrainRepository;
 import online.worldseed.service.generator.TerrainGeneratorService;
 import online.worldseed.service.generator.utils.TerrainSlicing;
@@ -65,7 +66,7 @@ public class SceneService {
         }
         return SceneConfigResult.builder()
             .geocentricPosition(geocentricPosition)
-            .sceneTerrainOptions(Arrays.stream(Resolution.values()).map(mapper::toSceneTerrainOptions).toList())
+            .sceneTerrainOptions(Arrays.stream(Resolution.values()).map(mapper::toTerrainOptionsDto).toList())
             .build();
     }
 
@@ -77,8 +78,10 @@ public class SceneService {
         if (terrainOptions.getGenerationType() == TERRAIN_PLANET) {
             throw new UnsupportedOperationException();
         }
-        var terrainViewDistance = sceneStateRequest.getTerrainViewDistance() > terrainOptions.getMaxTerrainViewDistance().get() ?
-            terrainOptions.getMaxTerrainViewDistance().get() : sceneStateRequest.getTerrainViewDistance();
+        var maxTerrainViewDistance = terrainOptions instanceof AltitudeTerrainOptions altitudeTerrainOptions ?
+            altitudeTerrainOptions.getMaxTerrainViewDistance() :
+            ((OsmTerrainOptions) terrainOptions).getMaxTerrainViewDistance();
+        var terrainViewDistance = Math.min(sceneStateRequest.getTerrainViewDistance(), maxTerrainViewDistance);
         var viewDistance = sceneStateRequest.getResolution().getTerrainOptions().getLatStep() * terrainViewDistance;
         var searchEnvelop = TerrainSlicing.getSearchEnvelop(
             sceneStateRequest.getLongitude(), sceneStateRequest.getLatitude(), viewDistance);
