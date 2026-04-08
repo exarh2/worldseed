@@ -2,8 +2,8 @@ package online.worldseed.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import online.worldseed.config.properties.GeneratorProperties;
 import online.worldseed.model.exception.ServiceErrorException;
-import online.worldseed.model.properties.GeneratorProperties;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

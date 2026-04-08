@@ -4,10 +4,10 @@ import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import online.worldseed.config.properties.SrtmProperties;
 import online.worldseed.model.dto.exception.ErrorInfo;
 import online.worldseed.model.entity.DemInfoEntity;
 import online.worldseed.model.exception.ServiceUnavailableException;
-import online.worldseed.model.properties.SrtmProperties;
 import online.worldseed.repository.DemInfoRepository;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
@@ -60,12 +60,12 @@ public class SrtmDataCgiarImporterService extends AbstractSrtmDataImporterServic
         }
         //Конвертация в hgt-архив (25 dem-файлов)
         Stream.of(new File(srtmProperties.getSrtmCgiarStoragePath() + RAW_DATA_DIR).listFiles())
-                .filter(f -> !f.isDirectory() &&
-                        f.getName().startsWith("srtm_") && f.getName().endsWith(".zip"))
-                .map(File::getName)
-                .filter(rawArcFileName -> !new File(srtmProperties.getSrtmCgiarStoragePath() +
-                        rawArcFileName.replace("srtm_", "hgt_")).exists())
-                .forEach(this::convertFromGeotiffRawData);
+            .filter(f -> !f.isDirectory() &&
+                         f.getName().startsWith("srtm_") && f.getName().endsWith(".zip"))
+            .map(File::getName)
+            .filter(rawArcFileName -> !new File(srtmProperties.getSrtmCgiarStoragePath() +
+                                                rawArcFileName.replace("srtm_", "hgt_")).exists())
+            .forEach(this::convertFromGeotiffRawData);
         importToDB();
     }
 
@@ -78,7 +78,7 @@ public class SrtmDataCgiarImporterService extends AbstractSrtmDataImporterServic
             for (int lat = 1; lat <= 24; lat++) {
                 for (int lon = 1; lon <= 72; lon++) {
                     var fileName = "srtm_" + String.format("%02d", lon) +
-                            "_" + String.format("%02d", lat) + ".zip";
+                                   "_" + String.format("%02d", lat) + ".zip";
                     var arcFile = new File(srtmProperties.getSrtmCgiarStoragePath() + RAW_DATA_DIR + fileName);
                     if (!arcFile.exists()) {
                         var srtmUrl = new URL(CGIAR_URL + fileName);
@@ -128,15 +128,15 @@ public class SrtmDataCgiarImporterService extends AbstractSrtmDataImporterServic
         log.info("Start importing srtm data from {} data folder", CGIAR);
         var processedArcs = new ArrayList<String>();
         processedArcs.addAll(demInfoRepository.findAllBySrtmSource(CGIAR)
-                .stream().map(DemInfoEntity::getArcName).distinct().toList());
+            .stream().map(DemInfoEntity::getArcName).distinct().toList());
         var processedRowKeys = new ArrayList<String>();
         processedRowKeys.addAll(demInfoRepository.findAllBySrtmSource(CGIAR)
-                .stream().map(DemInfoEntity::getRowKey).distinct().toList());
+            .stream().map(DemInfoEntity::getRowKey).distinct().toList());
         Stream.of(new File(srtmProperties.getSrtmCgiarStoragePath()).listFiles())
-                .filter(f -> !f.isDirectory() &&
-                        f.getName().startsWith("hgt_") && f.getName().endsWith(".zip"))
-                .filter(f -> !processedArcs.contains(f.getName()))
-                .forEach(f -> this.saveDemInfoFromArc(f, f.getName(), processedRowKeys));
+            .filter(f -> !f.isDirectory() &&
+                         f.getName().startsWith("hgt_") && f.getName().endsWith(".zip"))
+            .filter(f -> !processedArcs.contains(f.getName()))
+            .forEach(f -> this.saveDemInfoFromArc(f, f.getName(), processedRowKeys));
 
         log.info("Import srt data success");
     }
@@ -158,8 +158,8 @@ public class SrtmDataCgiarImporterService extends AbstractSrtmDataImporterServic
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
                     var pixels = (short[]) image.getData()
-                            .getDataElements(DEM3_RESOLUTION * j, DEM3_RESOLUTION * i,
-                                    DEM3_RESOLUTION, DEM3_RESOLUTION, null);
+                        .getDataElements(DEM3_RESOLUTION * j, DEM3_RESOLUTION * i,
+                            DEM3_RESOLUTION, DEM3_RESOLUTION, null);
                     //Если квадрат 1 x 1 без данных, то смысла сохранять нет
                     var hasData = false;
                     for (var p : pixels) {
@@ -171,7 +171,7 @@ public class SrtmDataCgiarImporterService extends AbstractSrtmDataImporterServic
                     if (hasData) {
                         var hgtBytes = convertToHgtBytes(pixels);
                         var hgtFileName = ns + String.format("%02d", Math.abs(minLat + 4 - i)) +
-                                we + String.format("%03d", Math.abs(minLon + j)) + ".hgt";
+                                          we + String.format("%03d", Math.abs(minLon + j)) + ".hgt";
                         //dumpHgtToImage(hgtBytes, hgtFileName.replace(".hgt", ".tif"));
                         val ze = new ZipEntry(hgtFileName);
                         zos.putNextEntry(ze);

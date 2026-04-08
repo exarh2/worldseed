@@ -1,6 +1,6 @@
 package online.worldseed.config;
 
-import online.worldseed.model.properties.SecurityProperties;
+import online.worldseed.config.properties.SecurityProperties;
 import online.worldseed.service.security.JwtAuthenticationFilter;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

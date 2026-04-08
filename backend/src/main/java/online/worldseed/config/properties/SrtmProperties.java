@@ -1,4 +1,4 @@
-package online.worldseed.model.properties;
+package online.worldseed.config.properties;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

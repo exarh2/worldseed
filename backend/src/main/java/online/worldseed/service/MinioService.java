@@ -8,9 +8,9 @@ import io.minio.RemoveObjectArgs;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import online.worldseed.config.properties.MinioProperties;
 import online.worldseed.model.exception.ServiceErrorException;
 import online.worldseed.model.generator.option.Resolution;
-import online.worldseed.model.properties.MinioProperties;
 import org.locationtech.jts.geom.Coordinate;
 import org.springframework.stereotype.Service;
 

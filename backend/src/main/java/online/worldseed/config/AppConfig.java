@@ -1,7 +1,7 @@
 package online.worldseed.config;
 
-import online.worldseed.model.properties.GeneratorProperties;
-import online.worldseed.model.properties.SrtmProperties;
+import online.worldseed.config.properties.GeneratorProperties;
+import online.worldseed.config.properties.SrtmProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

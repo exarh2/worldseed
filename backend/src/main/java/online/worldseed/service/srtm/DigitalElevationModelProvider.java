@@ -3,8 +3,8 @@ package online.worldseed.service.srtm;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import online.worldseed.config.properties.SrtmProperties;
 import online.worldseed.model.entity.DemInfoEntity;
-import online.worldseed.model.properties.SrtmProperties;
 import online.worldseed.repository.DemInfoRepository;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class DigitalElevationModelProvider {
                 log.info("Start importing from DemInfoEntity {} ", rowKey);
                 var demInfo = demInfoMap.get(rowKey);
                 copyElevationPointsFrom(digitalElevationModel, demInfo.getLat(), demInfo.getLon(),
-                        Optional.of(demInfoMap.get(rowKey)));
+                    Optional.of(demInfoMap.get(rowKey)));
             } else {
                 //log.info("Not found DemInfoEntity for {}, set zero data", rowKey);
                 var lat = Integer.parseInt(rowKey.split("_")[0]);
@@ -53,7 +53,7 @@ public class DigitalElevationModelProvider {
         }
         var stat = digitalElevationModel.getStatistics();
         log.debug("DigitalElevationModel created, min: {}, max: {}, missing: {}",
-                stat.getMinElevation(), stat.getMaxElevation(), stat.getMissingPoints());
+            stat.getMinElevation(), stat.getMaxElevation(), stat.getMissingPoints());
         return digitalElevationModel;
     }
 
@@ -61,8 +61,8 @@ public class DigitalElevationModelProvider {
         var latStep = (bounds.getMaxY() - bounds.getMinY()) / gridSize;
         var lonStep = (bounds.getMaxX() - bounds.getMinX()) / gridSize;
         return new Envelope(
-                bounds.getMinX() - 3 * lonStep, bounds.getMaxX() + lonStep,
-                bounds.getMinY() - 3 * latStep, bounds.getMaxY() + latStep);
+            bounds.getMinX() - 3 * lonStep, bounds.getMaxX() + lonStep,
+            bounds.getMinY() - 3 * latStep, bounds.getMaxY() + latStep);
     }
 
     public List<String> getRowKeys(Envelope bounds) {
@@ -81,7 +81,7 @@ public class DigitalElevationModelProvider {
 
     private Map<String, DemInfoEntity> getDemInfoMap(List<String> rowKeys) {
         var demSrtmSourceMap = demInfoRepository.findAllByRowKeyIn(rowKeys)
-                .stream().collect(Collectors.groupingBy(DemInfoEntity::getSrtmSource));
+            .stream().collect(Collectors.groupingBy(DemInfoEntity::getSrtmSource));
 
         Map<String, DemInfoEntity> demInfoMap = null;
         //Расставляем приоритеты источников данных

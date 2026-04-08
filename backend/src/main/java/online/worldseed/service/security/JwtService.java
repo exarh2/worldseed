@@ -6,7 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import online.worldseed.model.properties.SecurityProperties;
+import online.worldseed.config.properties.SecurityProperties;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
