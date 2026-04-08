@@ -63,34 +63,42 @@ generator:
   overpass-api-url: https://maps.mail.ru/osm/tools/overpass/api/interpreter
   overpass-connect-timeout-ms: 5000
   overpass-read-timeout-ms: 10000
+  # Примерный расчет целевого OSM zoom с учетом окна видимости:
+  # zoom-to ~= log2(360 / (lat-step * (2 * max-terrain-view-distance + 1)))
   resolutions:
     R_1_128:
       generation-type: TERRAIN_OSM
       lat-step: 0.0078125 # 1 / 128.0
+      zoom-to: 12.7
       max-terrain-view-distance: 3
     R_1_64:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.015625 # 1 / 64.0
+      zoom-to: 11.7
       max-terrain-view-distance: 3
       grid-size: 18
     R_1_16:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.0625 # 1 / 16.0
+      zoom-to: 9.7
       max-terrain-view-distance: 3
       grid-size: 18
     R_1_4:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.25 # 1 / 4.0
+      zoom-to: 7.7
       max-terrain-view-distance: 3
       grid-size: 18
     R_1:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 1.0
+      zoom-to: 5.7
       max-terrain-view-distance: 3
       grid-size: 18
     R_3:
       generation-type: TERRAIN_PLANET
       lat-step: 3.0
+      zoom-to: 0
       texture-source: earth1024.jpg
   terrain-compression:
     enabled: true

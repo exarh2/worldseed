@@ -76,6 +76,9 @@ public class GeneratorProperties {
         @NotNull
         private Double latStep;
 
+        @NotNull
+        private Double zoomTo;
+
         private Integer gridSize;
 
         private Integer maxTerrainViewDistance;

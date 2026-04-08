@@ -2,13 +2,11 @@ package online.worldseed.model.dto.scene.resolution;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import online.worldseed.model.generator.TerrainType;
 import online.worldseed.model.generator.resolution.Resolution;
 
 @Getter
-@AllArgsConstructor
 @Schema(description = "Базовые настройки террейна")
 public abstract class TerrainOptionsDto {
     @NotNull
@@ -19,4 +17,13 @@ public abstract class TerrainOptionsDto {
     protected TerrainType generationType;
     @Schema(description = "Шаг нарезки сетки по широте")
     protected double latStep;
+    @Schema(description = "Целевой уровень OSM zoom")
+    protected double zoomTo;
+
+    protected TerrainOptionsDto(Resolution resolution, TerrainType generationType, double latStep, double zoomTo) {
+        this.resolution = resolution;
+        this.generationType = generationType;
+        this.latStep = latStep;
+        this.zoomTo = zoomTo;
+    }
 }

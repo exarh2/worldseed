@@ -13,7 +13,7 @@ const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
 };
 // [-3282059.946, -2327411.335, 25504085.127],
 export const PlanetScene: React.FC = () => {
-    const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentSceneTerrainOptions);
+    const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
     const {data} = useGetPlanetSceneQuery(Resolution.R_3, {
         skip: !currentSceneTerrainOption?.resolution
     });

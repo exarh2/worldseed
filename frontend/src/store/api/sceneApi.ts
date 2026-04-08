@@ -1,8 +1,8 @@
 import { baseApi } from "./baseApi";
-import { setSceneTerrainOptions, type AnySceneTerrainOptions } from "../slices/sceneSlice";
+import { setTerrainOptions, type AnyTerrainOptions } from "../slices/sceneSlice";
 
 export interface SceneConfigResult {
-  sceneTerrainOptions: AnySceneTerrainOptions[];
+  sceneTerrainOptions: AnyTerrainOptions[];
 }
 
 export interface PlanetSceneResult {
@@ -19,10 +19,10 @@ export const sceneApi = baseApi.injectEndpoints({
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
-        dispatch(setSceneTerrainOptions(data.sceneTerrainOptions ?? []));
+        dispatch(setTerrainOptions(data.sceneTerrainOptions ?? []));
       }
     }),
-    getPlanetScene: builder.query<PlanetSceneResult, AnySceneTerrainOptions["resolution"]>({
+    getPlanetScene: builder.query<PlanetSceneResult, AnyTerrainOptions["resolution"]>({
       query: (resolution) => ({
         url: `v1/scene/planet/${resolution}`,
         method: "GET"

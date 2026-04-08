@@ -16,8 +16,8 @@ public class AltitudeTerrainOptions extends TerrainOptions {
     //а дальше разбивать бесполезно, т.к. высотные данные просто экстраполируются
     private final int gridSize;
 
-    public AltitudeTerrainOptions(double latStep, int maxTerrainViewDistance, int gridSize) {
-        super(TERRAIN_ALTITUDE, latStep);
+    public AltitudeTerrainOptions(double latStep, double zoomTo, int maxTerrainViewDistance, int gridSize) {
+        super(TERRAIN_ALTITUDE, latStep, zoomTo);
         this.maxTerrainViewDistance = maxTerrainViewDistance;
         this.gridSize = gridSize;
     }

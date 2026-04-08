@@ -12,7 +12,7 @@ import {TestScene} from "../scene/TestScene";
 import {TerrainType} from "../store/slices/sceneSlice";
 
 const SceneWrapper: React.FC = () => {
-    const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentSceneTerrainOptions);
+    const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
     if (currentSceneTerrainOption?.generationType == TerrainType.TERRAIN_PLANET)
         return <PlanetScene/>;
     return <TestScene/>;

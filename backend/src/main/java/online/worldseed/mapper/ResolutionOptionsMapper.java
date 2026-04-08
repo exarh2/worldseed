@@ -16,15 +16,18 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 public interface ResolutionOptionsMapper {
     default TerrainOptions toTerrainOptions(GeneratorProperties.ResolutionProperties source) {
         var generationType = source.getGenerationType();
+        var zoomTo = Objects.requireNonNull(source.getZoomTo(), "zoomTo is required for all terrain types");
         if (generationType == TerrainType.TERRAIN_OSM) {
             return new OsmTerrainOptions(
                 source.getLatStep(),
-                Objects.requireNonNull(source.getMaxTerrainViewDistance(), "gridSize is required for TERRAIN_ALTITUDE")
+                zoomTo,
+                Objects.requireNonNull(source.getMaxTerrainViewDistance(), "maxTerrainViewDistance is required for TERRAIN_OSM")
             );
         }
         if (generationType == TerrainType.TERRAIN_ALTITUDE) {
             return new AltitudeTerrainOptions(
                 source.getLatStep(),
+                zoomTo,
                 Objects.requireNonNull(source.getMaxTerrainViewDistance(), "gridSize is required for TERRAIN_ALTITUDE"),
                 Objects.requireNonNull(source.getGridSize(), "gridSize is required for TERRAIN_ALTITUDE")
             );
@@ -32,6 +35,7 @@ public interface ResolutionOptionsMapper {
         if (generationType == TerrainType.TERRAIN_PLANET) {
             return new PlanetTerrainOptions(
                 source.getLatStep(),
+                zoomTo,
                 Objects.requireNonNull(source.getTextureSource(),
                     "textureSource is required for TERRAIN_PLANET")
             );

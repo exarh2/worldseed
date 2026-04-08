@@ -17,17 +17,18 @@ public interface DefaultMapper {
     default TerrainOptionsDto toTerrainOptionsDto(Resolution resolution) {
         var terrainOptions = resolution.getTerrainOptions();
         if (terrainOptions instanceof OsmTerrainOptions osm) {
-            return new OsmTerrainOptionsDto(resolution, osm.getLatStep(), osm.getMaxTerrainViewDistance());
+            return new OsmTerrainOptionsDto(resolution, osm.getLatStep(), osm.getZoomTo(), osm.getMaxTerrainViewDistance());
         }
         if (terrainOptions instanceof AltitudeTerrainOptions altitude) {
             return new AltitudeTerrainOptionsDto(
                 resolution,
                 altitude.getLatStep(),
+                altitude.getZoomTo(),
                 altitude.getMaxTerrainViewDistance()
             );
         }
         if (terrainOptions instanceof PlanetTerrainOptions planet) {
-            return new PlanetTerrainOptionsDto(resolution, planet.getLatStep());
+            return new PlanetTerrainOptionsDto(resolution, planet.getLatStep(), planet.getZoomTo());
         }
         throw new IllegalArgumentException("Unsupported terrainOptions type: " + terrainOptions.getClass().getName());
     }

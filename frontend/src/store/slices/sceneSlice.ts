@@ -22,55 +22,57 @@ export interface TerrainOptions {
   generationType: TerrainType;
   /** Шаг нарезки сетки по широте */
   latStep: number;
+  /** Целевой уровень OSM zoom */
+  zoomTo: number;
 }
 
-export interface AltitudeSceneTerrainOptions extends TerrainOptions {
+export interface AltitudeTerrainOptions extends TerrainOptions {
   generationType: TerrainType.TERRAIN_ALTITUDE;
   /** Максимальная видимость вокруг пользователя в террейнах */
   maxTerrainViewDistance: number;
 }
 
-export interface OsmSceneTerrainOptions extends TerrainOptions {
+export interface OsmTerrainOptions extends TerrainOptions {
   generationType: TerrainType.TERRAIN_OSM;
   /** Максимальная видимость вокруг пользователя в террейнах */
   maxTerrainViewDistance: number;
 }
 
-export interface PlanetSceneTerrainOptions extends TerrainOptions {
+export interface PlanetTerrainOptions extends TerrainOptions {
   generationType: TerrainType.TERRAIN_PLANET;
 }
 
 export interface SceneState {
-  sceneTerrainOptions: AnySceneTerrainOptions[];
-  currentSceneTerrainOptions: AnySceneTerrainOptions | null;
+  terrainOptions: AnyTerrainOptions[];
+  currentTerrainOptions: AnyTerrainOptions | null;
 }
 
-export type AnySceneTerrainOptions =
-  | AltitudeSceneTerrainOptions
-  | OsmSceneTerrainOptions
-  | PlanetSceneTerrainOptions;
+export type AnyTerrainOptions =
+  | AltitudeTerrainOptions
+  | OsmTerrainOptions
+  | PlanetTerrainOptions;
 
 const initialState: SceneState = {
-  sceneTerrainOptions: [],
-  currentSceneTerrainOptions: null
+  terrainOptions: [],
+  currentTerrainOptions: null
 };
 
 const sceneSlice = createSlice({
   name: "scene",
   initialState,
   reducers: {
-    setSceneTerrainOptions(state, action: { payload: AnySceneTerrainOptions[] }) {
-      state.sceneTerrainOptions = action.payload;
-      if (!state.currentSceneTerrainOptions) {
-        state.currentSceneTerrainOptions =
+    setTerrainOptions(state, action: { payload: AnyTerrainOptions[] }) {
+      state.terrainOptions = action.payload;
+      if (!state.currentTerrainOptions) {
+        state.currentTerrainOptions =
           action.payload.find((option) => option.resolution === Resolution.R_3) ?? action.payload[0] ?? null;
       }
     },
-    setCurrentSceneTerrainOption(state, action: { payload: AnySceneTerrainOptions | null }) {
-      state.currentSceneTerrainOptions = action.payload;
+    setCurrentTerrainOption(state, action: { payload: AnyTerrainOptions | null }) {
+      state.currentTerrainOptions = action.payload;
     }
   }
 });
 
-export const { setSceneTerrainOptions, setCurrentSceneTerrainOption } = sceneSlice.actions;
+export const { setTerrainOptions, setCurrentTerrainOption } = sceneSlice.actions;
 export const sceneReducer = sceneSlice.reducer;

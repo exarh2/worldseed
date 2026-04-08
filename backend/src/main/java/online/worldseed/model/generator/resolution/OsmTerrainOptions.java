@@ -11,8 +11,8 @@ public class OsmTerrainOptions extends TerrainOptions {
     //Если террейнов нет, в казанном квадрате, то генерируются на 1 шире для более плавной подгрузки
     private final int maxTerrainViewDistance;
 
-    public OsmTerrainOptions(double latStep, int maxTerrainViewDistance) {
-        super(TERRAIN_OSM, latStep);
+    public OsmTerrainOptions(double latStep, double zoomTo, int maxTerrainViewDistance) {
+        super(TERRAIN_OSM, latStep, zoomTo);
         this.maxTerrainViewDistance = maxTerrainViewDistance;
     }
 }

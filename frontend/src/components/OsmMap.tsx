@@ -1,11 +1,14 @@
 import React, {useEffect, useRef} from "react";
 import {Rnd} from "react-rnd";
 import {CloseButton} from "@mantine/core";
+import {useDispatch, useSelector} from "react-redux";
 import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
 import "ol/ol.css";
+import type {AppDispatch, RootState} from "../store";
+import {setCurrentTerrainOption, type AnyTerrainOptions} from "../store/slices/sceneSlice";
 import type {MapViewState, MapWindowState} from "../store/slices/uiSlice";
 
 const MIN_MAP_WIDTH = 320;
@@ -56,12 +59,36 @@ interface OsmMapProps {
     onClose: () => void;
 }
 
+const pickTerrainOptionsByZoom = (
+    terrainOptions: AnyTerrainOptions[],
+    currentZoom: number
+): AnyTerrainOptions | null => {
+    const candidates = terrainOptions.filter((option) => option.zoomTo <= currentZoom);
+    if (candidates.length === 0) {
+        return null;
+    }
+    return candidates.reduce((best, option) => (option.zoomTo > best.zoomTo ? option : best));
+};
+
 export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowChange, onMapViewChange, onClose}) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const terrainOptions = useSelector((state: RootState) => state.scene.terrainOptions);
+    const currentTerrainOptions = useSelector((state: RootState) => state.scene.currentTerrainOptions);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<Map | null>(null);
     const clampedMapWindow = clampMapWindowToViewport(mapWindow);
     const initialMapViewRef = useRef<MapViewState>(normalizeMapView(mapView));
     const lastSavedMapViewRef = useRef<MapViewState>(initialMapViewRef.current);
+    const terrainOptionsRef = useRef(terrainOptions);
+    const currentTerrainOptionsRef = useRef(currentTerrainOptions);
+
+    useEffect(() => {
+        terrainOptionsRef.current = terrainOptions;
+    }, [terrainOptions]);
+
+    useEffect(() => {
+        currentTerrainOptionsRef.current = currentTerrainOptions;
+    }, [currentTerrainOptions]);
 
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) {
@@ -104,6 +131,15 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
                 lastSavedMapViewRef.current = nextMapView;
                 onMapViewChange(nextMapView);
             }
+
+            const nextTerrainOptions = pickTerrainOptionsByZoom(terrainOptionsRef.current, zoom);
+            if (!nextTerrainOptions) {
+                return;
+            }
+
+            if (currentTerrainOptionsRef.current?.resolution !== nextTerrainOptions.resolution) {
+                dispatch(setCurrentTerrainOption(nextTerrainOptions));
+            }
         };
 
         mapRef.current.on("moveend", handleMoveEnd);
@@ -117,7 +153,7 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
             mapRef.current.setTarget(undefined);
             mapRef.current = null;
         };
-    }, [onMapViewChange]);
+    }, [dispatch, onMapViewChange]);
 
     useEffect(() => {
         const normalizeMapWindow = () => {
