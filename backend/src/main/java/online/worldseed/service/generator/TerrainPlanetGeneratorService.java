@@ -29,7 +29,7 @@ import java.util.Optional;
 import static java.lang.Math.PI;
 import static java.lang.Math.toRadians;
 import static online.worldseed.model.generator.GeoConstants.GD_GEOMETRY_FACTORY;
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
 
 /**
  * Генерация глобуса на основе TERRAIN_PLANET

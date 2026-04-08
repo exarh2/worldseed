@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum TerrainGenerationType {
+public enum TerrainType {
     //Террейн без высотных данных (для построения глобуса)
     //Глобус будет генерироваться один раз и храниться в ФХ (minio)
     TERRAIN_PLANET,

@@ -1,7 +1,7 @@
 package online.worldseed.mapper;
 
 import online.worldseed.config.properties.GeneratorProperties;
-import online.worldseed.model.generator.TerrainGenerationType;
+import online.worldseed.model.generator.TerrainType;
 import online.worldseed.model.generator.option.AltitudeTerrainOptions;
 import online.worldseed.model.generator.option.OsmTerrainOptions;
 import online.worldseed.model.generator.option.PlanetTerrainOptions;
@@ -16,14 +16,14 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 public interface ResolutionOptionsMapper {
     default TerrainOptions toTerrainOptions(GeneratorProperties.ResolutionProperties source) {
         var generationType = source.getGenerationType();
-        if (generationType == TerrainGenerationType.TERRAIN_OSM) {
+        if (generationType == TerrainType.TERRAIN_OSM) {
             return new OsmTerrainOptions(
                     source.getLatStep(),
                     Objects.requireNonNull(source.getMaxTerrainViewDistance(),
                             "maxTerrainViewDistance is required for TERRAIN_OSM")
             );
         }
-        if (generationType == TerrainGenerationType.TERRAIN_ALTITUDE) {
+        if (generationType == TerrainType.TERRAIN_ALTITUDE) {
             return new AltitudeTerrainOptions(
                     source.getLatStep(),
                     Objects.requireNonNull(source.getMaxTerrainViewDistance(),
@@ -32,7 +32,7 @@ public interface ResolutionOptionsMapper {
                             "gridSize is required for TERRAIN_ALTITUDE")
             );
         }
-        if (generationType == TerrainGenerationType.TERRAIN_PLANET) {
+        if (generationType == TerrainType.TERRAIN_PLANET) {
             return new PlanetTerrainOptions(
                     source.getLatStep(),
                     Objects.requireNonNull(source.getTextureSource(),

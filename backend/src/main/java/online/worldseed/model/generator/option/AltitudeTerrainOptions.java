@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.util.Optional;
 
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_ALTITUDE;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_ALTITUDE;
 
 @Getter
 public class AltitudeTerrainOptions extends TerrainOptions {

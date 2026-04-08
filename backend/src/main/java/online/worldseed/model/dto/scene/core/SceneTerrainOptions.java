@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
-import online.worldseed.model.generator.TerrainGenerationType;
+import online.worldseed.model.generator.TerrainType;
 import online.worldseed.model.generator.option.Resolution;
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ public class SceneTerrainOptions {
     Resolution resolution;
     @NotNull
     @Schema(description = "Вид террейна (зависит зависимости от разрешения)")
-    TerrainGenerationType generationType;
+    TerrainType generationType;
     @NotNull
     @Schema(description = "Шаг нарезки сетки по широте")
     Double latStep;

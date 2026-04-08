@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static online.worldseed.model.generator.GeoConstants.EARTH_RADIUS_A;
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
 
 @Slf4j
 @Service

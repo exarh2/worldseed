@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.util.UUID;
 
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
 import static online.worldseed.utils.GltfDefaultModelWriter.getGltfBinary;
 
 @Slf4j

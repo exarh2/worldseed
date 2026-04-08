@@ -16,7 +16,7 @@ import static java.lang.Math.abs;
 import static java.lang.Math.ceil;
 import static java.lang.Math.floor;
 import static online.worldseed.model.generator.GeoConstants.LATITUDE_ONE_DEGREE_IN_METERS;
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
 
 /**
  * Сервис нарезки земной поверхности в зависимости от разрешения

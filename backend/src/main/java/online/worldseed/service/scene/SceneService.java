@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
 
 /**
  * Загрузки террейнов на сцену

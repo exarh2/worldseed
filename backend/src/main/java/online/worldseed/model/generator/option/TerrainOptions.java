@@ -2,7 +2,7 @@ package online.worldseed.model.generator.option;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import online.worldseed.model.generator.TerrainGenerationType;
+import online.worldseed.model.generator.TerrainType;
 
 import java.util.Optional;
 
@@ -14,7 +14,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public abstract class TerrainOptions {
     //Вид террейна (зависит зависимости от разрешения)
-    protected TerrainGenerationType generationType;
+    protected TerrainType generationType;
 
     //Шаг нарезки сетки по широте
     protected Double latStep;

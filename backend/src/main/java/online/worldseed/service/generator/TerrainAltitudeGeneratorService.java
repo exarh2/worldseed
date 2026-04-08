@@ -31,7 +31,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static online.worldseed.model.generator.GeoConstants.GD_GEOMETRY_FACTORY;
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_ALTITUDE;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_ALTITUDE;
 
 /**
  * Генерация террейнов с минимальными высотными данными (для построения рельефа ЧАСТИ земной поверхности) TERRAIN_ALTITUDE

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.util.Optional;
 
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_OSM;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_OSM;
 
 @Getter
 public class OsmTerrainOptions extends TerrainOptions {

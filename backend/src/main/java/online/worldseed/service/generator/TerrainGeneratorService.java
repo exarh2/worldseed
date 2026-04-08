@@ -21,8 +21,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_ALTITUDE;
-import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_ALTITUDE;
+import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
 
 @Slf4j
 @Service
