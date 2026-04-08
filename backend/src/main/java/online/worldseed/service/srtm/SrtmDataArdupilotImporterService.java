@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static online.worldseed.model.enums.SrtmSourceType.ARDUPILOT;
+import static online.worldseed.model.srtm.SrtmSourceType.ARDUPILOT;
 
 /**
  * Импорт данных из ARDUPILOT

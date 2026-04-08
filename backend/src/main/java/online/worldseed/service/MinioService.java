@@ -9,15 +9,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import online.worldseed.model.exception.ServiceErrorException;
+import online.worldseed.model.generator.option.Resolution;
 import online.worldseed.model.properties.MinioProperties;
-import online.worldseed.service.generator.model.option.Resolution;
 import org.locationtech.jts.geom.Coordinate;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.util.UUID;
 
-import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
 import static online.worldseed.utils.GltfDefaultModelWriter.getGltfBinary;
 
 @Slf4j
@@ -38,16 +38,16 @@ public class MinioService {
             var gltfBinary = getGltfBinary(gltfModel);
             var optimizedGltfBinary = terrainCompressionService.compress(gltfBinary, terrainStorageFilePath);
             minioClient.putObject(PutObjectArgs.builder()
-                    .bucket(minioProperties.getTerrainsBucketName())
-                    .object(terrainStorageFilePath)
-                    .stream(new ByteArrayInputStream(optimizedGltfBinary), optimizedGltfBinary.length, -1)
-                    .contentType(contentType)
-                    .build());
+                .bucket(minioProperties.getTerrainsBucketName())
+                .object(terrainStorageFilePath)
+                .stream(new ByteArrayInputStream(optimizedGltfBinary), optimizedGltfBinary.length, -1)
+                .contentType(contentType)
+                .build());
         } catch (Exception e) {
             log.error("Minio error while saving file {} to bucket {} with contentType {}",
-                    terrainStorageFilePath, minioProperties.getTerrainsBucketName(), contentType, e);
+                terrainStorageFilePath, minioProperties.getTerrainsBucketName(), contentType, e);
             throw new ServiceErrorException("Minio error while saving file " + terrainStorageFilePath + " to bucket " +
-                    minioProperties.getTerrainsBucketName() + " with contentType " + contentType, e);
+                                            minioProperties.getTerrainsBucketName() + " with contentType " + contentType, e);
         }
         return terrainStorageFilePath;
     }
@@ -58,15 +58,15 @@ public class MinioService {
     @SneakyThrows
     public void clearTerrainBucket() {
         for (var itemResult : minioClient.listObjects(
-                ListObjectsArgs.builder()
-                        .bucket(minioProperties.getTerrainsBucketName())
-                        .recursive(true)
-                        .build()
+            ListObjectsArgs.builder()
+                .bucket(minioProperties.getTerrainsBucketName())
+                .recursive(true)
+                .build()
         )) {
             minioClient.removeObject(RemoveObjectArgs.builder()
-                    .bucket(minioProperties.getTerrainsBucketName())
-                    .object(itemResult.get().objectName())
-                    .build());
+                .bucket(minioProperties.getTerrainsBucketName())
+                .object(itemResult.get().objectName())
+                .build());
         }
     }
 

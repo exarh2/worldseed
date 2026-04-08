@@ -1,7 +1,7 @@
 package online.worldseed.mapper;
 
 import online.worldseed.model.dto.scene.core.SceneTerrainOptions;
-import online.worldseed.service.generator.model.option.Resolution;
+import online.worldseed.model.generator.option.Resolution;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

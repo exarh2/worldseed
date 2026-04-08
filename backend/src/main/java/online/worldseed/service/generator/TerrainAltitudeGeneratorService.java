@@ -5,11 +5,11 @@ import de.javagl.jgltf.model.impl.DefaultNodeModel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import online.worldseed.model.generator.Geocentric;
+import online.worldseed.model.generator.GeocentricTriangle;
+import online.worldseed.model.generator.option.AltitudeTerrainOptions;
+import online.worldseed.model.generator.option.Resolution;
 import online.worldseed.service.generator.gltf.AltitudeGltfModelCreator;
-import online.worldseed.service.generator.model.Geocentric;
-import online.worldseed.service.generator.model.GeocentricTriangle;
-import online.worldseed.service.generator.model.option.AltitudeTerrainOptions;
-import online.worldseed.service.generator.model.option.Resolution;
 import online.worldseed.service.generator.utils.TerrainMath;
 import online.worldseed.service.generator.utils.TerrainSlicing;
 import online.worldseed.service.generator.utils.Triangulation;
@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static online.worldseed.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
-import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_ALTITUDE;
+import static online.worldseed.model.generator.GeoConstants.GD_GEOMETRY_FACTORY;
+import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_ALTITUDE;
 
 /**
  * Генерация террейнов с минимальными высотными данными (для построения рельефа ЧАСТИ земной поверхности) TERRAIN_ALTITUDE
@@ -54,7 +54,7 @@ public class TerrainAltitudeGeneratorService {
         }
         var terrainOptions = (AltitudeTerrainOptions) resolution.getTerrainOptions();
         var nodeModels = TerrainSlicing.coveringTerrainEnvelops(resolution, searchEnvelope).stream()
-                .map(p -> generateTerrainNodeModel(terrainOptions, p.getFirst(), p.getSecond())).toList();
+            .map(p -> generateTerrainNodeModel(terrainOptions, p.getFirst(), p.getSecond())).toList();
         return gltfModelCreator.createGltfFromNodeList(nodeModels);
     }
 
@@ -81,23 +81,23 @@ public class TerrainAltitudeGeneratorService {
         var outboundGridPolygons = getOutboundGridPolygons(terrainEnvelop, gridSize, doubling);
         //Триангулируем полигоны грида в геодезических координатах
         var gdTriangles = outboundGridPolygons.stream()
-                .map(p -> Triangulation.refinedTriangulation(p).stream()
-                        .peek(t -> t.setUserData(p.getUserData())).toList())
-                .flatMap(Collection::stream).toList();
+            .map(p -> Triangulation.refinedTriangulation(p).stream()
+                .peek(t -> t.setUserData(p.getUserData())).toList())
+            .flatMap(Collection::stream).toList();
         //Если хотим посмотреть разбиение на треугольники на плоскости
         //if (doubling) convertToPlaneImage(gdTriangles, "plane.jpg");
         //Переводим треугольники в геоцентрические координаты
         //Для оптимизации - те же самые точки грида (условно) в других треугольниках не высчитываем, а подменяем ссылку
         var gdGcMap = new HashMap<Coordinate, Geocentric>();
         var gcTriangles = gdTriangles.stream().map(
-                gdTriangle -> new GeocentricTriangle(Arrays.stream(gdTriangle.getCoordinates()).limit(3)
-                        .map(gdCoordinate -> {
-                            var approx = new Coordinate(TerrainMath.roundAvoid(gdCoordinate.getX()),
-                                    TerrainMath.roundAvoid(gdCoordinate.getY()));
-                            return gdGcMap.computeIfAbsent(approx,
-                                    key -> this.convertToGeocentric(gdCoordinate, terrainMatrices.directMatrix()));
-                        })
-                        .toList(), (Boolean) gdTriangle.getUserData())
+            gdTriangle -> new GeocentricTriangle(Arrays.stream(gdTriangle.getCoordinates()).limit(3)
+                .map(gdCoordinate -> {
+                    var approx = new Coordinate(TerrainMath.roundAvoid(gdCoordinate.getX()),
+                        TerrainMath.roundAvoid(gdCoordinate.getY()));
+                    return gdGcMap.computeIfAbsent(approx,
+                        key -> this.convertToGeocentric(gdCoordinate, terrainMatrices.directMatrix()));
+                })
+                .toList(), (Boolean) gdTriangle.getUserData())
         ).toList();
         //Установка нормалей для всех уникальных координат треугольников
         setNormals(gcTriangles);
@@ -126,11 +126,11 @@ public class TerrainAltitudeGeneratorService {
                     continue;
                 }
                 var gdCoordinates = new Coordinate[]{
-                        new Coordinate(lon, lat, dem.getAlt(lon, lat)),
-                        new Coordinate(lon + lonStep, lat, dem.getAlt(lon + lonStep, lat)),
-                        new Coordinate(lon + lonStep, lat + latStep, dem.getAlt(lon + lonStep, lat + latStep)),
-                        new Coordinate(lon, lat + latStep, dem.getAlt(lon, lat + latStep)),
-                        new Coordinate(lon, lat, dem.getAlt(lon, lat)),
+                    new Coordinate(lon, lat, dem.getAlt(lon, lat)),
+                    new Coordinate(lon + lonStep, lat, dem.getAlt(lon + lonStep, lat)),
+                    new Coordinate(lon + lonStep, lat + latStep, dem.getAlt(lon + lonStep, lat + latStep)),
+                    new Coordinate(lon, lat + latStep, dem.getAlt(lon, lat + latStep)),
+                    new Coordinate(lon, lat, dem.getAlt(lon, lat)),
                 };
                 var north = envelop.getMinY() >= 0;
                 if (doubling && (north && h <= 0 || !north && h >= gridSize - 1)) {
@@ -140,13 +140,13 @@ public class TerrainAltitudeGeneratorService {
                         var c0 = coordinates.get(0);
                         var c1 = coordinates.get(1);
                         coordinates.add(1, new Coordinate((c0.getX() + c1.getX()) / 2, c0.getY(),
-                                dem.getAlt((c0.getX() + c1.getX()) / 2, c0.getY())));
+                            dem.getAlt((c0.getX() + c1.getX()) / 2, c0.getY())));
                     } else {
                         //Добавление посредине верхней грани полигона
                         var c2 = coordinates.get(2);
                         var c3 = coordinates.get(3);
                         coordinates.add(3, new Coordinate((c2.getX() + c3.getX()) / 2, c2.getY(),
-                                dem.getAlt((c2.getX() + c3.getX()) / 2, c2.getY())));
+                            dem.getAlt((c2.getX() + c3.getX()) / 2, c2.getY())));
                     }
                     gdCoordinates = coordinates.toArray(Coordinate[]::new);
                 }
@@ -173,11 +173,11 @@ public class TerrainAltitudeGeneratorService {
      */
     private void setNormals(List<GeocentricTriangle> triangles) {
         triangles.stream()
-                .flatMap(gcTriangle -> gcTriangle.getGcCoordinates().stream().map(gc -> Pair.of(gc, gcTriangle)))
-                .collect(Collectors.groupingBy(Pair::getFirst, Collectors.mapping(Pair::getSecond, Collectors.toList())))
-                .forEach((geocentric, gcTriangles) ->
-                        //По координатам всех треугольников нет смысла устанавливать нормаль - instance координаты один и тот же
-                        geocentric.setNormal(Optional.of(gcTriangles.stream().map(TerrainMath::planeNormal)
-                                .reduce(Vector3D::add).orElse(Vector3D.ZERO).normalize())));
+            .flatMap(gcTriangle -> gcTriangle.getGcCoordinates().stream().map(gc -> Pair.of(gc, gcTriangle)))
+            .collect(Collectors.groupingBy(Pair::getFirst, Collectors.mapping(Pair::getSecond, Collectors.toList())))
+            .forEach((geocentric, gcTriangles) ->
+                //По координатам всех треугольников нет смысла устанавливать нормаль - instance координаты один и тот же
+                geocentric.setNormal(Optional.of(gcTriangles.stream().map(TerrainMath::planeNormal)
+                    .reduce(Vector3D::add).orElse(Vector3D.ZERO).normalize())));
     }
 }

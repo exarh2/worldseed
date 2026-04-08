@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import static online.worldseed.service.srtm.StrmConstants.DEM3_FILE_SIZE;
+import static online.worldseed.model.srtm.StrmConstants.DEM3_FILE_SIZE;
 
 /**
  * Импорт данных из соответствующего источника

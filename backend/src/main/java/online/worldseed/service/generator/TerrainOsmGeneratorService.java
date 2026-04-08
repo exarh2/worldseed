@@ -6,8 +6,8 @@
 //import lombok.SneakyThrows;
 //import lombok.extern.slf4j.Slf4j;
 //import online.worldseed.service.generator.gltf.GltfModelCreator;
-//import online.worldseed.service.generator.model.Geocentric;
-//import online.worldseed.service.generator.model.option.ResolutionOption;
+//import online.worldseed.model.generator.Geocentric;
+//import online.worldseed.model.generator.option.ResolutionOption;
 //import online.worldseed.service.generator.utils.TerrainMath;
 //import online.worldseed.service.generator.utils.TerrainSlicing;
 //import online.worldseed.service.generator.utils.Triangulation;
@@ -31,8 +31,8 @@
 //
 //import static java.lang.Math.PI;
 //import static java.lang.Math.toRadians;
-//import static online.worldseed.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
-//import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_ALTITUDE;
+//import static online.worldseed.model.generator.GeoConstants.GD_GEOMETRY_FACTORY;
+//import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_ALTITUDE;
 //
 //@Slf4j
 //@Service

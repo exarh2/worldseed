@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static java.lang.Math.abs;
-import static online.worldseed.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
+import static online.worldseed.model.generator.GeoConstants.GD_GEOMETRY_FACTORY;
 
 public final class Triangulation {
     //Sets the snapping tolerance which will be used to improved the robustness of the triangulation computation.

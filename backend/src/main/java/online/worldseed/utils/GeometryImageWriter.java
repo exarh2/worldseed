@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static java.lang.Boolean.TRUE;
 import static java.lang.Math.abs;
-import static online.worldseed.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
+import static online.worldseed.model.generator.GeoConstants.GD_GEOMETRY_FACTORY;
 import static online.worldseed.utils.GeoJsonWriter.DEBUG_DUMP_FOLDER;
 import static org.locationtech.jts.geom.util.AffineTransformation.scaleInstance;
 import static org.locationtech.jts.geom.util.AffineTransformation.translationInstance;

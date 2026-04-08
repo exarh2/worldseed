@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import online.worldseed.model.dto.scene.ScenePlanetResult;
+import online.worldseed.model.generator.TerrainGenerationRequest;
+import online.worldseed.model.generator.option.Resolution;
 import online.worldseed.repository.TerrainRepository;
 import online.worldseed.service.generator.TerrainGeneratorService;
-import online.worldseed.service.generator.model.TerrainGenerationRequest;
-import online.worldseed.service.generator.model.option.Resolution;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
 
 /**
  * Планетойды на сцене
@@ -34,7 +34,7 @@ public class PlanetService {
     @SneakyThrows
     private void init() {
         var planetResolutions = Arrays.stream(Resolution.values())
-                .filter(resolution -> resolution.getTerrainOptions().getGenerationType() == TERRAIN_PLANET).toList();
+            .filter(resolution -> resolution.getTerrainOptions().getGenerationType() == TERRAIN_PLANET).toList();
         terrainRepository.findAllByResolutionIn(planetResolutions).forEach(terrainEntity -> {
             resolutionStorePathMap.put(terrainEntity.getResolution(), terrainEntity.getStoragePath());
         });
@@ -50,18 +50,18 @@ public class PlanetService {
         log.info("Starting regeneration planets...");
         resolutionStorePathMap.clear();
         Arrays.stream(Resolution.values())
-                .filter(resolution -> resolution.getTerrainOptions().getGenerationType() == TERRAIN_PLANET)
-                .forEach(resolution -> {
-                    var terrain = terrainGeneratorService.generateTerrainSync(
-                            new TerrainGenerationRequest(resolution,
-                                    //Чтобы центры не совпадали у row_key чутка смещаю на Latstep
-                                    new Envelope(new Coordinate(-180 + resolution.getTerrainOptions().getLatStep(), -90),
-                                            new Coordinate(180, 90)),
-                                    Optional.empty()
-                            )
-                    );
-                    resolutionStorePathMap.put(resolution, terrain.getStoragePath());
-                });
+            .filter(resolution -> resolution.getTerrainOptions().getGenerationType() == TERRAIN_PLANET)
+            .forEach(resolution -> {
+                var terrain = terrainGeneratorService.generateTerrainSync(
+                    new TerrainGenerationRequest(resolution,
+                        //Чтобы центры не совпадали у row_key чутка смещаю на Latstep
+                        new Envelope(new Coordinate(-180 + resolution.getTerrainOptions().getLatStep(), -90),
+                            new Coordinate(180, 90)),
+                        Optional.empty()
+                    )
+                );
+                resolutionStorePathMap.put(resolution, terrain.getStoragePath());
+            });
         log.info("Regeneration planets completed.");
     }
 
@@ -73,8 +73,8 @@ public class PlanetService {
             throw new UnsupportedOperationException();
         }
         return ScenePlanetResult.builder()
-                .terrainPath(resolutionStorePathMap.get(resolution))
-                .build();
+            .terrainPath(resolutionStorePathMap.get(resolution))
+            .build();
     }
 }
 

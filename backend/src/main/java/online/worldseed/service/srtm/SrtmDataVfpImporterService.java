@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static online.worldseed.model.enums.SrtmSourceType.VFP;
+import static online.worldseed.model.srtm.SrtmSourceType.VFP;
 
 /**
  * Импорт данных из viewfinderpanoramas

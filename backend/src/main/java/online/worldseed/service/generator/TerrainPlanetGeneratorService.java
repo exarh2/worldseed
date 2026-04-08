@@ -4,11 +4,11 @@ import de.javagl.jgltf.model.impl.DefaultGltfModel;
 import de.javagl.jgltf.model.impl.DefaultNodeModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import online.worldseed.model.generator.Geocentric;
+import online.worldseed.model.generator.GeocentricTriangle;
+import online.worldseed.model.generator.option.PlanetTerrainOptions;
+import online.worldseed.model.generator.option.Resolution;
 import online.worldseed.service.generator.gltf.PlanetGltfModelCreator;
-import online.worldseed.service.generator.model.Geocentric;
-import online.worldseed.service.generator.model.GeocentricTriangle;
-import online.worldseed.service.generator.model.option.PlanetTerrainOptions;
-import online.worldseed.service.generator.model.option.Resolution;
 import online.worldseed.service.generator.utils.TerrainMath;
 import online.worldseed.service.generator.utils.TerrainSlicing;
 import online.worldseed.service.generator.utils.Triangulation;
@@ -28,8 +28,8 @@ import java.util.Optional;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.toRadians;
-import static online.worldseed.service.generator.model.GeoConstants.GD_GEOMETRY_FACTORY;
-import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.GeoConstants.GD_GEOMETRY_FACTORY;
+import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
 
 /**
  * Генерация глобуса на основе TERRAIN_PLANET
@@ -50,7 +50,7 @@ public class TerrainPlanetGeneratorService {
         var terrainOptions = (PlanetTerrainOptions) resolution.getTerrainOptions();
         var searchEnvelope = new Envelope(new Coordinate(-180, -90), new Coordinate(180, 90));
         var nodeModels = TerrainSlicing.coveringTerrainEnvelops(resolution, searchEnvelope)
-                .stream().map(p -> generatePlainTerrainNodeModel(terrainOptions, p.getFirst(), p.getSecond())).toList();
+            .stream().map(p -> generatePlainTerrainNodeModel(terrainOptions, p.getFirst(), p.getSecond())).toList();
         return planetGltfModelCreator.createGltfFromNodeList(nodeModels);
     }
 
@@ -69,10 +69,10 @@ public class TerrainPlanetGeneratorService {
         //Для оптимизации - те же самые точки в других треугольниках не высчитываем, а подменяем ссылку
         var gdGcMap = new HashMap<Coordinate, Geocentric>();
         var gcTriangles = gdTriangles.stream().map(
-                gdTriangle -> new GeocentricTriangle(Arrays.stream(gdTriangle.getCoordinates()).limit(3)
-                        .map(gdCoordinate -> gdGcMap.computeIfAbsent(gdCoordinate,
-                                key -> this.convertToGeocentricWithNormalAndUV(key, terrainMatrices.directMatrix())))
-                        .toList(), false)
+            gdTriangle -> new GeocentricTriangle(Arrays.stream(gdTriangle.getCoordinates()).limit(3)
+                .map(gdCoordinate -> gdGcMap.computeIfAbsent(gdCoordinate,
+                    key -> this.convertToGeocentricWithNormalAndUV(key, terrainMatrices.directMatrix())))
+                .toList(), false)
         ).toList();
         return planetGltfModelCreator.createNodeModel(gcTriangles, Optional.of(terrainOptions.getTextureSource()), terrainMatrices);
     }
@@ -112,7 +112,7 @@ public class TerrainPlanetGeneratorService {
         gdCoordinateAlt.setZ(1000);
         var gcAlt = Geocentric.fromGeodeticCoordinate(gdCoordinateAlt);
         var normal = Optional.of(new Vector3D(gcAlt.getX() - gc.getX(), gcAlt.getY() - gc.getY(),
-                gcAlt.getZ() - gc.getZ()).normalize());
+            gcAlt.getZ() - gc.getZ()).normalize());
 
         //https://ru.wikipedia.org/wiki/UV-преобразование
         var u = (float) (toRadians(gdCoordinate.getX()) / (2 * PI) + 0.5);

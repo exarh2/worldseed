@@ -31,8 +31,8 @@ import java.util.zip.ZipOutputStream;
 import javax.imageio.ImageIO;
 
 import static java.awt.image.BufferedImage.TYPE_USHORT_GRAY;
-import static online.worldseed.model.enums.SrtmSourceType.CGIAR;
-import static online.worldseed.service.srtm.StrmConstants.DEM3_RESOLUTION;
+import static online.worldseed.model.srtm.SrtmSourceType.CGIAR;
+import static online.worldseed.model.srtm.StrmConstants.DEM3_RESOLUTION;
 
 /**
  * Импорт данных из CGIAR

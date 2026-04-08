@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static online.worldseed.model.enums.RoleType.USER;
+import static online.worldseed.model.entity.RoleType.USER;
 
 @Service
 @RequiredArgsConstructor

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import static online.worldseed.service.srtm.StrmConstants.DEM3_RESOLUTION;
+import static online.worldseed.model.srtm.StrmConstants.DEM3_RESOLUTION;
 
 @Slf4j
 @Service

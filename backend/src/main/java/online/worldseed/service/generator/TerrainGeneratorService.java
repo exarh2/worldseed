@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import online.worldseed.model.entity.TerrainEntity;
+import online.worldseed.model.generator.TerrainGenerationRequest;
 import online.worldseed.repository.TerrainRepository;
 import online.worldseed.service.MinioService;
-import online.worldseed.service.generator.model.TerrainGenerationRequest;
 import online.worldseed.service.generator.utils.TerrainSlicing;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.core.task.TaskExecutor;
@@ -21,8 +21,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_ALTITUDE;
-import static online.worldseed.service.generator.model.TerrainGenerationType.TERRAIN_PLANET;
+import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_ALTITUDE;
+import static online.worldseed.model.generator.TerrainGenerationType.TERRAIN_PLANET;
 
 @Slf4j
 @Service
@@ -72,18 +72,18 @@ public class TerrainGeneratorService {
             gltfModel = terrainPlanetGeneratorService.generateEarthPlanet(resolution);
         } else if (resolution.getTerrainOptions().getGenerationType() == TERRAIN_ALTITUDE) {
             gltfModel = terrainAltitudeGeneratorService.generateTerrain(resolution,
-                    terrainGenerationRequest.terrainEnvelop(), terrainGenerationRequest.doubling().get());
+                terrainGenerationRequest.terrainEnvelop(), terrainGenerationRequest.doubling().get());
         } else {
             throw new UnsupportedOperationException();
         }
         var storagePath = minioService.saveTerrain(terrainId, resolution, center, gltfModel);
         var rowKey = TerrainSlicing.getRowKey(terrainGenerationRequest.terrainEnvelop());
         return terrainRepository.save(TerrainEntity.builder()
-                .id(terrainId)
-                .resolution(resolution)
-                .rowKey(rowKey)
-                .storagePath(storagePath)
-                .build());
+            .id(terrainId)
+            .resolution(resolution)
+            .rowKey(rowKey)
+            .storagePath(storagePath)
+            .build());
     }
 
     /**
