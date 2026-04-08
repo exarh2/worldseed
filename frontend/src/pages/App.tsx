@@ -7,7 +7,6 @@ import type {AppDispatch, RootState} from "../store";
 import {OsmMap} from "../components/OsmMap";
 import {setMapView, setMapVisible, setMapWindow} from "../store/slices/uiSlice";
 import {useGetSceneConfigQuery} from "../store/api/sceneApi";
-import {SceneSelector} from "../components/SceneSelector";
 import {PlanetScene} from "../scene/PlanetScene";
 import {TestScene} from "../scene/TestScene";
 import {TerrainType} from "../store/slices/sceneSlice";
@@ -100,9 +99,6 @@ export const App: React.FC = () => {
                     checked={isMapVisible}
                     onChange={(event) => dispatch(setMapVisible(event.currentTarget.checked))}
                 />
-                <Box mt="md">
-                    <SceneSelector/>
-                </Box>
             </Drawer>
             <Login opened={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}/>
             <SceneWrapper/>
