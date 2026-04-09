@@ -20,7 +20,7 @@ const MAX_MAP_ZOOM = 19;
 const MAP_CENTER_PRECISION = 6;
 const MAP_ZOOM_PRECISION = 3;
 const EARTH_CIRCUMFERENCE_M = 40075016.686;
-const MAP_VIEW_DISPATCH_THROTTLE_MS = 100;
+const MAP_VIEW_DISPATCH_THROTTLE_MS = 300;
 
 const roundToPrecision = (value: number, precision: number): number => {
     const factor = 10 ** precision;
@@ -39,10 +39,56 @@ export const PlanetScene: React.FC = () => {
     const lastMapViewRef = useRef<MapViewState | null>(null);
     const orbitControlsRef = useRef<any>(null);
     const isApplyingMapViewRef = useRef(false);
+    const isUserInteractingRef = useRef(false);
     const lastMapViewDispatchAtRef = useRef(0);
+    const pendingMapViewRef = useRef<MapViewState | null>(null);
+    const trailingDispatchTimeoutRef = useRef<number | null>(null);
     const terrainUrl = data?.terrainPath
         ? `${config.terrainsBaseUrl}/${data.terrainPath}`
         : null;
+
+    const dispatchMapViewThrottled = (nextMapView: MapViewState, forceImmediate = false) => {
+        const now = Date.now();
+        const elapsed = now - lastMapViewDispatchAtRef.current;
+        const canDispatchNow = forceImmediate || elapsed >= MAP_VIEW_DISPATCH_THROTTLE_MS;
+
+        if (canDispatchNow) {
+            if (trailingDispatchTimeoutRef.current !== null) {
+                window.clearTimeout(trailingDispatchTimeoutRef.current);
+                trailingDispatchTimeoutRef.current = null;
+            }
+            pendingMapViewRef.current = null;
+            lastMapViewDispatchAtRef.current = now;
+            lastMapViewRef.current = nextMapView;
+            dispatch(setMapView(nextMapView));
+            return;
+        }
+
+        pendingMapViewRef.current = nextMapView;
+        if (trailingDispatchTimeoutRef.current !== null) {
+            return;
+        }
+
+        const waitMs = MAP_VIEW_DISPATCH_THROTTLE_MS - elapsed;
+        trailingDispatchTimeoutRef.current = window.setTimeout(() => {
+            trailingDispatchTimeoutRef.current = null;
+            if (!pendingMapViewRef.current) {
+                return;
+            }
+            const pending = pendingMapViewRef.current;
+            pendingMapViewRef.current = null;
+            lastMapViewDispatchAtRef.current = Date.now();
+            lastMapViewRef.current = pending;
+            dispatch(setMapView(pending));
+        }, waitMs);
+    };
+
+    useEffect(() => () => {
+        if (trailingDispatchTimeoutRef.current !== null) {
+            window.clearTimeout(trailingDispatchTimeoutRef.current);
+            trailingDispatchTimeoutRef.current = null;
+        }
+    }, []);
 
     useEffect(() => {
         const controls = orbitControlsRef.current;
@@ -107,6 +153,9 @@ export const PlanetScene: React.FC = () => {
                     if (isApplyingMapViewRef.current) {
                         return;
                     }
+                    if (!isUserInteractingRef.current) {
+                        return;
+                    }
                     if (!event) {
                         return;
                     }
@@ -146,13 +195,16 @@ export const PlanetScene: React.FC = () => {
                         lastMapViewRef.current.center[1] !== nextMapView.center[1] ||
                         lastMapViewRef.current.zoom !== nextMapView.zoom
                     ) {
-                        const now = Date.now();
-                        if (now - lastMapViewDispatchAtRef.current < MAP_VIEW_DISPATCH_THROTTLE_MS) {
-                            return;
-                        }
-                        lastMapViewRef.current = nextMapView;
-                        lastMapViewDispatchAtRef.current = now;
-                        dispatch(setMapView(nextMapView));
+                        dispatchMapViewThrottled(nextMapView);
+                    }
+                }}
+                onStart={() => {
+                    isUserInteractingRef.current = true;
+                }}
+                onEnd={() => {
+                    isUserInteractingRef.current = false;
+                    if (pendingMapViewRef.current) {
+                        dispatchMapViewThrottled(pendingMapViewRef.current, true);
                     }
                 }}
             />
