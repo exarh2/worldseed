@@ -12,6 +12,7 @@ const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
     const gltf = useGLTF(url);
     return <primitive object={gltf.scene}/>;
 };
+
 // [-3282059.946, -2327411.335, 25504085.127],
 export const PlanetScene: React.FC = () => {
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
