@@ -156,6 +156,33 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
     }, [dispatch, onMapViewChange]);
 
     useEffect(() => {
+        if (!mapRef.current) {
+            return;
+        }
+
+        const view = mapRef.current.getView();
+        const normalizedMapView = normalizeMapView(mapView);
+        const currentCenter = view.getCenter();
+        const currentZoom = view.getZoom();
+
+        const centerChanged =
+            !currentCenter ||
+            currentCenter[0] !== normalizedMapView.center[0] ||
+            currentCenter[1] !== normalizedMapView.center[1];
+        const zoomChanged = currentZoom === undefined || currentZoom !== normalizedMapView.zoom;
+
+        if (centerChanged) {
+            view.setCenter(normalizedMapView.center);
+        }
+        if (zoomChanged) {
+            view.setZoom(normalizedMapView.zoom);
+        }
+
+        // Keep local snapshot in sync to avoid redundant write-back.
+        lastSavedMapViewRef.current = normalizedMapView;
+    }, [mapView]);
+
+    useEffect(() => {
         const normalizeMapWindow = () => {
             const normalized = clampMapWindowToViewport(mapWindow);
             if (

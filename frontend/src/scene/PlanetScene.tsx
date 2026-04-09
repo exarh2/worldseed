@@ -1,27 +1,81 @@
-import React, {Suspense} from "react";
-import {useSelector} from "react-redux";
-import type {RootState} from "../store";
+import React, {Suspense, useEffect, useRef} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import type {AppDispatch, RootState} from "../store";
 import {Canvas} from "@react-three/fiber";
-import {Bounds, Environment, OrbitControls, Stars, useGLTF} from "@react-three/drei";
+import {Environment, OrbitControls, Stars, useGLTF} from "@react-three/drei";
+import {PerspectiveCamera} from "three";
 import {config} from "../config";
 import {useGetPlanetSceneQuery} from "../store/api/sceneApi";
 import {Resolution} from "../store/slices/sceneSlice";
 import {EARTH_RADIUS} from "./constants";
+import {setMapView, type MapViewState} from "../store/slices/uiSlice";
 
 const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
     const gltf = useGLTF(url);
     return <primitive object={gltf.scene}/>;
 };
 
-// [-3282059.946, -2327411.335, 25504085.127],
+const MIN_MAP_ZOOM = 0;
+const MAX_MAP_ZOOM = 19;
+const MAP_CENTER_PRECISION = 6;
+const MAP_ZOOM_PRECISION = 3;
+const EARTH_CIRCUMFERENCE_M = 40075016.686;
+const MAP_VIEW_DISPATCH_THROTTLE_MS = 100;
+
+const roundToPrecision = (value: number, precision: number): number => {
+    const factor = 10 ** precision;
+    return Math.round(value * factor) / factor;
+};
+
+const clamp = (value: number, min: number, max: number): number => Math.min(max, Math.max(min, value));
+
 export const PlanetScene: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
+    const mapView = useSelector((state: RootState) => state.ui.mapView);
     const {data} = useGetPlanetSceneQuery(Resolution.R_3, {
         skip: !currentSceneTerrainOption?.resolution
     });
+    const lastMapViewRef = useRef<MapViewState | null>(null);
+    const orbitControlsRef = useRef<any>(null);
+    const isApplyingMapViewRef = useRef(false);
+    const lastMapViewDispatchAtRef = useRef(0);
     const terrainUrl = data?.terrainPath
         ? `${config.terrainsBaseUrl}/${data.terrainPath}`
         : null;
+
+    useEffect(() => {
+        const controls = orbitControlsRef.current;
+        if (!controls) {
+            return;
+        }
+
+        const camera = controls.object;
+        if (!(camera instanceof PerspectiveCamera)) {
+            return;
+        }
+
+        const longitude = mapView.center[0] * Math.PI / 180;
+        const latitude = mapView.center[1] * Math.PI / 180;
+        const latitudeCos = Math.max(Math.cos(latitude), 1e-6);
+        const viewportHeight = Math.max(window.innerHeight, 1);
+        const fovRad = (camera.fov * Math.PI) / 180;
+        const metersPerPixel =
+            (EARTH_CIRCUMFERENCE_M * latitudeCos) / (256 * Math.pow(2, clamp(mapView.zoom, MIN_MAP_ZOOM, MAX_MAP_ZOOM)));
+        const altitude = (metersPerPixel * viewportHeight) / (2 * Math.tan(fovRad / 2));
+        const distanceToCenter = clamp(EARTH_RADIUS + altitude, EARTH_RADIUS, 50000000);
+
+        const x = distanceToCenter * Math.cos(latitude) * Math.cos(longitude);
+        const y = distanceToCenter * Math.cos(latitude) * Math.sin(longitude);
+        const z = distanceToCenter * Math.sin(latitude);
+
+        isApplyingMapViewRef.current = true;
+        camera.position.set(x, y, z);
+        controls.target.set(0, 0, 0);
+        controls.update();
+        lastMapViewRef.current = mapView;
+        isApplyingMapViewRef.current = false;
+    }, [mapView]);
 
     return (
         <Canvas
@@ -40,6 +94,7 @@ export const PlanetScene: React.FC = () => {
                 speed={0.5}
             />
             <OrbitControls
+                ref={orbitControlsRef}
                 makeDefault
                 autoRotate={false}
                 enableDamping
@@ -48,15 +103,65 @@ export const PlanetScene: React.FC = () => {
                 maxDistance={50000000}
                 screenSpacePanning
                 target={[0, 0, 0]}
+                onChange={(event) => {
+                    if (isApplyingMapViewRef.current) {
+                        return;
+                    }
+                    if (!event) {
+                        return;
+                    }
+                    const controls = event.target;
+                    const camera = controls.object;
+                    if (!(camera instanceof PerspectiveCamera)) {
+                        return;
+                    }
+                    const position = camera.position;
+                    const distanceToCenter = position.length();
+                    if (distanceToCenter <= 0) {
+                        return;
+                    }
+
+                    const latitude = Math.asin(clamp(position.z / distanceToCenter, -1, 1)) * 180 / Math.PI;
+                    const longitude = Math.atan2(position.y, position.x) * 180 / Math.PI;
+
+                    const altitude = Math.max(distanceToCenter - EARTH_RADIUS, 1);
+                    const viewportHeight = Math.max(window.innerHeight, 1);
+                    const fovRad = (camera.fov * Math.PI) / 180;
+                    const metersPerPixel = (2 * altitude * Math.tan(fovRad / 2)) / viewportHeight;
+                    const latitudeCos = Math.max(Math.cos(latitude * Math.PI / 180), 1e-6);
+                    const zoom =
+                        Math.log2((EARTH_CIRCUMFERENCE_M * latitudeCos) / (256 * Math.max(metersPerPixel, 1e-9)));
+
+                    const nextMapView: MapViewState = {
+                        center: [
+                            roundToPrecision(longitude, MAP_CENTER_PRECISION),
+                            roundToPrecision(latitude, MAP_CENTER_PRECISION)
+                        ],
+                        zoom: roundToPrecision(clamp(zoom, MIN_MAP_ZOOM, MAX_MAP_ZOOM), MAP_ZOOM_PRECISION)
+                    };
+
+                    if (
+                        !lastMapViewRef.current ||
+                        lastMapViewRef.current.center[0] !== nextMapView.center[0] ||
+                        lastMapViewRef.current.center[1] !== nextMapView.center[1] ||
+                        lastMapViewRef.current.zoom !== nextMapView.zoom
+                    ) {
+                        const now = Date.now();
+                        if (now - lastMapViewDispatchAtRef.current < MAP_VIEW_DISPATCH_THROTTLE_MS) {
+                            return;
+                        }
+                        lastMapViewRef.current = nextMapView;
+                        lastMapViewDispatchAtRef.current = now;
+                        dispatch(setMapView(nextMapView));
+                    }
+                }}
             />
             <ambientLight intensity={0.35}/>
             <directionalLight position={[5, 10, 8]} intensity={1.1}/>
             <Environment preset="city"/>
             <Suspense fallback={null}>
                 {terrainUrl && (
-                    // <Bounds fit clip observe margin={1.2}>
-                        <PlanetTerrainModel url={terrainUrl}/>
-                    // </Bounds>
+                    <PlanetTerrainModel url={terrainUrl}/>
                 )}
             </Suspense>
         </Canvas>
