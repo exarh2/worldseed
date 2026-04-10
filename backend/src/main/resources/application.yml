@@ -72,39 +72,52 @@ generator:
       lat-step: 0.0078125 # 1 / 128.0
       zoom-to: 12.7
       max-terrain-view-distance: 3
+      compression: DRACO
     R_1_64:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.015625 # 1 / 64.0
       zoom-to: 11.7
       max-terrain-view-distance: 3
       grid-size: 18
+      compression: DRACO
     R_1_16:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.0625 # 1 / 16.0
       zoom-to: 9.7
       max-terrain-view-distance: 3
       grid-size: 18
+      compression: DRACO
     R_1_4:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.25 # 1 / 4.0
       zoom-to: 7.7
       max-terrain-view-distance: 3
       grid-size: 18
+      compression: DRACO
     R_1:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 1.0
       zoom-to: 5.7
       max-terrain-view-distance: 3
       grid-size: 18
+      compression: DRACO
     R_3:
       generation-type: TERRAIN_PLANET
       lat-step: 3.0
       zoom-to: 0
       texture-source: earth1024.jpg
-  terrain-compression:
-    enabled: true
-    # См. https://www.npmjs.com/package/@gltf-transform/cli — геометрия: подкоманды meshopt / draco
-    # command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "meshopt", "--texture-compress", "webp"]
-    command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "draco", "--texture-compress", "webp"]
-    timeout-ms: 120000
-    fail-on-error: false
+      compression: DRACO
+  compression:
+    OFF:
+      enabled: false
+      command: [ ]
+      timeout-ms: 1000
+    MESHOPT:
+      enabled: true
+      # См. https://www.npmjs.com/package/@gltf-transform/cli — геометрия: подкоманды meshopt / draco
+      command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "meshopt", "--texture-compress", "webp" ]
+      timeout-ms: 120000
+    DRACO:
+      enabled: true
+      command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "draco", "--texture-compress", "webp" ]
+      timeout-ms: 120000

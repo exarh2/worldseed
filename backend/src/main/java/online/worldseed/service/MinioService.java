@@ -36,7 +36,11 @@ public class MinioService {
         var contentType = "model/gltf-binary";
         try {
             var gltfBinary = getGltfBinary(gltfModel);
-            var optimizedGltfBinary = terrainCompressionService.compress(gltfBinary, terrainStorageFilePath);
+            var optimizedGltfBinary = terrainCompressionService.compress(
+                gltfBinary,
+                terrainStorageFilePath,
+                resolution.getTerrainOptions().getCompression()
+            );
             minioClient.putObject(PutObjectArgs.builder()
                 .bucket(minioProperties.getTerrainsBucketName())
                 .object(terrainStorageFilePath)

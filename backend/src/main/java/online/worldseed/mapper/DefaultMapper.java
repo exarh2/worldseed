@@ -9,6 +9,7 @@ import online.worldseed.model.generator.resolution.OsmTerrainOptions;
 import online.worldseed.model.generator.resolution.PlanetTerrainOptions;
 import online.worldseed.model.generator.resolution.Resolution;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
@@ -17,19 +18,23 @@ public interface DefaultMapper {
     default TerrainOptionsDto toTerrainOptionsDto(Resolution resolution) {
         var terrainOptions = resolution.getTerrainOptions();
         if (terrainOptions instanceof OsmTerrainOptions osm) {
-            return new OsmTerrainOptionsDto(resolution, osm.getLatStep(), osm.getZoomTo(), osm.getMaxTerrainViewDistance());
+            return toOsmTerrainOptionsDto(osm, resolution);
         }
         if (terrainOptions instanceof AltitudeTerrainOptions altitude) {
-            return new AltitudeTerrainOptionsDto(
-                resolution,
-                altitude.getLatStep(),
-                altitude.getZoomTo(),
-                altitude.getMaxTerrainViewDistance()
-            );
+            return toAltitudeTerrainOptionsDto(altitude, resolution);
         }
         if (terrainOptions instanceof PlanetTerrainOptions planet) {
-            return new PlanetTerrainOptionsDto(resolution, planet.getLatStep(), planet.getZoomTo());
+            return toPlanetTerrainOptionsDto(planet, resolution);
         }
         throw new IllegalArgumentException("Unsupported terrainOptions type: " + terrainOptions.getClass().getName());
     }
+
+    @Mapping(target = "resolution", source = "resolution")
+    OsmTerrainOptionsDto toOsmTerrainOptionsDto(OsmTerrainOptions source, Resolution resolution);
+
+    @Mapping(target = "resolution", source = "resolution")
+    AltitudeTerrainOptionsDto toAltitudeTerrainOptionsDto(AltitudeTerrainOptions source, Resolution resolution);
+
+    @Mapping(target = "resolution", source = "resolution")
+    PlanetTerrainOptionsDto toPlanetTerrainOptionsDto(PlanetTerrainOptions source, Resolution resolution);
 }

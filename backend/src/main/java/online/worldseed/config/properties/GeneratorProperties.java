@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import online.worldseed.model.generator.TerrainType;
 import online.worldseed.model.generator.resolution.Resolution;
+import online.worldseed.model.generator.resolution.TerrainCompression;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -33,7 +34,7 @@ public class GeneratorProperties {
     private int overpassReadTimeoutMs;
 
     @NotNull
-    private TerrainCompressionProperties terrainCompression;
+    private Map<TerrainCompression, CompressionProperties> compression;
 
     @NotNull
     private Map<Resolution, ResolutionProperties> resolutions;
@@ -43,7 +44,7 @@ public class GeneratorProperties {
      */
     @Data
     @Validated
-    public static class TerrainCompressionProperties {
+    public static class CompressionProperties {
         /**
          * Включение оптимизации GLB перед сохранением
          */
@@ -60,11 +61,6 @@ public class GeneratorProperties {
          */
         @NotNull
         private Long timeoutMs;
-        /**
-         * Падать с ошибкой, если CLI завершился неуспешно.
-         */
-        @NotNull
-        private Boolean failOnError;
     }
 
     @Data
@@ -84,5 +80,8 @@ public class GeneratorProperties {
         private Integer maxTerrainViewDistance;
 
         private String textureSource;
+
+        @NotNull
+        private TerrainCompression compression;
     }
 }

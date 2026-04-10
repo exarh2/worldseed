@@ -18,9 +18,13 @@ public abstract class TerrainOptions {
     //Целевой OSM zoom для текущего шага нарезки
     protected double zoomTo;
 
-    protected TerrainOptions(TerrainType generationType, double latStep, double zoomTo) {
+    //Настройки сжатия итогового GLB
+    protected TerrainCompression compression;
+
+    protected TerrainOptions(TerrainType generationType, double latStep, double zoomTo, TerrainCompression compression) {
         this.generationType = generationType;
         this.latStep = latStep;
         this.zoomTo = zoomTo;
+        this.compression = compression;
     }
 }
