@@ -50,6 +50,11 @@ public class TerrainEntity {
     @NotNull
     private String storagePath;
     /**
+     * Признак, что GLB уже сжат и оптимизирован.
+     */
+    @NotNull
+    private boolean compressed;
+    /**
      * Дата создания записи
      */
     @NotNull

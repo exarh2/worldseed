@@ -1,7 +1,5 @@
-package online.worldseed.service;
+package online.worldseed.service.generator;
 
-import lombok.RequiredArgsConstructor;
-import online.worldseed.config.properties.GeneratorProperties;
 import online.worldseed.model.exception.ServiceErrorException;
 import online.worldseed.model.generator.resolution.TerrainCompression;
 import org.springframework.stereotype.Service;
@@ -15,34 +13,27 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 @Service
-@RequiredArgsConstructor
 public class TerrainCompressionService {
     private static final String INPUT_TOKEN = "{input}";
     private static final String OUTPUT_TOKEN = "{output}";
-
-    private final GeneratorProperties generatorProperties;
 
     /**
      * Оптимизирует GLB через внешний CLI (например gltf-transform/gltfpack).
      * При выключенной оптимизации возвращает исходный байтовый массив.
      */
-    public byte[] compress(byte[] sourceGlb, String sourcePathTag, TerrainCompression compressionType) {
+    public byte[] compress(byte[] sourceGlb, TerrainCompression compressionType) {
         if (compressionType == TerrainCompression.OFF) {
             return sourceGlb;
         }
 
-        var configByType = generatorProperties.getCompression();
-        var compression = configByType.get(compressionType);
-        if (compression == null) {
-            throw new ServiceErrorException("Missing terrain compression config for: " + compressionType);
-        }
-        if (!compression.isEnabled()) {
+        var compression = compressionType.compressionProperties;
+        if (!compression.getEnabled()) {
             return sourceGlb;
         }
 
         var commandTemplate = compression.getCommand();
         if (commandTemplate == null || commandTemplate.isEmpty()) {
-            throw new ServiceErrorException("Terrain compression enabled, but command is empty. Source path: " + sourcePathTag);
+            throw new ServiceErrorException("Terrain compression enabled, but command is empty.");
         }
 
         if (!containsRequiredTokens(commandTemplate)) {
@@ -65,23 +56,20 @@ public class TerrainCompressionService {
 
             if (!completed) {
                 process.destroyForcibly();
-                throw new ServiceErrorException("Terrain compression process timed out. Source path: " + sourcePathTag +
-                                                ". Output: " + processOutput);
+                throw new ServiceErrorException("Terrain compression process timed out." + ". Output: " + processOutput);
             }
 
             if (process.exitValue() != 0) {
-                throw new ServiceErrorException("Terrain compression process failed. Source path: " + sourcePathTag +
-                                                ". Output: " + processOutput);
+                throw new ServiceErrorException("Terrain compression process failed." + ". Output: " + processOutput);
             }
 
             var compressedGlb = Files.readAllBytes(outputFile);
             if (compressedGlb.length == 0) {
-                throw new ServiceErrorException("Terrain compression produced empty file. Source path: " + sourcePathTag +
-                                                ". Output: " + processOutput);
+                throw new ServiceErrorException("Terrain compression produced empty file." + ". Output: " + processOutput);
             }
             return compressedGlb;
         } catch (Exception e) {
-            throw new ServiceErrorException("Terrain compression failed for " + sourcePathTag, e);
+            throw new ServiceErrorException("Terrain compression failed for ", e);
         } finally {
             deleteQuietly(inputFile);
             deleteQuietly(outputFile);

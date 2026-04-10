@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import online.worldseed.config.properties.GeneratorProperties;
 import online.worldseed.mapper.PropertiesMapper;
 import online.worldseed.model.generator.resolution.Resolution;
+import online.worldseed.model.generator.resolution.TerrainCompression;
 import online.worldseed.model.generator.resolution.TerrainOptions;
 import org.springframework.stereotype.Component;
 
@@ -23,5 +24,6 @@ public class ResolutionConfigurationInitializer {
                 (resolution, properties) -> mappedOptions.put(resolution, propertiesMapper.toTerrainOptions(properties))
         );
         Resolution.applyConfiguration(mappedOptions);
+        TerrainCompression.applyConfiguration(generatorProperties.getCompression());
     }
 }

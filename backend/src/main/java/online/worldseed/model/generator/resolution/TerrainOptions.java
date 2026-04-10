@@ -1,5 +1,7 @@
 package online.worldseed.model.generator.resolution;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import online.worldseed.model.generator.TerrainType;
 
@@ -8,6 +10,7 @@ import online.worldseed.model.generator.TerrainType;
  * TODO https://wiki.openstreetmap.org/wiki/Zoom_levels
  */
 @Getter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class TerrainOptions {
     //Вид террейна (зависит зависимости от разрешения)
     protected TerrainType generationType;
@@ -21,10 +24,4 @@ public abstract class TerrainOptions {
     //Настройки сжатия итогового GLB
     protected TerrainCompression compression;
 
-    protected TerrainOptions(TerrainType generationType, double latStep, double zoomTo, TerrainCompression compression) {
-        this.generationType = generationType;
-        this.latStep = latStep;
-        this.zoomTo = zoomTo;
-        this.compression = compression;
-    }
 }

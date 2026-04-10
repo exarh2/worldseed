@@ -58,6 +58,10 @@ srtm:
   #Путь к хранилищу высотных данных CGIAR
   srtm-cgiar-storage-path: c:/Projects/world-seed/data/cgiar_srtm/
 
+services:
+  compression:
+    lazy-run-delay-ms: 10000
+
 generator:
   #overpass-api-url: https://overpass-api.de/api/interpreter
   overpass-api-url: https://maps.mail.ru/osm/tools/overpass/api/interpreter
@@ -106,18 +110,26 @@ generator:
       lat-step: 3.0
       zoom-to: 0
       texture-source: earth1024.jpg
-      compression: DRACO
+      compression: DRACO_LAZY
   compression:
     OFF:
       enabled: false
+      lazy: false
       command: [ ]
       timeout-ms: 1000
     MESHOPT:
       enabled: true
+      lazy: false
       # См. https://www.npmjs.com/package/@gltf-transform/cli — геометрия: подкоманды meshopt / draco
       command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "meshopt", "--texture-compress", "webp" ]
       timeout-ms: 120000
     DRACO:
       enabled: true
+      lazy: false
+      command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "draco", "--texture-compress", "webp" ]
+      timeout-ms: 120000
+    DRACO_LAZY:
+      enabled: true
+      lazy: true
       command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "draco", "--texture-compress", "webp" ]
       timeout-ms: 120000

@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static online.worldseed.model.generator.TerrainType.TERRAIN_ALTITUDE;
 import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
+import static online.worldseed.utils.GltfDefaultModelWriter.getGltfBinary;
 
 @Slf4j
 @Service
@@ -40,6 +41,7 @@ public class TerrainGeneratorService {
     private final TerrainPlanetGeneratorService terrainPlanetGeneratorService;
     private final TerrainAltitudeGeneratorService terrainAltitudeGeneratorService;
     private final MinioService minioService;
+    private final TerrainCompressionService terrainCompressionService;
 
     /**
      * Добавление террейна в очередь на генерацию, если он еще не там
@@ -76,13 +78,20 @@ public class TerrainGeneratorService {
         } else {
             throw new UnsupportedOperationException();
         }
-        var storagePath = minioService.saveTerrain(terrainId, resolution, center, gltfModel);
+        var gltfBinary = getGltfBinary(gltfModel);
+        var compressionType = resolution.getTerrainOptions().getCompression();
+        var shouldCompressNow = compressionType.compressOnGenerate();
+        var terrainBinary = shouldCompressNow ?
+            terrainCompressionService.compress(gltfBinary, compressionType) :
+            gltfBinary;
+        var storagePath = minioService.saveTerrain(terrainId, resolution, center, terrainBinary);
         var rowKey = TerrainSlicing.getRowKey(terrainGenerationRequest.terrainEnvelop());
         return terrainRepository.save(TerrainEntity.builder()
             .id(terrainId)
             .resolution(resolution)
             .rowKey(rowKey)
             .storagePath(storagePath)
+            .compressed(shouldCompressNow)
             .build());
     }
 

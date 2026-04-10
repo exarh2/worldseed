@@ -49,7 +49,12 @@ public class GeneratorProperties {
          * Включение оптимизации GLB перед сохранением
          */
         @NotNull
-        private boolean enabled;
+        private Boolean enabled;
+        /**
+         * Если true, сжатие откладывается и выполняется фоновым процессом.
+         */
+        @NotNull
+        private Boolean lazy;
         /**
          * Команда оптимизации.
          * Поддерживаются шаблоны {input} и {output}.

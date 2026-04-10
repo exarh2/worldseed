@@ -7,6 +7,7 @@
     <include file="db/changelog/changes/2026-02-18-create-example-table.xml"/>
     <include file="db/changelog/changes/2026-03-03_create_dem_info_table.xml"/>
     <include file="db/changelog/changes/2026-03-24_terrain_table.xml"/>
+    <include file="db/changelog/changes/2026-04-10_add_compressed_to_terrain.xml"/>
 
 </databaseChangeLog>
 

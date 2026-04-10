@@ -1,6 +1,6 @@
 package online.worldseed.service;
 
-import de.javagl.jgltf.model.GltfModel;
+import io.minio.GetObjectArgs;
 import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
@@ -18,7 +18,6 @@ import java.io.ByteArrayInputStream;
 import java.util.UUID;
 
 import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
-import static online.worldseed.utils.GltfDefaultModelWriter.getGltfBinary;
 
 @Slf4j
 @Service
@@ -26,25 +25,18 @@ import static online.worldseed.utils.GltfDefaultModelWriter.getGltfBinary;
 public class MinioService {
     private final MinioClient minioClient;
     private final MinioProperties minioProperties;
-    private final TerrainCompressionService terrainCompressionService;
 
     /**
      * Сохранение террейна в минио
      */
-    public String saveTerrain(UUID terrainId, Resolution resolution, Coordinate center, GltfModel gltfModel) {
+    public String saveTerrain(UUID terrainId, Resolution resolution, Coordinate center, byte[] gltfBinary) {
         var terrainStorageFilePath = getTerrainStorageFilePath(resolution, center, terrainId);
         var contentType = "model/gltf-binary";
         try {
-            var gltfBinary = getGltfBinary(gltfModel);
-            var optimizedGltfBinary = terrainCompressionService.compress(
-                gltfBinary,
-                terrainStorageFilePath,
-                resolution.getTerrainOptions().getCompression()
-            );
             minioClient.putObject(PutObjectArgs.builder()
                 .bucket(minioProperties.getTerrainsBucketName())
                 .object(terrainStorageFilePath)
-                .stream(new ByteArrayInputStream(optimizedGltfBinary), optimizedGltfBinary.length, -1)
+                .stream(new ByteArrayInputStream(gltfBinary), gltfBinary.length, -1)
                 .contentType(contentType)
                 .build());
         } catch (Exception e) {
@@ -54,6 +46,33 @@ public class MinioService {
                                             minioProperties.getTerrainsBucketName() + " with contentType " + contentType, e);
         }
         return terrainStorageFilePath;
+    }
+
+    public byte[] getTerrainBinary(String storagePath) {
+        try (var stream = minioClient.getObject(GetObjectArgs.builder()
+            .bucket(minioProperties.getTerrainsBucketName())
+            .object(storagePath)
+            .build())) {
+            return stream.readAllBytes();
+        } catch (Exception e) {
+            throw new ServiceErrorException("Minio error while reading file " + storagePath + " from bucket " +
+                                            minioProperties.getTerrainsBucketName(), e);
+        }
+    }
+
+    public void overwriteTerrainBinary(String storagePath, byte[] gltfBinary) {
+        var contentType = "model/gltf-binary";
+        try {
+            minioClient.putObject(PutObjectArgs.builder()
+                .bucket(minioProperties.getTerrainsBucketName())
+                .object(storagePath)
+                .stream(new ByteArrayInputStream(gltfBinary), gltfBinary.length, -1)
+                .contentType(contentType)
+                .build());
+        } catch (Exception e) {
+            throw new ServiceErrorException("Minio error while overwriting file " + storagePath + " to bucket " +
+                                            minioProperties.getTerrainsBucketName() + " with contentType " + contentType, e);
+        }
     }
 
     /**
