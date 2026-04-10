@@ -87,28 +87,28 @@ generator:
       zoom-to: 11.7
       max-terrain-view-distance: 3
       grid-size: 18
-      compression: DRACO
+      compression: OFF
     R_1_16:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.0625 # 1 / 16.0
       zoom-to: 9.7
       max-terrain-view-distance: 3
       grid-size: 18
-      compression: DRACO
+      compression: OFF
     R_1_4:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.25 # 1 / 4.0
       zoom-to: 7.7
       max-terrain-view-distance: 3
       grid-size: 18
-      compression: DRACO
+      compression: OFF
     R_1:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 1.0
       zoom-to: 5.7
       max-terrain-view-distance: 3
       grid-size: 18
-      compression: DRACO
+      compression: OFF
     R_3:
       generation-type: TERRAIN_PLANET
       lat-step: 3.0

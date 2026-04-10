@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import online.worldseed.model.dto.scene.SceneConfigRequest;
 import online.worldseed.model.dto.scene.SceneConfigResult;
 import online.worldseed.model.dto.scene.SceneGenerationStateRequest;
 import online.worldseed.model.dto.scene.ScenePlanetResult;
 import online.worldseed.model.dto.scene.SceneStateRequest;
 import online.worldseed.model.dto.scene.SceneStateResult;
+import online.worldseed.model.dto.scene.core.GeocentricPosition;
+import online.worldseed.model.dto.scene.core.GeodeticPosition;
 import online.worldseed.model.generator.resolution.Resolution;
 import online.worldseed.service.scene.PlanetService;
 import online.worldseed.service.scene.SceneService;
@@ -38,9 +39,19 @@ public class SceneController {
             @ApiResponse(responseCode = "200", description = "Стартовая конфигурация"),
             @ApiResponse(responseCode = "400", description = HTTP_400_DESC)
         })
-    @PostMapping("/config")
-    public SceneConfigResult getSceneConfig(@Valid @RequestBody SceneConfigRequest sceneConfigRequest) {
-        return sceneService.getSceneConfig(sceneConfigRequest);
+    @GetMapping("/config")
+    public SceneConfigResult getSceneConfig() {
+        return sceneService.getSceneConfig();
+    }
+
+    @Operation(summary = "Высота и геоцентрическая позиция по геодезическим координатам",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Геоцентрическая позиция с высотой"),
+            @ApiResponse(responseCode = "400", description = HTTP_400_DESC)
+        })
+    @PostMapping("/alt-by-position")
+    public GeocentricPosition getAltByPosition(@Valid @RequestBody GeodeticPosition geodeticPosition) {
+        return sceneService.getAltByPosition(geodeticPosition);
     }
 
     @Operation(summary = "Получение ссылки на планетойд для переданного разрешения",

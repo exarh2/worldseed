@@ -6,7 +6,6 @@ import {Environment, OrbitControls, Stars, useGLTF} from "@react-three/drei";
 import {PerspectiveCamera} from "three";
 import {config} from "../config";
 import {useGetPlanetSceneQuery} from "../store/api/sceneApi";
-import {Resolution} from "../store/slices/sceneSlice";
 import {EARTH_RADIUS} from "./constants";
 import {setMapView, type MapViewState} from "../store/slices/uiSlice";
 
@@ -33,9 +32,7 @@ export const PlanetScene: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
     const mapView = useSelector((state: RootState) => state.ui.mapView);
-    const {data} = useGetPlanetSceneQuery(Resolution.R_3, {
-        skip: !currentSceneTerrainOption?.resolution
-    });
+    const {data} = useGetPlanetSceneQuery(currentSceneTerrainOption!.resolution);
     const lastMapViewRef = useRef<MapViewState | null>(null);
     const orbitControlsRef = useRef<any>(null);
     const isApplyingMapViewRef = useRef(false);

@@ -4,12 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import online.worldseed.mapper.DefaultMapper;
-import online.worldseed.model.dto.scene.SceneConfigRequest;
 import online.worldseed.model.dto.scene.SceneConfigResult;
 import online.worldseed.model.dto.scene.SceneGenerationStateRequest;
 import online.worldseed.model.dto.scene.SceneStateRequest;
 import online.worldseed.model.dto.scene.SceneStateResult;
 import online.worldseed.model.dto.scene.core.GeocentricPosition;
+import online.worldseed.model.dto.scene.core.GeodeticPosition;
 import online.worldseed.model.entity.TerrainEntity;
 import online.worldseed.model.generator.Geocentric;
 import online.worldseed.model.generator.Geodetic;
@@ -50,24 +50,21 @@ public class SceneService {
     /**
      * Стартовая конфигурация
      */
-    public SceneConfigResult getSceneConfig(@Valid SceneConfigRequest sceneConfigRequest) {
-        var geocentricPosition = Optional.<GeocentricPosition>empty();
-        //TODO на фронте высоту
-        if (sceneConfigRequest.getGeodeticPosition() != null) {
-            var pos = sceneConfigRequest.getGeodeticPosition();
-            //Пока минимальное разрешение считаем R_1_64
-            var altitudeTerrainOptions = (AltitudeTerrainOptions) Resolution.R_1_64.getTerrainOptions();
-            var minEnvelop = TerrainSlicing.getSearchEnvelop(pos.getLon(), pos.getLat(),
-                altitudeTerrainOptions.getLatStep() / altitudeTerrainOptions.getGridSize());
-            var dem = digitalElevationModelProvider.loadDemForArea(minEnvelop);
-            var alt = dem.getAlt(pos.getLon(), pos.getLat());
-            var geocentric = Geocentric.fromGeodetic(new Geodetic(pos.getLat(), pos.getLon(), alt));
-            geocentricPosition = Optional.of(new GeocentricPosition(geocentric.getX(), geocentric.getY(), geocentric.getZ(), alt));
-        }
+    public SceneConfigResult getSceneConfig() {
         return SceneConfigResult.builder()
-            .geocentricPosition(geocentricPosition)
             .sceneTerrainOptions(Arrays.stream(Resolution.values()).map(mapper::toTerrainOptionsDto).toList())
             .build();
+    }
+
+    public GeocentricPosition getAltByPosition(@Valid GeodeticPosition geodeticPosition) {
+        //Пока минимальное разрешение считаем R_1_64
+        var altitudeTerrainOptions = (AltitudeTerrainOptions) Resolution.R_1_64.getTerrainOptions();
+        var minEnvelop = TerrainSlicing.getSearchEnvelop(geodeticPosition.getLon(), geodeticPosition.getLat(),
+            altitudeTerrainOptions.getLatStep() / altitudeTerrainOptions.getGridSize());
+        var dem = digitalElevationModelProvider.loadDemForArea(minEnvelop);
+        var alt = dem.getAlt(geodeticPosition.getLon(), geodeticPosition.getLat());
+        var geocentric = Geocentric.fromGeodetic(new Geodetic(geodeticPosition.getLat(), geodeticPosition.getLon(), alt));
+        return new GeocentricPosition(geocentric.getX(), geocentric.getY(), geocentric.getZ(), alt);
     }
 
     /**
