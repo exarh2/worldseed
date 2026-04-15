@@ -106,7 +106,7 @@ export const PlanetScene: React.FC = () => {
         const metersPerPixel =
             (EARTH_CIRCUMFERENCE_M * latitudeCos) / (256 * Math.pow(2, clamp(mapView.zoom, MIN_MAP_ZOOM, MAX_MAP_ZOOM)));
         const altitude = (metersPerPixel * viewportHeight) / (2 * Math.tan(fovRad / 2));
-        const distanceToCenter = clamp(EARTH_RADIUS + altitude, EARTH_RADIUS, 50000000);
+        const distanceToCenter = clamp(EARTH_RADIUS + altitude, EARTH_RADIUS, EARTH_RADIUS * 10);
 
         const x = distanceToCenter * Math.cos(latitude) * Math.cos(longitude);
         const y = distanceToCenter * Math.cos(latitude) * Math.sin(longitude);
@@ -124,7 +124,7 @@ export const PlanetScene: React.FC = () => {
         <Canvas
             shadows
             gl={{antialias: true}}
-            camera={{fov: 35, near: /*0.01*/10, far: 135504085, position: [25504085, 0, 0], up: [0, 0, 1]}}
+            camera={{fov: 35, near: /*0.01*/10, far: 135504085, position: [EARTH_RADIUS * 4, 0, 0], up: [0, 0, 1]}}
             style={{background: "#f3f4f6"}}
         >
             <color attach="background" args={["#030712"]}/>
@@ -143,7 +143,7 @@ export const PlanetScene: React.FC = () => {
                 enableDamping
                 dampingFactor={0.08}
                 minDistance={EARTH_RADIUS}
-                maxDistance={50000000}
+                maxDistance={EARTH_RADIUS * 10}
                 screenSpacePanning
                 target={[0, 0, 0]}
                 onChange={(event) => {

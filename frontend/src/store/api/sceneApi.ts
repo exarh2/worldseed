@@ -33,6 +33,10 @@ export interface SceneStateResult {
   waitingRowKeys: string[];
 }
 
+export interface SceneGenerationRequest {
+  waitingRowKeys: string[];
+}
+
 export const sceneApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSceneConfig: builder.query<SceneConfigResult, void>({
@@ -64,6 +68,13 @@ export const sceneApi = baseApi.injectEndpoints({
         method: "POST",
         body: request
       })
+    }),
+    getSceneGeneration: builder.mutation<SceneStateResult, SceneGenerationRequest>({
+      query: (request) => ({
+        url: "v1/scene/generation",
+        method: "POST",
+        body: request
+      })
     })
   }),
   overrideExisting: false
@@ -73,5 +84,7 @@ export const {
   useGetSceneConfigQuery,
   useGetAltByPositionMutation,
   useGetPlanetSceneQuery,
-  useGetSceneStateQuery
+  useGetSceneStateQuery,
+  useLazyGetSceneStateQuery,
+  useGetSceneGenerationMutation
 } = sceneApi;

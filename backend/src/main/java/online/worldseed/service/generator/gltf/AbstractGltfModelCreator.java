@@ -5,6 +5,7 @@ import de.javagl.jgltf.model.creation.GltfModelBuilder;
 import de.javagl.jgltf.model.creation.MaterialBuilder;
 import de.javagl.jgltf.model.creation.MaterialModels;
 import de.javagl.jgltf.model.creation.MeshPrimitiveBuilder;
+import de.javagl.jgltf.model.impl.AbstractNamedModelElement;
 import de.javagl.jgltf.model.impl.DefaultGltfModel;
 import de.javagl.jgltf.model.impl.DefaultMeshModel;
 import de.javagl.jgltf.model.impl.DefaultMeshPrimitiveModel;
@@ -31,12 +32,17 @@ import java.util.stream.Collectors;
 @Service
 public abstract class AbstractGltfModelCreator {
     protected Map<String, MaterialModelV2> materialModelMap = new HashMap<>();
-    private MaterialModelV2 baseMaterialModel;
+    //private MaterialModelV2 baseMaterialModel;
 
     @SneakyThrows
-    public AbstractGltfModelCreator() {
-        this.baseMaterialModel = MaterialModels.createFromBaseColor(0, 0, 1, 0.5f);
-        this.baseMaterialModel.setDoubleSided(false);
+    public MaterialModelV2 getBaseMaterialModel() {
+        var baseMaterialModel = MaterialModels.createFromBaseColor(
+            (float) Math.random(),
+            (float) Math.random(),
+            (float) Math.random(),
+            0.8f);
+        baseMaterialModel.setDoubleSided(false);
+        return baseMaterialModel;
     }
 
     /**
@@ -87,7 +93,7 @@ public abstract class AbstractGltfModelCreator {
     private MeshModel createMeshModel(List<GeocentricTriangle> triangles, MaterialModelV2 materialModel) {
         //Построим список уникальных координат
         var uniqueCoords = triangles.stream().map(GeocentricTriangle::getGcCoordinates).flatMap(Collection::stream)
-                .collect(Collectors.toSet()).stream().toList();
+            .collect(Collectors.toSet()).stream().toList();
         var hasUv = uniqueCoords.get(0).getUv().isPresent();
 
         var positions = new float[uniqueCoords.size() * 3];
@@ -139,7 +145,7 @@ public abstract class AbstractGltfModelCreator {
      */
     private MaterialModelV2 getMaterialModel(Optional<String> textureSource) {
         return textureSource.map(s -> materialModelMap.get(s))
-                .orElse(baseMaterialModel);
+            .orElse(getBaseMaterialModel());
     }
 
     /**
@@ -161,7 +167,11 @@ public abstract class AbstractGltfModelCreator {
         meshPrimitiveNormalBuilder.setLines();
         meshPrimitiveNormalBuilder.addPositions3D(FloatBuffer.wrap(positions));
         var meshPrimitiveModel = meshPrimitiveNormalBuilder.build();
-        var materialModel = MaterialModels.createFromBaseColor(1.0f, 0, 0, 0.9f);
+        var materialModel = MaterialModels.createFromBaseColor(
+            (float) Math.random(),
+            (float) Math.random(),
+            (float) Math.random(),
+            0.9f);
         meshPrimitiveModel.setMaterialModel(materialModel);
         return meshPrimitiveModel;
     }
