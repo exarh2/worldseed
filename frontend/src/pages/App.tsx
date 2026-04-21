@@ -7,10 +7,10 @@ import type {AppDispatch, RootState} from "../store";
 import {OsmMap} from "../components/OsmMap";
 import {setMapView, setMapVisible, setMapWindow} from "../store/slices/uiSlice";
 import {useGetSceneConfigQuery} from "../store/api/sceneApi";
-import {PlanetScene} from "../scene/PlanetScene";
+import {PlanetScene} from "../scene/PlanetScene/PlanetScene";
 import {TestScene} from "../scene/TestScene";
 import {TerrainType} from "../store/slices/sceneSlice";
-import {AltitudeScene} from "../scene/AltitudeScene";
+import {AltitudeScene} from "../scene/AltitudeScene/AltitudeScene";
 
 const SceneWrapper: React.FC = () => {
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
