@@ -1,14 +1,16 @@
 import React, {Suspense, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {Canvas} from "@react-three/fiber";
 import {Environment, FlyControls, OrbitControls, Stars, useGLTF} from "@react-three/drei";
-import {useSelector} from "react-redux";
-import type {RootState} from "../../store";
+import {useDispatch, useSelector} from "react-redux";
+import type {AppDispatch, RootState} from "../../store";
 import type {SceneStateRequest} from "../../store/api/sceneApi";
 import {config} from "../../config";
 import {EARTH_RADIUS} from "../constants";
 import {PerspectiveCamera} from "three";
 import {mapCenterToCameraPosition} from "./altitudeCameraMath";
 import {useAltitudeSceneState} from "./useAltitudeSceneState";
+import {setMapView} from "../../store/slices/uiSlice";
+import {useAltitudeMapViewSync} from "./useAltitudeMapViewSync";
 
 const AltitudeTerrainModel: React.FC<{ url: string; onLoaded?: () => void }> = ({url, onLoaded}) => {
     const gltf = useGLTF(url);
@@ -21,12 +23,17 @@ const AltitudeTerrainModel: React.FC<{ url: string; onLoaded?: () => void }> = (
 };
 
 export const AltitudeScene: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
     const mapView = useSelector((state: RootState) => state.ui.mapView);
     const [useFlyControls, setUseFlyControls] = useState(false);
-    const orbitControlsRef = useRef<any>(null);
     const cameraRef = useRef<PerspectiveCamera | null>(null);
     const isInitialCameraAppliedRef = useRef(false);
+    const {orbitControlsRef, onControlsChange, onControlsStart, onControlsEnd} = useAltitudeMapViewSync({
+        onMapViewChange: (nextMapView) => {
+            dispatch(setMapView(nextMapView));
+        }
+    });
 
     const sceneRequest = useMemo<SceneStateRequest | null>(() => {
         if (!currentSceneTerrainOption) {
@@ -129,6 +136,9 @@ export const AltitudeScene: React.FC = () => {
                         maxDistance={50000000}
                         screenSpacePanning
                         target={[0, 0, 0]}
+                        onChange={onControlsChange}
+                        onStart={onControlsStart}
+                        onEnd={onControlsEnd}
                     />
                 )}
                 <ambientLight intensity={0.35}/>
