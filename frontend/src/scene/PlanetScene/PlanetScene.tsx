@@ -6,7 +6,7 @@ import {Environment, OrbitControls, Stars, useGLTF} from "@react-three/drei";
 import {config} from "../../config";
 import {useGetPlanetSceneQuery} from "../../store/api/sceneApi";
 import {setMapView} from "../../store/slices/uiSlice";
-import {EARTH_RADIUS} from "../constants";
+import {EARTH_RADIUS} from "../../utils/constants";
 import {usePlanetMapViewSync} from "./usePlanetMapViewSync";
 
 const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {

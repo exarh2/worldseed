@@ -1,5 +1,5 @@
 import type {MapViewState} from "../../store/slices/uiSlice";
-import {EARTH_RADIUS} from "../constants";
+import {EARTH_RADIUS} from "../../utils/constants";
 
 export interface Vec3 {
     x: number;

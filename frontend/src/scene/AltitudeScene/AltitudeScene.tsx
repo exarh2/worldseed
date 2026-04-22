@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../store";
 import type {SceneStateRequest} from "../../store/api/sceneApi";
 import {config} from "../../config";
-import {EARTH_RADIUS} from "../constants";
+import {EARTH_RADIUS} from "../../utils/constants";
 import {PerspectiveCamera} from "three";
 import {mapCenterToCameraPosition} from "./altitudeCameraMath";
 import {useAltitudeSceneState} from "./useAltitudeSceneState";
