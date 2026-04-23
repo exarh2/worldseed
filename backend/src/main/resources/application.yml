@@ -78,41 +78,41 @@ generator:
     R_1_128:
       generation-type: TERRAIN_OSM
       lat-step: 0.0078125 # 1 / 128.0
-      zoom-to: 12.7
+      zoom-from: 12.7
       max-terrain-view-distance: 3
       compression: DRACO
     R_1_64:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.015625 # 1 / 64.0
-      zoom-to: 11.7
+      zoom-from: 11.7
       max-terrain-view-distance: 3
       grid-size: 18
       compression: DRACO_LAZY
     R_1_16:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.0625 # 1 / 16.0
-      zoom-to: 9.7
+      zoom-from: 9.7
       max-terrain-view-distance: 3
       grid-size: 18
       compression: DRACO_LAZY
     R_1_4:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 0.25 # 1 / 4.0
-      zoom-to: 7.7
+      zoom-from: 7.7
       max-terrain-view-distance: 3
       grid-size: 18
       compression: DRACO_LAZY
     R_1:
       generation-type: TERRAIN_ALTITUDE
       lat-step: 1.0
-      zoom-to: 6.7
+      zoom-from: 6.7
       max-terrain-view-distance: 3
       grid-size: 18
       compression: DRACO_LAZY
     R_3:
       generation-type: TERRAIN_PLANET
       lat-step: 3.0
-      zoom-to: 0
+      zoom-from: 3.5
       texture-source: earth1024.jpg
       compression: DRACO
   compression:

@@ -78,7 +78,7 @@ public class GeneratorProperties {
         private Double latStep;
 
         @NotNull
-        private Double zoomTo;
+        private Double zoomFrom;
 
         private Integer gridSize;
 

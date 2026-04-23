@@ -8,7 +8,7 @@ import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
 import "ol/ol.css";
 import type {AppDispatch, RootState} from "../store";
-import {setCurrentTerrainOption, type AnyTerrainOptions} from "../store/slices/sceneSlice";
+import {type AnyTerrainOptions, setCurrentTerrainOption} from "../store/slices/sceneSlice";
 import type {MapViewState, MapWindowState} from "../store/slices/uiSlice";
 
 const MIN_MAP_WIDTH = 320;
@@ -63,11 +63,11 @@ const pickTerrainOptionsByZoom = (
     terrainOptions: AnyTerrainOptions[],
     currentZoom: number
 ): AnyTerrainOptions | null => {
-    const candidates = terrainOptions.filter((option) => option.zoomTo <= currentZoom);
-    if (candidates.length === 0) {
+    if (terrainOptions.length === 0) {
         return null;
     }
-    return candidates.reduce((best, option) => (option.zoomTo > best.zoomTo ? option : best));
+    return terrainOptions.filter((option) => option.zoomFrom >= currentZoom)
+        .reduce((best, option) => (option.zoomFrom < best.zoomFrom ? option : best));
 };
 
 export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowChange, onMapViewChange, onClose}) => {

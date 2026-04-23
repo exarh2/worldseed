@@ -7,6 +7,7 @@ import {config} from "../../config";
 import {useGetPlanetSceneQuery} from "../../store/api/sceneApi";
 import {setMapView} from "../../store/slices/uiSlice";
 import {EARTH_RADIUS} from "../../utils/constants";
+import {PLANET_CAMERA_FOV_DEGREES} from "./planetCameraMath";
 import {usePlanetMapViewSync} from "./usePlanetMapViewSync";
 
 const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
@@ -34,7 +35,13 @@ export const PlanetScene: React.FC = () => {
         <Canvas
             shadows
             gl={{antialias: true}}
-            camera={{fov: 35, near: 10, far: 135504085, position: [EARTH_RADIUS * 4, 0, 0], up: [0, 0, 1]}}
+            camera={{
+                fov: PLANET_CAMERA_FOV_DEGREES,
+                near: 10,
+                far: 135504085,
+                position: [EARTH_RADIUS * 4, 0, 0],
+                up: [0, 0, 1]
+            }}
             style={{background: "#f3f4f6"}}
         >
             <color attach="background" args={["#030712"]}/>

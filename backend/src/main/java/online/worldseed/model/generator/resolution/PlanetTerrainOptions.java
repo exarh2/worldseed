@@ -9,8 +9,8 @@ public class PlanetTerrainOptions extends TerrainOptions {
     //Источник тестурирования
     private final String textureSource;
 
-    public PlanetTerrainOptions(double latStep, double zoomTo, String textureSource, TerrainCompression compression) {
-        super(TERRAIN_PLANET, latStep, zoomTo, compression);
+    public PlanetTerrainOptions(double latStep, double zoomFrom, String textureSource, TerrainCompression compression) {
+        super(TERRAIN_PLANET, latStep, zoomFrom, compression);
         this.textureSource = textureSource;
     }
 }

@@ -23,7 +23,7 @@ export interface TerrainOptions {
   /** Шаг нарезки сетки по широте */
   latStep: number;
   /** Целевой уровень OSM zoom */
-  zoomTo: number;
+  zoomFrom: number;
 }
 
 export interface AltitudeTerrainOptions extends TerrainOptions {

@@ -18,12 +18,12 @@ public abstract class TerrainOptionsDto {
     @Schema(description = "Шаг нарезки сетки по широте")
     protected double latStep;
     @Schema(description = "Целевой уровень OSM zoom")
-    protected double zoomTo;
+    protected double zoomFrom;
 
-    protected TerrainOptionsDto(Resolution resolution, TerrainType generationType, double latStep, double zoomTo) {
+    protected TerrainOptionsDto(Resolution resolution, TerrainType generationType, double latStep, double zoomFrom) {
         this.resolution = resolution;
         this.generationType = generationType;
         this.latStep = latStep;
-        this.zoomTo = zoomTo;
+        this.zoomFrom = zoomFrom;
     }
 }

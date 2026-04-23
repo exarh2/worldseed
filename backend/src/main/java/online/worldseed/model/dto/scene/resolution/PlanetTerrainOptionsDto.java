@@ -9,7 +9,7 @@ import static online.worldseed.model.generator.TerrainType.TERRAIN_PLANET;
 @Getter
 @Schema(description = "Настройки планетарного террейна")
 public class PlanetTerrainOptionsDto extends TerrainOptionsDto {
-    public PlanetTerrainOptionsDto(Resolution resolution, double latStep, double zoomTo) {
-        super(resolution, TERRAIN_PLANET, latStep, zoomTo);
+    public PlanetTerrainOptionsDto(Resolution resolution, double latStep, double zoomFrom) {
+        super(resolution, TERRAIN_PLANET, latStep, zoomFrom);
     }
 }

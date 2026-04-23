@@ -19,7 +19,7 @@ public abstract class TerrainOptions {
     protected double latStep;
 
     //Целевой OSM zoom для текущего шага нарезки
-    protected double zoomTo;
+    protected double zoomFrom;
 
     //Настройки сжатия итогового GLB
     protected TerrainCompression compression;

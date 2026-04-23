@@ -12,8 +12,8 @@ public class OsmTerrainOptionsDto extends TerrainOptionsDto {
     @Schema(description = "Максимальная видимость вокруг пользователя в террейнах")
     private final int maxTerrainViewDistance;
 
-    public OsmTerrainOptionsDto(Resolution resolution, double latStep, double zoomTo, int maxTerrainViewDistance) {
-        super(resolution, TERRAIN_OSM, latStep, zoomTo);
+    public OsmTerrainOptionsDto(Resolution resolution, double latStep, double zoomFrom, int maxTerrainViewDistance) {
+        super(resolution, TERRAIN_OSM, latStep, zoomFrom);
         this.maxTerrainViewDistance = maxTerrainViewDistance;
     }
 }

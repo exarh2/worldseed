@@ -90,7 +90,7 @@ export const usePlanetMapViewSync = ({mapView, onMapViewChange}: UsePlanetMapVie
             return;
         }
 
-        const cameraPosition = mapViewToCameraPosition(mapView, camera.fov, window.innerHeight);
+        const cameraPosition = mapViewToCameraPosition(mapView);
 
         isApplyingMapViewRef.current = true;
         camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
@@ -110,7 +110,7 @@ export const usePlanetMapViewSync = ({mapView, onMapViewChange}: UsePlanetMapVie
             return;
         }
 
-        const nextMapView = cameraPositionToMapView(camera.position, camera.fov, window.innerHeight);
+        const nextMapView = cameraPositionToMapView(camera.position);
         if (!nextMapView) {
             return;
         }
