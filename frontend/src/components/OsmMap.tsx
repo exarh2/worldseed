@@ -9,7 +9,7 @@ import {OSM} from "ol/source";
 import "ol/ol.css";
 import type {AppDispatch, RootState} from "../store";
 import {type AnyTerrainOptions, setCurrentTerrainOption} from "../store/slices/sceneSlice";
-import type {MapViewState, MapWindowState} from "../store/slices/uiSlice";
+import type {OsmViewState, MapWindowState} from "../store/slices/uiSlice";
 
 const MIN_MAP_WIDTH = 320;
 const MIN_MAP_HEIGHT = 240;
@@ -21,7 +21,7 @@ const roundToPrecision = (value: number, precision: number): number => {
     return Math.round(value * factor) / factor;
 };
 
-const normalizeMapView = (mapView: MapViewState): MapViewState => ({
+const normalizeMapView = (mapView: OsmViewState): OsmViewState => ({
     center: [
         roundToPrecision(mapView.center[0], MAP_CENTER_PRECISION),
         roundToPrecision(mapView.center[1], MAP_CENTER_PRECISION)
@@ -53,9 +53,9 @@ const clampMapWindowToViewport = (windowState: MapWindowState): MapWindowState =
 
 interface OsmMapProps {
     mapWindow: MapWindowState;
-    mapView: MapViewState;
+    mapView: OsmViewState;
     onMapWindowChange: (next: MapWindowState) => void;
-    onMapViewChange: (next: MapViewState) => void;
+    onMapViewChange: (next: OsmViewState) => void;
     onClose: () => void;
 }
 
@@ -77,8 +77,8 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<Map | null>(null);
     const clampedMapWindow = clampMapWindowToViewport(mapWindow);
-    const initialMapViewRef = useRef<MapViewState>(normalizeMapView(mapView));
-    const lastSavedMapViewRef = useRef<MapViewState>(initialMapViewRef.current);
+    const initialMapViewRef = useRef<OsmViewState>(normalizeMapView(mapView));
+    const lastSavedMapViewRef = useRef<OsmViewState>(initialMapViewRef.current);
     const terrainOptionsRef = useRef(terrainOptions);
     const currentTerrainOptionsRef = useRef(currentTerrainOptions);
 

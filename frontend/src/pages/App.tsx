@@ -5,7 +5,7 @@ import {Login} from "../components/Login";
 import {clearAuth} from "../store/slices/authSlice";
 import type {AppDispatch, RootState} from "../store";
 import {OsmMap} from "../components/OsmMap";
-import {setMapView, setMapVisible, setMapWindow} from "../store/slices/uiSlice";
+import {setOsmViewState, setMapVisible, setMapWindowState} from "../store/slices/uiSlice";
 import {useGetSceneConfigQuery} from "../store/api/sceneApi";
 import {PlanetScene} from "../scene/PlanetScene/PlanetScene";
 import {TestScene} from "../scene/TestScene";
@@ -29,14 +29,14 @@ export const App: React.FC = () => {
     const login = useSelector((state: RootState) => state.auth.login);
     const isMapVisible = useSelector((state: RootState) => state.ui.isMapVisible);
     const mapWindow = useSelector((state: RootState) => state.ui.mapWindow);
-    const mapView = useSelector((state: RootState) => state.ui.mapView);
+    const mapView = useSelector((state: RootState) => state.ui.osmViewState);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const handleMapWindowChange = useCallback((next: RootState["ui"]["mapWindow"]) => {
-        dispatch(setMapWindow(next));
+        dispatch(setMapWindowState(next));
     }, [dispatch]);
-    const handleMapViewChange = useCallback((next: RootState["ui"]["mapView"]) => {
-        dispatch(setMapView(next));
+    const handleMapViewChange = useCallback((next: RootState["ui"]["osmViewState"]) => {
+        dispatch(setOsmViewState(next));
     }, [dispatch]);
 
     if (isLoading) {

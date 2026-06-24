@@ -1,7 +1,7 @@
 import {useEffect, useRef} from "react";
 import {PerspectiveCamera} from "three";
 import type {OrbitControls as OrbitControlsImpl} from "three-stdlib";
-import type {MapViewState} from "../../store/slices/uiSlice";
+import type {OsmViewState} from "../../store/slices/uiSlice";
 import {cameraPositionToMapView} from "./altitudeCameraMath";
 
 const MAP_VIEW_DISPATCH_THROTTLE_MS = 300;
@@ -13,7 +13,7 @@ interface OrbitControlsChangeEvent {
 }
 
 interface UseAltitudeMapViewSyncParams {
-    onMapViewChange: (nextMapView: MapViewState) => void;
+    onMapViewChange: (nextMapView: OsmViewState) => void;
 }
 
 interface UseAltitudeMapViewSyncResult {
@@ -23,18 +23,18 @@ interface UseAltitudeMapViewSyncResult {
     onControlsEnd: () => void;
 }
 
-const isEqualMapView = (a: MapViewState, b: MapViewState): boolean =>
+const isEqualMapView = (a: OsmViewState, b: OsmViewState): boolean =>
     a.center[0] === b.center[0] && a.center[1] === b.center[1] && a.zoom === b.zoom;
 
 export const useAltitudeMapViewSync = ({onMapViewChange}: UseAltitudeMapViewSyncParams): UseAltitudeMapViewSyncResult => {
     const orbitControlsRef = useRef<OrbitControlsImpl>(null);
-    const lastMapViewRef = useRef<MapViewState | null>(null);
+    const lastMapViewRef = useRef<OsmViewState | null>(null);
     const isUserInteractingRef = useRef(false);
     const lastMapViewDispatchAtRef = useRef(0);
-    const pendingMapViewRef = useRef<MapViewState | null>(null);
+    const pendingMapViewRef = useRef<OsmViewState | null>(null);
     const trailingDispatchTimeoutRef = useRef<number | null>(null);
 
-    const dispatchMapViewThrottled = (nextMapView: MapViewState, forceImmediate = false) => {
+    const dispatchMapViewThrottled = (nextMapView: OsmViewState, forceImmediate = false) => {
         const now = Date.now();
         const elapsed = now - lastMapViewDispatchAtRef.current;
         const canDispatchNow = forceImmediate || elapsed >= MAP_VIEW_DISPATCH_THROTTLE_MS;

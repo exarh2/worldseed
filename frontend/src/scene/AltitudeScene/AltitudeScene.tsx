@@ -9,7 +9,7 @@ import {EARTH_RADIUS} from "../../utils/constants";
 import {PerspectiveCamera} from "three";
 import {mapCenterToCameraPosition} from "./altitudeCameraMath";
 import {useAltitudeSceneState} from "./useAltitudeSceneState";
-import {setMapView} from "../../store/slices/uiSlice";
+import {setOsmViewState} from "../../store/slices/uiSlice";
 import {useAltitudeMapViewSync} from "./useAltitudeMapViewSync";
 
 const AltitudeTerrainModel: React.FC<{ url: string; onLoaded?: () => void }> = ({url, onLoaded}) => {
@@ -25,13 +25,13 @@ const AltitudeTerrainModel: React.FC<{ url: string; onLoaded?: () => void }> = (
 export const AltitudeScene: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
-    const mapView = useSelector((state: RootState) => state.ui.mapView);
+    const mapView = useSelector((state: RootState) => state.ui.osmViewState);
     const [useFlyControls, setUseFlyControls] = useState(false);
     const cameraRef = useRef<PerspectiveCamera | null>(null);
     const isInitialCameraAppliedRef = useRef(false);
     const {orbitControlsRef, onControlsChange, onControlsStart, onControlsEnd} = useAltitudeMapViewSync({
         onMapViewChange: (nextMapView) => {
-            dispatch(setMapView(nextMapView));
+            dispatch(setOsmViewState(nextMapView));
         }
     });
 

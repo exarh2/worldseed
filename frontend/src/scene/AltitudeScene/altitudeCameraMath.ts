@@ -1,4 +1,4 @@
-import type {MapViewState} from "../../store/slices/uiSlice";
+import type {OsmViewState} from "../../store/slices/uiSlice";
 import {EARTH_RADIUS} from "../../utils/constants";
 
 export interface Vec3 {
@@ -36,7 +36,7 @@ export const cameraPositionToMapView = (
     position: Vec3,
     cameraFovDegrees: number,
     viewportHeight: number
-): MapViewState | null => {
+): OsmViewState | null => {
     const distanceToCenter = Math.sqrt(position.x ** 2 + position.y ** 2 + position.z ** 2);
     if (distanceToCenter <= 0) {
         return null;

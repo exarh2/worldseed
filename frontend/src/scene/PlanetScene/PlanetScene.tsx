@@ -5,7 +5,7 @@ import {Canvas} from "@react-three/fiber";
 import {Environment, OrbitControls, Stars, useGLTF} from "@react-three/drei";
 import {config} from "../../config";
 import {useGetPlanetSceneQuery} from "../../store/api/sceneApi";
-import {setMapView} from "../../store/slices/uiSlice";
+import {setOsmViewState} from "../../store/slices/uiSlice";
 import {EARTH_RADIUS} from "../../utils/constants";
 import {PLANET_CAMERA_FOV_DEGREES} from "./planetCameraMath";
 import {usePlanetMapViewSync} from "./usePlanetMapViewSync";
@@ -18,7 +18,7 @@ const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
 export const PlanetScene: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
-    const mapView = useSelector((state: RootState) => state.ui.mapView);
+    const mapView = useSelector((state: RootState) => state.ui.osmViewState);
     const {data} = useGetPlanetSceneQuery(currentSceneTerrainOption!.resolution);
     const terrainUrl = data?.terrainPath
         ? `${config.terrainsBaseUrl}/${data.terrainPath}`
@@ -27,7 +27,7 @@ export const PlanetScene: React.FC = () => {
     const {orbitControlsRef, onControlsChange, onControlsStart, onControlsEnd} = usePlanetMapViewSync({
         mapView,
         onMapViewChange: (nextMapView) => {
-            dispatch(setMapView(nextMapView));
+            dispatch(setOsmViewState(nextMapView));
         }
     });
 
