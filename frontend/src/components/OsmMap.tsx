@@ -76,8 +76,6 @@ export const OsmMap: React.FC = () => {
     const mapRef = useRef<Map | null>(null);
 
     const osmViewStateRef = useRef<OsmViewState>(normalizeOsmViewState(osmViewState));
-    const terrainOptionsRef = useRef(terrainOptions);
-    const currentTerrainOptionsRef = useRef(currentTerrainOptions);
 
     const onMapWindowStateChange = useCallback((next: RootState["ui"]["mapWindowState"]) => {
         dispatch(setMapWindowState(next));
@@ -86,15 +84,6 @@ export const OsmMap: React.FC = () => {
     const onOsmViewStateChange = useCallback((next: RootState["ui"]["osmViewState"]) => {
         dispatch(setOsmViewState(next));
     }, [dispatch]);
-
-
-    useEffect(() => {
-        terrainOptionsRef.current = terrainOptions;
-    }, [terrainOptions]);
-
-    useEffect(() => {
-        currentTerrainOptionsRef.current = currentTerrainOptions;
-    }, [currentTerrainOptions]);
 
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) {
@@ -137,12 +126,11 @@ export const OsmMap: React.FC = () => {
                 onOsmViewStateChange(nextOsmViewState);
             }
 
-            const nextTerrainOptions = pickTerrainOptionsByZoom(terrainOptionsRef.current, zoom);
+            const nextTerrainOptions = pickTerrainOptionsByZoom(terrainOptions, zoom);
             if (!nextTerrainOptions) {
                 return;
             }
-
-            if (currentTerrainOptionsRef.current?.resolution !== nextTerrainOptions.resolution) {
+            if (currentTerrainOptions?.resolution !== nextTerrainOptions.resolution) {
                 dispatch(setCurrentTerrainOption(nextTerrainOptions));
             }
         };
@@ -158,7 +146,7 @@ export const OsmMap: React.FC = () => {
             mapRef.current.setTarget(undefined);
             mapRef.current = null;
         };
-    }, [dispatch, onOsmViewStateChange]);
+    }, [dispatch, currentTerrainOptions]);
 
     useEffect(() => {
         if (!mapRef.current) {
