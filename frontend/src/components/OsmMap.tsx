@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useCallback, useEffect, useRef} from "react";
 import {Rnd} from "react-rnd";
 import {CloseButton} from "@mantine/core";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,6 +10,7 @@ import "ol/ol.css";
 import type {AppDispatch, RootState} from "../store";
 import {type AnyTerrainOptions, setCurrentTerrainOption} from "../store/slices/sceneSlice";
 import type {OsmViewState, MapWindowState} from "../store/slices/uiSlice";
+import {setOsmViewState, setMapVisible, setMapWindowState} from "../store/slices/uiSlice";
 
 const MIN_MAP_WIDTH = 320;
 const MIN_MAP_HEIGHT = 240;
@@ -21,43 +22,36 @@ const roundToPrecision = (value: number, precision: number): number => {
     return Math.round(value * factor) / factor;
 };
 
-const normalizeMapView = (mapView: OsmViewState): OsmViewState => ({
+const normalizeOsmViewState = (osmViewState: OsmViewState): OsmViewState => ({
     center: [
-        roundToPrecision(mapView.center[0], MAP_CENTER_PRECISION),
-        roundToPrecision(mapView.center[1], MAP_CENTER_PRECISION)
+        roundToPrecision(osmViewState.center[0], MAP_CENTER_PRECISION),
+        roundToPrecision(osmViewState.center[1], MAP_CENTER_PRECISION)
     ],
-    zoom: roundToPrecision(mapView.zoom, MAP_ZOOM_PRECISION)
+    zoom: roundToPrecision(osmViewState.zoom, MAP_ZOOM_PRECISION)
 });
 
-const clampMapWindowToViewport = (windowState: MapWindowState): MapWindowState => {
+//Функция проверки, что диалоговое окно карты влезает в основное окно при его уменьшении (если нужно сдигает)
+const clampMapWindowStateToViewport = (mapWindowState: MapWindowState): MapWindowState => {
     if (typeof window === "undefined") {
-        return windowState;
+        return mapWindowState;
     }
 
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    const width = Math.min(Math.max(windowState.width, MIN_MAP_WIDTH), viewportWidth);
-    const height = Math.min(Math.max(windowState.height, MIN_MAP_HEIGHT), viewportHeight);
+    const width = Math.min(Math.max(mapWindowState.width, MIN_MAP_WIDTH), viewportWidth);
+    const height = Math.min(Math.max(mapWindowState.height, MIN_MAP_HEIGHT), viewportHeight);
 
     const maxX = Math.max(0, viewportWidth - width);
     const maxY = Math.max(0, viewportHeight - height);
 
     return {
-        x: Math.min(Math.max(windowState.x, 0), maxX),
-        y: Math.min(Math.max(windowState.y, 0), maxY),
+        x: Math.min(Math.max(mapWindowState.x, 0), maxX),
+        y: Math.min(Math.max(mapWindowState.y, 0), maxY),
         width,
         height
     };
 };
-
-interface OsmMapProps {
-    mapWindow: MapWindowState;
-    mapView: OsmViewState;
-    onMapWindowChange: (next: MapWindowState) => void;
-    onMapViewChange: (next: OsmViewState) => void;
-    onClose: () => void;
-}
 
 const pickTerrainOptionsByZoom = (
     terrainOptions: AnyTerrainOptions[],
@@ -70,17 +64,29 @@ const pickTerrainOptionsByZoom = (
         .reduce((best, option) => (option.zoomFrom < best.zoomFrom ? option : best));
 };
 
-export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowChange, onMapViewChange, onClose}) => {
+export const OsmMap: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
+    //Данные из redux
     const terrainOptions = useSelector((state: RootState) => state.scene.terrainOptions);
     const currentTerrainOptions = useSelector((state: RootState) => state.scene.currentTerrainOptions);
+    const mapWindowState = useSelector((state: RootState) => state.ui.mapWindowState);
+    const osmViewState = useSelector((state: RootState) => state.ui.osmViewState);
+
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<Map | null>(null);
-    const clampedMapWindow = clampMapWindowToViewport(mapWindow);
-    const initialMapViewRef = useRef<OsmViewState>(normalizeMapView(mapView));
-    const lastSavedMapViewRef = useRef<OsmViewState>(initialMapViewRef.current);
+
+    const osmViewStateRef = useRef<OsmViewState>(normalizeOsmViewState(osmViewState));
     const terrainOptionsRef = useRef(terrainOptions);
     const currentTerrainOptionsRef = useRef(currentTerrainOptions);
+
+    const onMapWindowStateChange = useCallback((next: RootState["ui"]["mapWindowState"]) => {
+        dispatch(setMapWindowState(next));
+    }, [dispatch]);
+
+    const onOsmViewStateChange = useCallback((next: RootState["ui"]["osmViewState"]) => {
+        dispatch(setOsmViewState(next));
+    }, [dispatch]);
+
 
     useEffect(() => {
         terrainOptionsRef.current = terrainOptions;
@@ -105,8 +111,8 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
             ],
             view: new View({
                 projection: 'EPSG:4326',
-                center: initialMapViewRef.current.center,
-                zoom: initialMapViewRef.current.zoom,
+                center: osmViewStateRef.current.center,
+                zoom: osmViewStateRef.current.zoom,
                 maxZoom: 18
             })
         });
@@ -118,18 +124,17 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
             if (!center || zoom === undefined) {
                 return;
             }
-
-            const nextMapView = normalizeMapView({
+            const nextOsmViewState = normalizeOsmViewState({
                 center: [center[0], center[1]],
                 zoom
             });
             if (
-                nextMapView.center[0] !== lastSavedMapViewRef.current.center[0] ||
-                nextMapView.center[1] !== lastSavedMapViewRef.current.center[1] ||
-                nextMapView.zoom !== lastSavedMapViewRef.current.zoom
+                nextOsmViewState.center[0] !== osmViewStateRef.current.center[0] ||
+                nextOsmViewState.center[1] !== osmViewStateRef.current.center[1] ||
+                nextOsmViewState.zoom !== osmViewStateRef.current.zoom
             ) {
-                lastSavedMapViewRef.current = nextMapView;
-                onMapViewChange(nextMapView);
+                osmViewStateRef.current = nextOsmViewState;
+                onOsmViewStateChange(nextOsmViewState);
             }
 
             const nextTerrainOptions = pickTerrainOptionsByZoom(terrainOptionsRef.current, zoom);
@@ -153,7 +158,7 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
             mapRef.current.setTarget(undefined);
             mapRef.current = null;
         };
-    }, [dispatch, onMapViewChange]);
+    }, [dispatch, onOsmViewStateChange]);
 
     useEffect(() => {
         if (!mapRef.current) {
@@ -161,49 +166,50 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
         }
 
         const view = mapRef.current.getView();
-        const normalizedMapView = normalizeMapView(mapView);
+        const normalizedOsmViewState = normalizeOsmViewState(osmViewState);
         const currentCenter = view.getCenter();
         const currentZoom = view.getZoom();
 
         const centerChanged =
             !currentCenter ||
-            currentCenter[0] !== normalizedMapView.center[0] ||
-            currentCenter[1] !== normalizedMapView.center[1];
-        const zoomChanged = currentZoom === undefined || currentZoom !== normalizedMapView.zoom;
+            currentCenter[0] !== normalizedOsmViewState.center[0] ||
+            currentCenter[1] !== normalizedOsmViewState.center[1];
+        const zoomChanged = currentZoom === undefined || currentZoom !== normalizedOsmViewState.zoom;
 
         if (centerChanged) {
-            view.setCenter(normalizedMapView.center);
+            view.setCenter(normalizedOsmViewState.center);
         }
         if (zoomChanged) {
-            view.setZoom(normalizedMapView.zoom);
+            view.setZoom(normalizedOsmViewState.zoom);
         }
 
         // Keep local snapshot in sync to avoid redundant write-back.
-        lastSavedMapViewRef.current = normalizedMapView;
-    }, [mapView]);
+        osmViewStateRef.current = normalizedOsmViewState;
+    }, [osmViewState]);
 
+    //Обраотка ресайза окна браузера
     useEffect(() => {
         const normalizeMapWindow = () => {
-            const normalized = clampMapWindowToViewport(mapWindow);
+            const normalized = clampMapWindowStateToViewport(mapWindowState);
             if (
-                normalized.x !== mapWindow.x ||
-                normalized.y !== mapWindow.y ||
-                normalized.width !== mapWindow.width ||
-                normalized.height !== mapWindow.height
+                normalized.x !== mapWindowState.x ||
+                normalized.y !== mapWindowState.y ||
+                normalized.width !== mapWindowState.width ||
+                normalized.height !== mapWindowState.height
             ) {
-                onMapWindowChange(normalized);
+                onMapWindowStateChange(normalized);
             }
         };
 
         normalizeMapWindow();
         window.addEventListener("resize", normalizeMapWindow);
         return () => window.removeEventListener("resize", normalizeMapWindow);
-    }, [mapWindow, onMapWindowChange]);
+    }, [mapWindowState]);
 
     return (
         <Rnd
-            size={{width: clampedMapWindow.width, height: clampedMapWindow.height}}
-            position={{x: clampedMapWindow.x, y: clampedMapWindow.y}}
+            size={{width: mapWindowState.width, height: mapWindowState.height}}
+            position={{x: mapWindowState.x, y: mapWindowState.y}}
             minWidth={MIN_MAP_WIDTH}
             minHeight={MIN_MAP_HEIGHT}
             bounds="window"
@@ -217,7 +223,7 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
                 boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)"
             }}
             onResizeStop={(_event, _direction, ref, _delta, position) => {
-                onMapWindowChange(clampMapWindowToViewport({
+                onMapWindowStateChange(clampMapWindowStateToViewport({
                     x: position.x,
                     y: position.y,
                     width: ref.offsetWidth,
@@ -226,8 +232,8 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
                 mapRef.current?.updateSize();
             }}
             onDragStop={(_event, data) => {
-                onMapWindowChange(clampMapWindowToViewport({
-                    ...mapWindow,
+                onMapWindowStateChange(clampMapWindowStateToViewport({
+                    ...mapWindowState,
                     x: data.x,
                     y: data.y
                 }));
@@ -248,7 +254,7 @@ export const OsmMap: React.FC<OsmMapProps> = ({mapWindow, mapView, onMapWindowCh
                     fontWeight: 600
                 }}
             >
-                <CloseButton aria-label="Close map" onClick={onClose}/>
+                <CloseButton aria-label="Close map" onClick={() => dispatch(setMapVisible(false))}/>
             </div>
             <div
                 ref={mapContainerRef}

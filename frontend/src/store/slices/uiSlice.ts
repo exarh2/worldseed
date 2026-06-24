@@ -14,7 +14,7 @@ export interface OsmViewState {
 
 export interface UiState {
   isMapVisible: boolean;
-  mapWindow: MapWindowState;
+  mapWindowState: MapWindowState;
   osmViewState: OsmViewState;
 }
 
@@ -38,7 +38,7 @@ const getDefaultMapWindow = (): MapWindowState => {
 
 const initialState: UiState = {
   isMapVisible: false,
-  mapWindow: getDefaultMapWindow(),
+  mapWindowState: getDefaultMapWindow(),
   osmViewState: {
     center: [112, 40],
     zoom: 10
@@ -53,7 +53,7 @@ const uiSlice = createSlice({
       state.isMapVisible = action.payload;
     },
     setMapWindowState(state, action: { payload: MapWindowState }) {
-      state.mapWindow = action.payload;
+      state.mapWindowState = action.payload;
     },
     setOsmViewState(state, action: { payload: OsmViewState }) {
       state.osmViewState = action.payload;

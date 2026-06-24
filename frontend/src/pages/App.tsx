@@ -1,11 +1,11 @@
-import React, {useCallback, useState} from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Box, Burger, Button, Checkbox, Drawer, Text} from "@mantine/core";
 import {Login} from "../components/Login";
 import {clearAuth} from "../store/slices/authSlice";
 import type {AppDispatch, RootState} from "../store";
 import {OsmMap} from "../components/OsmMap";
-import {setOsmViewState, setMapVisible, setMapWindowState} from "../store/slices/uiSlice";
+import {setMapVisible} from "../store/slices/uiSlice";
 import {useGetSceneConfigQuery} from "../store/api/sceneApi";
 import {PlanetScene} from "../scene/PlanetScene/PlanetScene";
 import {TestScene} from "../scene/TestScene";
@@ -14,10 +14,10 @@ import {AltitudeScene} from "../scene/AltitudeScene/AltitudeScene";
 
 const SceneWrapper: React.FC = () => {
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
-        if (currentSceneTerrainOption?.generationType == TerrainType.TERRAIN_PLANET)
-            return <PlanetScene/>;
-        if (currentSceneTerrainOption?.generationType == TerrainType.TERRAIN_ALTITUDE)
-            return <AltitudeScene/>;
+    if (currentSceneTerrainOption?.generationType == TerrainType.TERRAIN_PLANET)
+        return <PlanetScene/>;
+    if (currentSceneTerrainOption?.generationType == TerrainType.TERRAIN_ALTITUDE)
+        return <AltitudeScene/>;
     return <TestScene/>;
 };
 
@@ -28,16 +28,8 @@ export const App: React.FC = () => {
     const token = useSelector((state: RootState) => state.auth.token);
     const login = useSelector((state: RootState) => state.auth.login);
     const isMapVisible = useSelector((state: RootState) => state.ui.isMapVisible);
-    const mapWindow = useSelector((state: RootState) => state.ui.mapWindow);
-    const mapView = useSelector((state: RootState) => state.ui.osmViewState);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-    const handleMapWindowChange = useCallback((next: RootState["ui"]["mapWindow"]) => {
-        dispatch(setMapWindowState(next));
-    }, [dispatch]);
-    const handleMapViewChange = useCallback((next: RootState["ui"]["osmViewState"]) => {
-        dispatch(setOsmViewState(next));
-    }, [dispatch]);
 
     if (isLoading) {
         return null;
@@ -105,15 +97,7 @@ export const App: React.FC = () => {
             </Drawer>
             <Login opened={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}/>
             <SceneWrapper/>
-            {isMapVisible && (
-                <OsmMap
-                    mapWindow={mapWindow}
-                    mapView={mapView}
-                    onMapWindowChange={handleMapWindowChange}
-                    onMapViewChange={handleMapViewChange}
-                    onClose={() => dispatch(setMapVisible(false))}
-                />
-            )}
+            {isMapVisible && <OsmMap/>}
         </Box>
     );
 };
