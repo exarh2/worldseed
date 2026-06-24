@@ -8,7 +8,8 @@ export interface MapWindowState {
 }
 
 export interface OsmViewState {
-  center: [number, number];
+  lat: number;
+  lon: number;
   zoom: number;
 }
 
@@ -40,7 +41,8 @@ const initialState: UiState = {
   isMapVisible: false,
   mapWindowState: getDefaultMapWindow(),
   osmViewState: {
-    center: [112, 40],
+    lon: 112,
+    lat: 40,
     zoom: 10
   }
 };

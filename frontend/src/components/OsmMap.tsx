@@ -24,10 +24,8 @@ const roundToPrecision = (value: number, precision: number): number => {
 
 const normalizeOsmViewState = (osmViewState: OsmViewState): OsmViewState =>
     ({
-        center: [
-            roundToPrecision(osmViewState.center[0], MAP_CENTER_PRECISION),
-            roundToPrecision(osmViewState.center[1], MAP_CENTER_PRECISION)
-        ],
+        lon: roundToPrecision(osmViewState.lon, MAP_CENTER_PRECISION),
+        lat: roundToPrecision(osmViewState.lat, MAP_CENTER_PRECISION),
         zoom: roundToPrecision(osmViewState.zoom, MAP_ZOOM_PRECISION)
     });
 
@@ -101,7 +99,7 @@ export const OsmMap: React.FC = () => {
             ],
             view: new View({
                 projection: 'EPSG:4326',
-                center: osmViewStateRef.current.center,
+                center: [osmViewStateRef.current.lon, osmViewStateRef.current.lat],
                 zoom: osmViewStateRef.current.zoom,
                 maxZoom: 18
             })
@@ -115,12 +113,13 @@ export const OsmMap: React.FC = () => {
                 return;
             }
             const nextOsmViewState = normalizeOsmViewState({
-                center: [center[0], center[1]],
+                lon: center[0],
+                lat: center[1],
                 zoom
             });
             if (
-                nextOsmViewState.center[0] !== osmViewStateRef.current.center[0] ||
-                nextOsmViewState.center[1] !== osmViewStateRef.current.center[1] ||
+                nextOsmViewState.lon !== osmViewStateRef.current.lon ||
+                nextOsmViewState.lat !== osmViewStateRef.current.lat ||
                 nextOsmViewState.zoom !== osmViewStateRef.current.zoom
             ) {
                 osmViewStateRef.current = nextOsmViewState;
@@ -161,12 +160,12 @@ export const OsmMap: React.FC = () => {
 
         const centerChanged =
             !currentCenter ||
-            currentCenter[0] !== normalizedOsmViewState.center[0] ||
-            currentCenter[1] !== normalizedOsmViewState.center[1];
+            currentCenter[0] !== normalizedOsmViewState.lon ||
+            currentCenter[1] !== normalizedOsmViewState.lat;
         const zoomChanged = currentZoom === undefined || currentZoom !== normalizedOsmViewState.zoom;
 
         if (centerChanged) {
-            view.setCenter(normalizedOsmViewState.center);
+            view.setCenter([normalizedOsmViewState.lon, normalizedOsmViewState.lat]);
         }
         if (zoomChanged) {
             view.setZoom(normalizedOsmViewState.zoom);

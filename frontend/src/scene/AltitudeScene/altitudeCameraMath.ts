@@ -20,9 +20,9 @@ const roundToPrecision = (value: number, precision: number): number => {
     return Math.round(value * factor) / factor;
 };
 
-export const mapCenterToCameraPosition = (center: [number, number], altitude: number): Vec3 => {
-    const longitude = center[0] * Math.PI / 180;
-    const latitude = center[1] * Math.PI / 180;
+export const mapCenterToCameraPosition = (lon: number, lat: number, altitude: number): Vec3 => {
+    const longitude = lon * Math.PI / 180;
+    const latitude = lat * Math.PI / 180;
     const distanceToCenter = EARTH_RADIUS + altitude;
 
     return {
@@ -52,10 +52,8 @@ export const cameraPositionToMapView = (
     const zoom = Math.log2((EARTH_CIRCUMFERENCE_M * latitudeCos) / (256 * Math.max(metersPerPixel, 1e-9)));
 
     return {
-        center: [
-            roundToPrecision(longitude, MAP_CENTER_PRECISION),
-            roundToPrecision(latitude, MAP_CENTER_PRECISION)
-        ],
+        lon: roundToPrecision(longitude, MAP_CENTER_PRECISION),
+        lat: roundToPrecision(latitude, MAP_CENTER_PRECISION),
         zoom: roundToPrecision(clamp(zoom, MIN_MAP_ZOOM, MAX_MAP_ZOOM), MAP_ZOOM_PRECISION)
     };
 };

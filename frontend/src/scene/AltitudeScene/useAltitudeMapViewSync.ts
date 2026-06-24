@@ -24,7 +24,7 @@ interface UseAltitudeMapViewSyncResult {
 }
 
 const isEqualMapView = (a: OsmViewState, b: OsmViewState): boolean =>
-    a.center[0] === b.center[0] && a.center[1] === b.center[1] && a.zoom === b.zoom;
+    a.lon === b.lon && a.lat === b.lat && a.zoom === b.zoom;
 
 export const useAltitudeMapViewSync = ({onMapViewChange}: UseAltitudeMapViewSyncParams): UseAltitudeMapViewSyncResult => {
     const orbitControlsRef = useRef<OrbitControlsImpl>(null);

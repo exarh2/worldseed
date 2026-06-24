@@ -41,14 +41,14 @@ export const AltitudeScene: React.FC = () => {
         }
         return {
             resolution: currentSceneTerrainOption.resolution,
-            longitude: mapView.center[0],
-            latitude: mapView.center[1],
+            longitude: mapView.lon,
+            latitude: mapView.lat,
             terrainViewDistance:
                 "maxTerrainViewDistance" in currentSceneTerrainOption
                     ? currentSceneTerrainOption.maxTerrainViewDistance
                     : 3
         };
-    }, [currentSceneTerrainOption, mapView.center]);
+    }, [currentSceneTerrainOption, mapView.lon, mapView.lat]);
 
     const sceneState = useAltitudeSceneState(sceneRequest);
     const terrainUrls = (sceneState?.terrainPaths ?? []).map((terrainPath) => `${config.terrainsBaseUrl}/${terrainPath}`);
@@ -67,7 +67,7 @@ export const AltitudeScene: React.FC = () => {
             return;
         }
 
-        const cameraPosition = mapCenterToCameraPosition(mapView.center, 100);
+        const cameraPosition = mapCenterToCameraPosition(mapView.lon, mapView.lat, 100);
         camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
         const controls = orbitControlsRef.current;
         if (controls) {
@@ -75,7 +75,7 @@ export const AltitudeScene: React.FC = () => {
             controls.update();
         }
         isInitialCameraAppliedRef.current = true;
-    }, [mapView.center]);
+    }, [mapView.lon, mapView.lat]);
 
     return (
         <div style={{position: "relative", width: "100%", height: "100%"}}>

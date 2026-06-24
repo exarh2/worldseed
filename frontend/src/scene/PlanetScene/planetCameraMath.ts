@@ -23,8 +23,8 @@ export const roundToPrecision = (value: number, precision: number): number => {
 export const clamp = (value: number, min: number, max: number): number => Math.min(max, Math.max(min, value));
 
 export const mapViewToCameraPosition = (mapView: OsmViewState): Vec3 => {
-    const longitude = mapView.center[0];
-    const latitude = mapView.center[1];
+    const longitude = mapView.lon;
+    const latitude = mapView.lat;
     //const latitudeCos = Math.max(Math.cos(latitude * Math.PI / 180), 1e-6);
     const latitudeCos = 1;
     const safeViewportHeight = Math.max(window.innerHeight, 1);
@@ -57,10 +57,8 @@ export const cameraPositionToMapView = (position: Vec3): OsmViewState | null => 
     const zoom = Math.log2((EARTH_CIRCUMFERENCE_M * latitudeCos) / (256 * Math.max(metersPerPixel, 1e-9)));
     console.log('xxx', latitude)
     return {
-        center: [
-            roundToPrecision(longitude, MAP_CENTER_PRECISION),
-            roundToPrecision(latitude, MAP_CENTER_PRECISION)
-        ],
+        lon: roundToPrecision(longitude, MAP_CENTER_PRECISION),
+        lat: roundToPrecision(latitude, MAP_CENTER_PRECISION),
         zoom: roundToPrecision(clamp(zoom, MIN_MAP_ZOOM, MAX_MAP_ZOOM), MAP_ZOOM_PRECISION)
     };
 };
