@@ -5,6 +5,7 @@ import {OsmViewState, setOsmViewState} from "../../store/slices/uiSlice";
 import {cameraPositionToOsmViewState, osmViewStateToCameraPosition} from "./planetCameraMath";
 import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../store";
+import {EARTH_RADIUS} from "../../utils/constants";
 
 const MAP_VIEW_DISPATCH_THROTTLE_MS = 300;
 
@@ -47,26 +48,27 @@ export const useOrbitControlsToOsmViewSync = (): UsePlanetOsmViewSyncResult => {
         }
     }, []);
 
-    // useEffect(() => {
-    //     const controls = orbitControlsRef.current;
-    //     if (!controls) {
-    //         return;
-    //     }
-    //
-    //     const camera = controls.object;
-    //     if (!(camera instanceof PerspectiveCamera)) {
-    //         return;
-    //     }
-    //
-    //     const cameraPosition = osmViewStateToCameraPosition(osmViewState);
-    //
-    //     isApplyingMapViewRef.current = true;
-    //     camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-    //     controls.target.set(0, 0, 0);
-    //     controls.update();
-    //     lastMapViewRef.current = osmViewState;
-    //     isApplyingMapViewRef.current = false;
-    // }, [osmViewState]);
+    useEffect(() => {
+        const controls = orbitControlsRef.current;
+        if (!controls) {
+            return;
+        }
+
+        const camera = controls.object;
+        if (!(camera instanceof PerspectiveCamera)) {
+            return;
+        }
+
+        const cameraPosition = osmViewStateToCameraPosition(osmViewState);
+        console.log("fffffffffffffffffff", cameraPosition, (cameraPosition.x / EARTH_RADIUS))
+
+        isApplyingMapViewRef.current = true;
+        camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+        controls.target.set(0, 0, 0);
+        controls.update();
+        lastMapViewRef.current = osmViewState;
+        isApplyingMapViewRef.current = false;
+    }, [osmViewState]);
 
     const onControlsChange = (event?: OrbitControlsChangeEvent) => {
         if (isApplyingMapViewRef.current || !isUserInteractingRef.current || !event) {
@@ -100,39 +102,39 @@ export const useOrbitControlsToOsmViewSync = (): UsePlanetOsmViewSyncResult => {
     };
 
     const dispatchOsmViewThrottled = (nextOsmViewState: OsmViewState, forceImmediate = false) => {
-        // const now = Date.now();
-        // const elapsed = now - lastMapViewDispatchAtRef.current;
-        // const canDispatchNow = forceImmediate || elapsed >= MAP_VIEW_DISPATCH_THROTTLE_MS;
-        //
-        // if (canDispatchNow) {
-        //     if (trailingDispatchTimeoutRef.current !== null) {
-        //         window.clearTimeout(trailingDispatchTimeoutRef.current);
-        //         trailingDispatchTimeoutRef.current = null;
-        //     }
-        //     pendingMapViewRef.current = null;
-        //     lastMapViewDispatchAtRef.current = now;
-        //     lastMapViewRef.current = nextOsmViewState;
-        //     onMapViewChange(nextOsmViewState);
-        //     return;
-        // }
-        //
-        // pendingMapViewRef.current = nextOsmViewState;
-        // if (trailingDispatchTimeoutRef.current !== null) {
-        //     return;
-        // }
-        //
-        // const waitMs = MAP_VIEW_DISPATCH_THROTTLE_MS - elapsed;
-        // trailingDispatchTimeoutRef.current = window.setTimeout(() => {
-        //     trailingDispatchTimeoutRef.current = null;
-        //     if (!pendingMapViewRef.current) {
-        //         return;
-        //     }
-        //     const pending = pendingMapViewRef.current;
-        //     pendingMapViewRef.current = null;
-        //     lastMapViewDispatchAtRef.current = Date.now();
-        //     lastMapViewRef.current = pending;
-        //     onMapViewChange(pending);
-        // }, waitMs);
+        const now = Date.now();
+        const elapsed = now - lastMapViewDispatchAtRef.current;
+        const canDispatchNow = forceImmediate || elapsed >= MAP_VIEW_DISPATCH_THROTTLE_MS;
+
+        if (canDispatchNow) {
+            if (trailingDispatchTimeoutRef.current !== null) {
+                window.clearTimeout(trailingDispatchTimeoutRef.current);
+                trailingDispatchTimeoutRef.current = null;
+            }
+            pendingMapViewRef.current = null;
+            lastMapViewDispatchAtRef.current = now;
+            lastMapViewRef.current = nextOsmViewState;
+            onMapViewChange(nextOsmViewState);
+            return;
+        }
+
+        pendingMapViewRef.current = nextOsmViewState;
+        if (trailingDispatchTimeoutRef.current !== null) {
+            return;
+        }
+
+        const waitMs = MAP_VIEW_DISPATCH_THROTTLE_MS - elapsed;
+        trailingDispatchTimeoutRef.current = window.setTimeout(() => {
+            trailingDispatchTimeoutRef.current = null;
+            if (!pendingMapViewRef.current) {
+                return;
+            }
+            const pending = pendingMapViewRef.current;
+            pendingMapViewRef.current = null;
+            lastMapViewDispatchAtRef.current = Date.now();
+            lastMapViewRef.current = pending;
+            onMapViewChange(pending);
+        }, waitMs);
     };
 
     return {

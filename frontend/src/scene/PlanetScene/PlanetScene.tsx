@@ -1,14 +1,13 @@
-import React, {Suspense} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import type {AppDispatch, RootState} from "../../store";
+import React, {Suspense, useMemo} from "react";
+import {useSelector} from "react-redux";
+import type {RootState} from "../../store";
 import {Canvas} from "@react-three/fiber";
 import {Environment, OrbitControls, Stars, useGLTF} from "@react-three/drei";
 import {config} from "../../config";
 import {useGetPlanetSceneQuery} from "../../store/api/sceneApi";
-import {setOsmViewState} from "../../store/slices/uiSlice";
-import {EARTH_RADIUS} from "../../utils/constants";
-import {PLANET_CAMERA_FOV_DEGREES} from "./planetCameraMath";
+import {osmViewStateToCameraPosition, PLANET_CAMERA_FOV_DEGREES} from "./planetCameraMath";
 import {useOrbitControlsToOsmViewSync} from "./useOrbitControlsToOsmViewSync";
+import {EARTH_RADIUS} from "../../utils/constants";
 
 const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
     const gltf = useGLTF(url);
@@ -17,6 +16,11 @@ const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
 
 export const PlanetScene: React.FC = () => {
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
+    const osmViewState = useSelector((state: RootState) => state.ui.osmViewState);
+    const initialCameraPosition = useMemo(() => {
+        const position = osmViewStateToCameraPosition(osmViewState);
+        return [position.x, position.y, position.z] as [number, number, number];
+    }, [osmViewState]);
     const {data} = useGetPlanetSceneQuery(currentSceneTerrainOption!.resolution);
     const terrainUrl = data?.terrainPath
         ? `${config.terrainsBaseUrl}/${data.terrainPath}`
@@ -32,7 +36,7 @@ export const PlanetScene: React.FC = () => {
                 fov: PLANET_CAMERA_FOV_DEGREES,
                 near: 10,
                 far: 135504085,
-                position: [EARTH_RADIUS * 4, 0, 0],
+                position: initialCameraPosition,
                 up: [0, 0, 1]
             }}
             style={{background: "#f3f4f6"}}
@@ -52,13 +56,13 @@ export const PlanetScene: React.FC = () => {
                 autoRotate={false}
                 enableDamping
                 dampingFactor={0.08}
-                // minDistance={EARTH_RADIUS * 5}
-                // maxDistance={EARTH_RADIUS * 10}
+                minDistance={EARTH_RADIUS * 2}
+                maxDistance={EARTH_RADIUS * 7}
                 screenSpacePanning
                 target={[0, 0, 0]}
-                // onChange={onControlsChange}
-                // onStart={onControlsStart}
-                // onEnd={onControlsEnd}
+                onChange={onControlsChange}
+                onStart={onControlsStart}
+                onEnd={onControlsEnd}
             />
             <ambientLight intensity={0.35}/>
             <directionalLight position={[5, 10, 8]} intensity={1.1}/>
