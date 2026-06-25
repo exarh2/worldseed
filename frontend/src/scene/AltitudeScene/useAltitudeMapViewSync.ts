@@ -34,7 +34,7 @@ export const useAltitudeMapViewSync = ({onMapViewChange}: UseAltitudeMapViewSync
     const pendingMapViewRef = useRef<OsmViewState | null>(null);
     const trailingDispatchTimeoutRef = useRef<number | null>(null);
 
-    const dispatchMapViewThrottled = (nextMapView: OsmViewState, forceImmediate = false) => {
+    const dispatchOsmViewThrottled = (nextMapView: OsmViewState, forceImmediate = false) => {
         const now = Date.now();
         const elapsed = now - lastMapViewDispatchAtRef.current;
         const canDispatchNow = forceImmediate || elapsed >= MAP_VIEW_DISPATCH_THROTTLE_MS;
@@ -94,7 +94,7 @@ export const useAltitudeMapViewSync = ({onMapViewChange}: UseAltitudeMapViewSync
         }
 
         if (!lastMapViewRef.current || !isEqualMapView(lastMapViewRef.current, nextMapView)) {
-            dispatchMapViewThrottled(nextMapView);
+            dispatchOsmViewThrottled(nextMapView);
         }
     };
 
@@ -105,7 +105,7 @@ export const useAltitudeMapViewSync = ({onMapViewChange}: UseAltitudeMapViewSync
     const onControlsEnd = () => {
         isUserInteractingRef.current = false;
         if (pendingMapViewRef.current) {
-            dispatchMapViewThrottled(pendingMapViewRef.current, true);
+            dispatchOsmViewThrottled(pendingMapViewRef.current, true);
         }
     };
 

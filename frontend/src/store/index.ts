@@ -27,7 +27,7 @@ const authPersistConfig = {
 const uiPersistConfig = {
   key: "ui",
   storage,
-  whitelist: ["isMapVisible", "mapWindow", "mapView"]
+  whitelist: ["isMapVisible", "mapWindowState", "osmViewState"]
 };
 
 const rootReducer = combineReducers({

@@ -8,7 +8,7 @@ import {useGetPlanetSceneQuery} from "../../store/api/sceneApi";
 import {setOsmViewState} from "../../store/slices/uiSlice";
 import {EARTH_RADIUS} from "../../utils/constants";
 import {PLANET_CAMERA_FOV_DEGREES} from "./planetCameraMath";
-import {usePlanetMapViewSync} from "./usePlanetMapViewSync";
+import {useOrbitControlsToOsmViewSync} from "./useOrbitControlsToOsmViewSync";
 
 const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
     const gltf = useGLTF(url);
@@ -16,20 +16,13 @@ const PlanetTerrainModel: React.FC<{ url: string }> = ({url}) => {
 };
 
 export const PlanetScene: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
     const currentSceneTerrainOption = useSelector((state: RootState) => state.scene.currentTerrainOptions);
-    const mapView = useSelector((state: RootState) => state.ui.osmViewState);
     const {data} = useGetPlanetSceneQuery(currentSceneTerrainOption!.resolution);
     const terrainUrl = data?.terrainPath
         ? `${config.terrainsBaseUrl}/${data.terrainPath}`
         : null;
 
-    const {orbitControlsRef, onControlsChange, onControlsStart, onControlsEnd} = usePlanetMapViewSync({
-        mapView,
-        onMapViewChange: (nextMapView) => {
-            dispatch(setOsmViewState(nextMapView));
-        }
-    });
+    const {orbitControlsRef, onControlsChange, onControlsStart, onControlsEnd} = useOrbitControlsToOsmViewSync();
 
     return (
         <Canvas
@@ -59,13 +52,13 @@ export const PlanetScene: React.FC = () => {
                 autoRotate={false}
                 enableDamping
                 dampingFactor={0.08}
-                minDistance={EARTH_RADIUS}
-                maxDistance={EARTH_RADIUS * 10}
+                // minDistance={EARTH_RADIUS * 5}
+                // maxDistance={EARTH_RADIUS * 10}
                 screenSpacePanning
                 target={[0, 0, 0]}
-                onChange={onControlsChange}
-                onStart={onControlsStart}
-                onEnd={onControlsEnd}
+                // onChange={onControlsChange}
+                // onStart={onControlsStart}
+                // onEnd={onControlsEnd}
             />
             <ambientLight intensity={0.35}/>
             <directionalLight position={[5, 10, 8]} intensity={1.1}/>

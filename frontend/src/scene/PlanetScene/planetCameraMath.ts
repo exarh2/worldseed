@@ -22,7 +22,7 @@ export const roundToPrecision = (value: number, precision: number): number => {
 
 export const clamp = (value: number, min: number, max: number): number => Math.min(max, Math.max(min, value));
 
-export const mapViewToCameraPosition = (mapView: OsmViewState): Vec3 => {
+export const osmViewStateToCameraPosition = (mapView: OsmViewState): Vec3 => {
     const longitude = mapView.lon;
     const latitude = mapView.lat;
     //const latitudeCos = Math.max(Math.cos(latitude * Math.PI / 180), 1e-6);
@@ -39,7 +39,7 @@ export const mapViewToCameraPosition = (mapView: OsmViewState): Vec3 => {
     return geocentricFromGeodetic({lat: geodetic.lat, lon: geodetic.lon, alt: altitude});
 };
 
-export const cameraPositionToMapView = (position: Vec3): OsmViewState | null => {
+export const cameraPositionToOsmViewState = (position: Vec3): OsmViewState | null => {
     const distanceToCenter = Math.sqrt(position.x ** 2 + position.y ** 2 + position.z ** 2);
     if (distanceToCenter <= 0) {
         return null;
