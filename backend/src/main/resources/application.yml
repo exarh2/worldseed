@@ -137,3 +137,4 @@ generator:
       lazy: true
       command: [ "gltf-transform", "optimize", "{input}", "{output}", "--compress", "draco", "--texture-compress", "webp" ]
       timeout-ms: 120000
+
